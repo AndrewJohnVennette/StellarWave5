@@ -1,0 +1,33 @@
+---
+import stellarLogo from '../assets/Stellarwave.png';
+import background from '../assets/background.svg';
+import NavBar from '../components/NavBar.astro';
+import Footer from '../components/Footer.astro';
+import '../style/global.css'
+const { title } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+	
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/png" sizes="32x32" href={stellarLogo.src}>
+		<title>{title}</title>
+	</head>
+	<body>
+		<NavBar>
+		</NavBar>
+		<main>
+			<slot />
+		</main>
+		<Footer>
+		</Footer>
+	</body>
+</html>
+<style>
+	main{
+		width: 100%;
+	}
+</style>
+

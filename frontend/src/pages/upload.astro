@@ -1,0 +1,102 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Upload">
+  <h1>Upload a File</h1>
+  <p style="color: #666; margin: 0.5rem 0 1.5rem;">
+    Accepted: JPEG, PNG, GIF, PDF — max 10 MB
+  </p>
+
+  <div id="upload-box" style="
+    border: 2px dashed #ccc; border-radius: 12px;
+    padding: 3rem; text-align: center; background: white;
+  ">
+    <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.gif,.pdf"
+      style="display: none;" />
+    <label for="file-input" style="cursor: pointer; color: #7b8cde; font-weight: 600;">
+      Click to choose a file
+    </label>
+    <p id="file-name" style="margin-top: 0.75rem; color: #888; font-size: 0.9rem;"></p>
+  </div>
+
+  <button id="upload-btn" style="
+    margin-top: 1.5rem; background: #2ecc71; color: white;
+    border: none; padding: 0.75rem 2rem;
+    border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem;
+    display: none;
+  ">
+    Upload
+  </button>
+
+  <div id="progress" style="display:none; margin-top:1rem;">
+    <progress id="progress-bar" value="0" max="100" style="width:100%;"></progress>
+  </div>
+
+  <div id="result" style="margin-top: 1.5rem;"></div>
+
+  <script>
+    const input   = document.getElementById('file-input');
+    const nameEl  = document.getElementById('file-name');
+    const btn     = document.getElementById('upload-btn');
+    const result  = document.getElementById('result');
+    const progress = document.getElementById('progress');
+    const bar     = document.getElementById('progress-bar');
+
+    input.addEventListener('change', () => {
+      const file = input.files[0];
+      if (file) {
+        nameEl.textContent = `Selected: ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+        btn.style.display = 'block';
+      }
+    });
+
+    btn.addEventListener('click', async () => {
+      const file = input.files[0];
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      btn.disabled    = true;
+      btn.textContent = 'Uploading...';
+      progress.style.display = 'block';
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', 'http://localhost:3000/api/upload');
+
+      xhr.upload.addEventListener('progress', e => {
+        if (e.lengthComputable) bar.value = (e.loaded / e.total) * 100;
+      });
+
+      xhr.addEventListener('load', () => {
+        const data = JSON.parse(xhr.responseText);
+        if (data.success) {
+          result.innerHTML = `
+            <div style="
+              background:#e8f5e9; border:1px solid #81c784;
+              border-radius:8px; padding:1rem; color:#2e7d32;
+            ">
+              ✓ <strong>${data.file.name}</strong> uploaded successfully!
+            </div>`;
+        } else {
+          result.innerHTML = `
+            <div style="
+              background:#ffebee; border:1px solid #e57373;
+              border-radius:8px; padding:1rem; color:#c62828;
+            ">
+              ✗ Error: ${data.error}
+            </div>`;
+        }
+        btn.disabled    = false;
+        btn.textContent = 'Upload';
+        btn.style.display = 'none';
+        nameEl.textContent = '';
+        input.value = '';
+        progress.style.display = 'none';
+        bar.value = 0;
+      });
+
+      xhr.send(formData);
+    });
+  </script>
+</Layout>

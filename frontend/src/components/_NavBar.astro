@@ -1,0 +1,260 @@
+---
+import stellarLogo from '../assets/Stellarwave.png';
+---
+<header id="GEV-navBar" class="flex">
+    <div class="logo">
+        <img src={stellarLogo.src} alt="Logo of Corp" class="logo">
+    </div>
+    <button class="mobile-nav-toggle " aria-controls="primary-navigation" aria-expanded="false">
+        <div class="menu-btn">
+            <div class="menu-btn_burger"></div>
+        </div>
+    </button>
+    <nav>
+        <ul data-visible="false" class="primary-navigation flex">
+            <li class="active">
+                <a class="ff-sans-cond uppercase text-white letter-spacing" href="/index.html">
+                    <span aria-hidden="true" id="lng-menuHome">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="/selectedOption.html">
+                    <span aria-hidden="true" id="lng-menuServices">Services</span>
+                </a>
+            </li>
+            <li>
+                <a href="/info.html">
+                    <span aria-hidden="true" id="lng-menuInfo">Info</span>
+                </a>
+            </li>
+            <li>
+                <select required class="placeholder-select" onchange="if(this.value) window.location = this.value;">
+                    <option value="" disabled selected>— Language —</option>
+                    <option value="index.html">🇺🇸 USA</option>
+                    <option value="../es/index.html">🇪🇸 Spain</option>
+                    <option value="../pt-BR/index.html">🇧🇷 Portuguese</option>
+                    <option value="../fr/index.html">🇫🇷 French</option>
+                    <option value="../it/index.html">🇮🇹 Italian</option>
+                </select>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+
+<style>
+:root {
+    --gap: 2rem;
+    --textColor: #fff;
+    --textSize: 1rem;
+    --borderBottomLeftRadius: 55%;
+}
+
+#GEV-navBar{
+    /* backdrop-filter: blur(2rem); */
+    background: hsl(0 0% 100% / .07);
+    backdrop-filter: blur(2.2rem);
+    
+    /* font-family: Poppins, Dancing, sans-serif; */
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap, 1rem);
+
+    height: 50px;
+    position: relative;
+    z-index: 100;
+    & nav{
+        font-size: var(--textSize, 16px);
+    }
+    & ul{
+            margin: 0;
+            padding: 0;
+            border-bottom-left-radius:var(--borderBottomLeftRadius, 50%);
+            display: flex;
+            gap: var(--gap, 1rem);
+        & li{
+            padding-top: 15px;
+        }
+    }
+    & div.logo{
+        padding: 1.8rem 0 0 0;
+    }
+    & img.logo{
+        width: 60px;
+        height: inherit;
+        margin: 0 0 0 1rem;
+        border-radius: 7px;
+    }
+    & .mobile-nav-toggle {
+        display: none;
+    }
+
+    & .primary-navigation {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        /* background: hsl(0 0% 0% / .5);
+        backdrop-filter: blur(2rem); */
+        & a {
+            text-decoration: none;
+            color: var(--textColor);
+        }
+        & a>[aria-hidden="true"] {
+            font-weight: 700;
+            margin-inline-end: .75rem;
+        }
+    }
+    /* Hamburger */
+    & .menu-btn{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80px;
+        height: 80px;
+        cursor: pointer;
+        transition: all .5s ease-in-out;
+        /* border: 3px solid #fff; */
+
+        /* Animation */
+        &.open .menu-btn_burger{
+            transform: translate(-50px);
+            background: transparent;
+            box-shadow: none;
+            &::before{
+                transform: translate(50px);
+                transform: rotate(45deg) translate(35px, -35px);
+            }
+            &::after{
+                transform: translate(50px);
+                transform: rotate(-45deg) translate(35px, 35px);
+            }
+        } 
+    }
+    & .menu-btn_burger{
+        width: 50px;
+        height: 6px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(255, 101, 47, .2);
+        transition: all .5s ease-in-out;
+        left: 0;
+        position: absolute;
+        &::before,
+        &::after{
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 6px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(255, 101, 47, .2);
+            transition: all .5s ease-in-out;
+            left: 0;
+        }
+        &::before{
+            transform: translateY(-16px);
+        }
+        &::after{
+            transform: translateY(16px);
+        }
+    }
+}
+
+
+/* @supports(backdrop-filter: blur(2rem)) {
+    #GEV-navBar .primary-navigation {
+        background: hsl(0 0% 100% / .07);
+        backdrop-filter: blur(2.2rem);
+    }
+} */
+/* ****************************************Media********************************************************* */
+@media (max-width: 35rem) {
+    #GEV-navBar {
+        position: static;
+
+        .primary-navigation {
+            --gap: 2rem;
+            position: fixed;
+            inset: 0 0 0 30%;
+            flex-direction: column;
+            padding: min(30vh, 10rem) 2rem;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 350ms ease-out;
+
+            &[data-visible="true"] {
+                transform: translateX(0%);
+            }
+        }
+
+        .mobile-nav-toggle {
+            display: block;
+            position: absolute;
+            background-color: transparent;
+            /* background-image: url(./Hamburger_icon.svg.png); */
+            background-repeat: no-repeat;
+            width: 4rem;
+            aspect-ratio: 1;
+            border: 0;
+            top: 2rem;
+            right: 2rem;
+            z-index: 5000;
+            border: 1px solid transparent;
+            background-color: transparent;
+
+            &[aria-expanded="true"] {
+                content: '';
+            }
+        }
+
+        .menu-btn {
+            display: block;
+        }
+    }
+}
+
+@media (min-width: 35rem) {
+    #GEV-navBar {
+        .primary-navigation {
+            --gap: clamp(1.5rem, 5vw, 3rem);
+            padding-block: 2rem;
+            padding-inline: clamp(3rem, 8vw, 10rem);
+        }
+
+        &:is(:not(:has([data-visible="true"]))) {
+            /* min-width styles apply here */
+        }
+    }
+}
+
+@media (min-width: 35rem) and (max-width: 55rem) {
+    #GEV-navBar {
+        .primary-navigation {
+            a > [aria-hidden="true"] {
+                display: none;
+            }
+        }
+    }
+}
+
+@media(min-width: 55rem) {
+    
+}
+</style>
+
+<script>
+    const primaryNav = document.querySelector('.primary-navigation');
+    const navToggle = document.querySelector('.mobile-nav-toggle');
+    const menuBtn = document.querySelector('.menu-btn'); //.mobile-nav-toggle
+
+    navToggle.addEventListener('click', () => {
+        const isVisible = primaryNav.dataset.visible === 'true';
+        primaryNav.dataset.visible = !isVisible;
+        navToggle.setAttribute('aria-expanded', !isVisible);
+        menuBtn.classList.toggle('open');
+    });
+</script>

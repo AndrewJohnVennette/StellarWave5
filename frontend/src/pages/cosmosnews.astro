@@ -1,0 +1,186 @@
+---
+import Layout from '../layouts/Layout.astro';
+import spaceImage from '../assets/images/newsImages/starun2.webp';
+
+// ─────────────────────────────────────────────────────────────────────────
+// FIX: everything that used to be here (document.querySelector, forEach,
+// template cloning) ran in the Astro *frontmatter*, which executes on the
+// server (this project uses `output: 'server'` in astro.config.mjs). There
+// is no `document` object on the server — that line alone throws
+// "ReferenceError: document is not defined" on every request, and `data`
+// was never defined anywhere either. Fetching the data belongs here
+// (server-side); the DOM/template work has to move to a client <script>
+// tag further down, since that's the only place a `document` exists.
+// ─────────────────────────────────────────────────────────────────────────
+
+let data = [];
+try {
+    const res = await fetch('http://localhost:3000/api/news');
+    if (res.ok) {
+        const json = await res.json();
+        data = json.news ?? [];
+    } else {
+        console.error('Failed to fetch news:', res.status);
+    }
+} catch (err) {
+    console.error('Error fetching news:', err);
+}
+
+const Name = "Stellarwaves-5";
+---
+
+<Layout title={Name}>
+    <br><br><br><br>
+    <br><br><br><br>
+
+    <main id="newsSection">
+        <template id="newsPanel">
+            <article class="GEV-showItem-main-container" data-direction="left">
+                <img class="image-area article-Image" src="" alt="" />
+                <section class="content-area">
+                    <h2 class="title-cell article-Title"></h2>
+                    <textarea class="text-cell article-Text"></textarea>
+                </section>
+            </article>
+        </template>
+    </main>
+</Layout>
+
+<script define:vars={{ data }}>
+    // ─────────────────────────────────────────────────────────────────────
+    // FIX: this is the forEach/template-cloning logic, now running client-
+    // side (a real <script> tag) where `document` actually exists. `data`
+    // is injected from the server-fetched value above via define:vars.
+    // ─────────────────────────────────────────────────────────────────────
+    const newsSection = document.querySelector('#newsSection');
+    const template = document.querySelector('#newsPanel');
+
+    if (newsSection && template) {
+        data.forEach((element, index) => {
+            const clone = template.content.cloneNode(true);
+
+            const img = clone.querySelector('img');
+            // FIX: was `.attibuteValue = element.image`, which is not a real
+            // DOM property (typo) and silently did nothing — the <img> kept
+            // src="" forever. Set `.src` instead, and prefix with the
+            // public folder path since the DB only stores the bare filename
+            // (e.g. "05Kepler-186f.jpg") and the files actually live in
+            // public/images/destinationBlock/.
+            img.src = `/images/destinationBlock/${element.image}`;
+            img.alt = element.title ?? '';
+
+            clone.querySelector('h2').textContent = element.title;
+
+            // FIX: use `.value` rather than `.textContent` for the textarea,
+            // matching the working pattern already used in
+            // web-components/GEV-showItems.js — this is what actually
+            // displays as the textarea's content.
+            clone.querySelector('textarea').value = element.article;
+
+            // Alternate left/right layout per card, same as GEV-showItems.js
+            clone.querySelector('article').dataset.direction = index % 2 === 0 ? 'left' : 'right';
+
+            newsSection.appendChild(clone);
+        });
+    }
+</script>
+
+<style>
+    body {
+        display: grid;
+        place-items: center;
+        position: relative;
+        min-height: 100vh;
+    }
+
+    body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: center / 100% 100% no-repeat
+            url(../assets/images/background/new/msh1552.webp);
+        /* opacity: 0.45; */
+        z-index: -1;
+    }
+    
+    /* main {
+        height: auto;
+        width: 100%;
+        margin: 15rem 0 45vh 0;
+    } */
+    .GEV-showItem-main-container {
+        display: grid;
+        min-height: 10vh;
+        width: 90vw;
+        max-width: 1000px;
+        margin: 0 auto 30px auto;
+        border: 2px solid #fff;
+        border-radius: 10%;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        &[data-direction="left"] {
+            grid-template-columns: 250px 1fr;
+            grid-template-areas: "img content";
+            & .image-area {
+                border-right: 2px solid black;
+                border-left: none;
+            }
+        }
+        &[data-direction="right"] {
+            grid-template-columns: 1fr 250px;
+            grid-template-areas: "content img";
+            & .image-area {
+                border-left: 2px solid #fff;
+                border-right: none;
+            }
+        }
+        & .image-area {
+            grid-area: img;
+            width: 15vw;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            object-fit: cover;
+            color: #555;
+            font-size: 2em;
+            font-style: italic;
+        }
+        & .content-area {
+            grid-area: content;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            & .title-cell {
+                padding: 20px 40px;
+                border-bottom: 2px solid black;
+                color: #fff;
+                /* font-size: 3em; */
+                font-size: clamp(2rem, 5vw + 1rem, 2.7rem);
+                font-weight: bold;
+                align-self: end;
+                margin: 0;
+            }
+            & .text-cell {
+                padding: 40px;
+                color: #fff;
+                font-size: 1.5em;
+                align-self: center;
+                width: 100%;
+                height: 100%;
+                border: none;
+                resize: none;
+                background: transparent;
+            }
+        }
+    }
+</style>
+<style is:global>
+    main { width: 100%; }
+</style> 
+<script>
+  // Assuming your web component file is located at /src/scripts/show-data.js
+//   import "../web-components/GEV-showItems.js";
+</script>

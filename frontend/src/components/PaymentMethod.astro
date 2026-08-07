@@ -1,0 +1,434 @@
+---
+
+---
+
+<section class="completeCard">
+
+    <!-- ══════════════════════════════════════════════════════
+         Invoice Table — reads checked payload from PayloadBlock
+         ══════════════════════════════════════════════════════ -->
+    <section class="InvoiceTable" id="invoiceTable" aria-label="Order summary">
+        <h3 class="invoice-title">Order Summary</h3>
+        <table id="invoiceTableEl">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody id="invoiceRows"></tbody>
+            <tfoot>
+                <tr class="invoice-total-row">
+                    <td>Total</td>
+                    <td id="invoiceTotal">$0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+        <p class="invoice-empty" id="invoiceEmpty">No items selected yet.</p>
+    </section>
+
+    <section class="servicePage">
+        <article class="card" id="card-payment">
+            <label>Payment Info</label>
+
+            <section class="inputBoxData">
+                <input type="text" id="cardNumber" required maxlength="19"
+                    autocomplete="cc-number" inputmode="numeric" placeholder="">
+                <label for="cardNumber">Card Number</label>
+            </section>
+
+            <section class="inputBoxData">
+                <input type="text" id="cardName" required
+                    autocomplete="cc-name" placeholder="">
+                <label for="cardName">Cardholder Name</label>
+            </section>
+
+            <section class="inputBoxData">
+                <input type="text" id="expDate" required maxlength="5"
+                    autocomplete="cc-exp" inputmode="numeric" placeholder="">
+                <label for="expDate">Expiry Date — MM/YY</label>
+            </section>
+
+            <section class="inputBoxData">
+                <input type="text" id="CVC" required maxlength="4"
+                    autocomplete="cc-csc" inputmode="numeric" placeholder="">
+                <label for="CVC">CVC</label>
+            </section>
+
+            <div id="pay-btn-wrap" style="display:none; text-align:center; margin-top:1.5rem;">
+                <button id="payBtn" type="button">Pay Now</button>
+            </div>
+
+        </article>
+    </section>
+</section>
+
+
+<style>
+/* ── InvoiceTable ───────────────────────────────── */
+.InvoiceTable {
+    position: relative;
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem 2.2rem 1.6rem;
+    background: var(--surface);
+    margin: 1.8rem auto;
+    width: 45vw;
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.04) inset,
+        0 8px 40px rgba(0,0,0,.55);
+}
+
+.invoice-title {
+    text-align: center;
+    color: var(--accent, #00dfc4);
+    font-size: .88rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+}
+
+.InvoiceTable table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+    font-size: .95rem;
+}
+
+.InvoiceTable thead th {
+    text-align: left;
+    color: rgba(255,255,255,.45);
+    font-size: .75rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid rgba(255,255,255,.12);
+}
+
+.InvoiceTable thead th:last-child { text-align: right; }
+
+.InvoiceTable tbody tr td {
+    padding: .55rem 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.InvoiceTable tbody tr td:last-child { text-align: right; color: #00dfc4; }
+
+.invoice-total-row td {
+    padding-top: .9rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+}
+
+.invoice-total-row td:last-child {
+    text-align: right;
+    color: #00dfc4;
+    font-size: 1.15rem;
+}
+
+.invoice-empty {
+    text-align: center;
+    color: rgba(255,255,255,.3);
+    font-size: .85rem;
+    margin-top: .6rem;
+    display: none;
+}
+
+/* ── Card shell ─────────────────────────────────── */
+#card-payment {
+    position: relative;
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.6rem 2.2rem 2rem;
+    background: var(--surface);
+    margin: 1.8rem auto;
+    width: 45vw;
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.04) inset,
+        0 8px 40px rgba(0,0,0,.55);
+
+    & > label {
+        position: absolute;
+        top: 0; left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--label-bg);
+        color: var(--accent);
+        padding: var(--label-pad-y) var(--label-pad-x);
+        border-radius: 30%;
+        outline: var(--border-w) solid var(--border);
+        font-size: .88rem;
+        font-weight: 500;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        animation: pmLabelDrop .6s cubic-bezier(.22,1,.36,1) both;
+    }
+}
+
+.inputBoxData {
+    position: relative;
+    width: 70%;
+    margin: 1.5rem auto;
+
+    & input {
+        background: transparent;
+        width: 100%;
+        padding: 19px 0;
+        border: solid 1px rgba(255,255,255,.25);
+        border-radius: 5px;
+        outline: none;
+        color: #fff;
+        font-size: 1rem;
+        transition: border-color .5s, box-shadow .5s;
+    }
+
+    & label {
+        position: absolute;
+        left: 0; top: 0;
+        padding: 10px;
+        pointer-events: none;
+        font-size: .95rem;
+        color: rgba(255,255,255,.25);
+        text-transform: uppercase;
+        transition: .5s;
+    }
+
+    & input:focus ~ label,
+    & input:not(:placeholder-shown) ~ label {
+        color: #00dfc4;
+        transform: translateX(10px) translateY(-7px);
+        font-size: .65rem;
+        padding: 0 10px;
+        background: #1d2b3a;
+        border-left: solid 1px #00dfc4;
+        border-right: solid 1px #00dfc4;
+        letter-spacing: .2rem;
+    }
+
+    & input:focus,
+    & input:not(:placeholder-shown) { border: solid 1px #00dfc4; }
+
+    & input.is-invalid {
+        border-color: #e53535;
+        box-shadow: 0 0 0 2px rgba(229,53,53,.18);
+    }
+
+    & input.is-valid {
+        border-color: #00dfc4;
+        box-shadow: 0 0 0 2px rgba(0,223,196,.12);
+    }
+}
+
+@keyframes pmLabelDrop {
+    from { opacity: 0; transform: translate(-50%, -70%); }
+    to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+@media screen and (max-width: 400px) {
+    #card-payment,
+    .InvoiceTable {
+        padding: var(--servicePaddingMobileLess400);
+        margin:  var(--serviceMarginMobileLess400);
+        width:   var(--serviceWidthMobileLess400);
+    }
+    .inputBoxData { width: 70vw; margin: 1.5rem auto; }
+}
+</style>
+
+
+<script define:vars={{ TEXT_PRICE, PICTURE_PRICE, AUDIO_PRICE, VIDEO_PRICE }}>
+// ═══════════════════════════════════════════════════════════════════════════
+// ALL const declarations first — define:vars wraps this in a block scope,
+// so anything referenced before its declaration hits the temporal dead zone.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ── Catalogue ─────────────────────────────────────────────────────────────
+const CATALOGUE = [
+    { id: 'Text1',    label: 'Text',    envValue: TEXT_PRICE    },
+    { id: 'Picture1', label: 'Picture', envValue: PICTURE_PRICE },
+    { id: 'Audio1',   label: 'Audio',   envValue: AUDIO_PRICE   },
+    { id: 'Video1',   label: 'Video',   envValue: VIDEO_PRICE   },
+];
+
+// ── Regex validators ──────────────────────────────────────────────────────
+const RX_NUMBER = /^(?:\d{4} ){3}\d{4}$/;
+const RX_EXP    = /^(0[1-9]|1[0-2])\/(\d{2})$/;
+const RX_NAME   = /\S/;
+const RX_CVC    = /^\d{3,4}$/;
+
+// ── Touched flags ─────────────────────────────────────────────────────────
+const touched = { cardNumber: false, cardName: false, expDate: false, CVC: false };
+
+// ── DOM refs ──────────────────────────────────────────────────────────────
+const invoiceRows    = document.getElementById('invoiceRows');
+const invoiceTotalEl = document.getElementById('invoiceTotal');
+const invoiceEmpty   = document.getElementById('invoiceEmpty');
+const invoiceTableEl = document.getElementById('invoiceTableEl');
+const elNumber       = document.getElementById('cardNumber');
+const elName         = document.getElementById('cardName');
+const elExp          = document.getElementById('expDate');
+const elCVC          = document.getElementById('CVC');
+const payBtnWrap     = document.getElementById('pay-btn-wrap');
+const payBtn         = document.getElementById('payBtn');
+
+// ── Shared total in cents (read by Stripe handler) ────────────────────────
+window.__invoiceTotal = 0;
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Functions
+// ═══════════════════════════════════════════════════════════════════════════
+
+function parsePrice(raw) {
+    if (!raw || raw.toString().trim().toLowerCase() === 'off') return null;
+    const n = parseFloat(raw);
+    return isNaN(n) ? null : n;
+}
+
+function isNumberValid() { return RX_NUMBER.test(elNumber.value); }
+function isNameValid()   { return RX_NAME.test(elName.value.trim()); }
+function isExpValid()    { return RX_EXP.test(elExp.value); }
+function isCVCValid()    { return RX_CVC.test(elCVC.value.trim()); }
+
+function markField(el, valid) {
+    el.classList.toggle('is-valid',   valid);
+    el.classList.toggle('is-invalid', !valid);
+}
+
+function onUpdate() {
+    const cardOk   = isNumberValid() && isNameValid() && isExpValid() && isCVCValid();
+    const hasItems = window.__invoiceTotal > 0;
+    payBtnWrap.style.display = (cardOk && hasItems) ? 'block' : 'none';
+}
+
+function rebuildInvoice() {
+    invoiceRows.innerHTML = '';
+    let totalCents = 0;
+    let hasRows = false;
+
+    for (const item of CATALOGUE) {
+        const price = parsePrice(item.envValue);
+        if (price === null) continue;
+
+        const checkbox = document.getElementById(item.id);
+        if (!checkbox || !checkbox.checked) continue;
+
+        hasRows = true;
+        totalCents += Math.round(price * 100);
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${item.label}</td><td>$${price.toFixed(2)}</td>`;
+        invoiceRows.appendChild(tr);
+    }
+
+    window.__invoiceTotal = totalCents;
+    invoiceTotalEl.textContent = `$${(totalCents / 100).toFixed(2)}`;
+    invoiceEmpty.style.display   = hasRows ? 'none'  : 'block';
+    invoiceTableEl.style.display = hasRows ? 'table' : 'none';
+
+    onUpdate();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Event listeners
+// ═══════════════════════════════════════════════════════════════════════════
+
+// PayloadBlock checkboxes
+['Text1', 'Picture1', 'Audio1', 'Video1'].forEach(id => {
+    const cb = document.getElementById(id);
+    if (cb) cb.addEventListener('change', rebuildInvoice);
+});
+
+// cardNumber
+elNumber.addEventListener('input', () => {
+    const digits = elNumber.value.replace(/\D/g, '').slice(0, 16);
+    elNumber.value = digits.match(/.{1,4}/g)?.join(' ') ?? digits;
+    if (touched.cardNumber) markField(elNumber, isNumberValid());
+    onUpdate();
+});
+elNumber.addEventListener('blur', () => {
+    touched.cardNumber = true;
+    markField(elNumber, isNumberValid());
+    onUpdate();
+});
+
+// cardName
+elName.addEventListener('input', () => {
+    if (touched.cardName) markField(elName, isNameValid());
+    onUpdate();
+});
+elName.addEventListener('blur', () => {
+    touched.cardName = true;
+    markField(elName, isNameValid());
+    onUpdate();
+});
+
+// expDate
+elExp.addEventListener('input', () => {
+    const digits = elExp.value.replace(/\D/g, '').slice(0, 4);
+    elExp.value = digits.length > 2
+        ? digits.slice(0, 2) + '/' + digits.slice(2)
+        : digits;
+    if (touched.expDate) markField(elExp, isExpValid());
+    onUpdate();
+});
+elExp.addEventListener('blur', () => {
+    touched.expDate = true;
+    markField(elExp, isExpValid());
+    onUpdate();
+});
+
+// CVC
+elCVC.addEventListener('input', () => {
+    elCVC.value = elCVC.value.replace(/\D/g, '').slice(0, 4);
+    if (touched.CVC) markField(elCVC, isCVCValid());
+    onUpdate();
+});
+elCVC.addEventListener('blur', () => {
+    touched.CVC = true;
+    markField(elCVC, isCVCValid());
+    onUpdate();
+});
+
+// Stripe submit
+payBtn.addEventListener('click', async () => {
+    payBtn.disabled = true;
+    payBtn.textContent = 'Processing…';
+
+    try {
+        const res = await fetch('http://localhost:3000/create-payment-intent', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                totalAmount: window.__invoiceTotal,
+                cardName:    elName.value.trim(),
+            })
+        });
+
+        const data = await res.json();
+
+        if (data.requiresAction) {
+            if (window.stripe) {
+                const { error } = await window.stripe.handleCardAction(data.clientSecret);
+                if (error) throw new Error(error.message);
+                window.location.href = '/success';
+            } else {
+                throw new Error('3D Secure required but Stripe.js is not loaded.');
+            }
+        } else if (data.success) {
+            window.location.href = data.redirectUrl ?? '/success';
+        } else {
+            throw new Error(data.error ?? 'Payment failed.');
+        }
+
+    } catch (err) {
+        console.error('[PaymentMethod] Stripe error:', err.message);
+        payBtn.textContent = 'Error — try again';
+        payBtn.disabled = false;
+    }
+});
+
+// ── Initial render ────────────────────────────────────────────────────────
+rebuildInvoice();
+</script>

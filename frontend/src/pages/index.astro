@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import InfiniteSlider from '../components/InfiniteSlider.astro';
+import StockTicker from '../components/StockTicker.astro';
+import Carousel from '../components/Carousel.astro';
+
+const Name = "Stellarwaves-5";
+---
+<Layout title={Name}>
+	<Carousel companyName = {Name}></Carousel>
+	<br><br><br><br><br>
+	<InfiniteSlider></InfiniteSlider>
+	<StockTicker></StockTicker>
+</Layout>

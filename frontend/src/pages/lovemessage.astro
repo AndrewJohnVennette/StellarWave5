@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+import InfiniteSlider from '../components/InfiniteSlider.astro';
+import StockTicker from '../components/StockTicker.astro';
+import Carousel from '../components/Carousel.astro';
+import SeeMoreInfo from '../components/SeeMoreInfo.astro';
+const { services = "/services"} = Astro.props;
+
+import mainImage04 from '../assets/images/background/04star-bottle-1.webp';
+
+
+
+const Name = "Stellarwaves-5";
+let TopColum2 = "SEND YOUR LOVE MESSAGE, BEYOND TIME"
+let TopColum3 = "How will your love message actually get launched into space?"
+---
+<Layout title={Name}>
+    <SeeMoreInfo titleColum2 = {TopColum2}, titleColum3 = {TopColum3}>
+        <p slot="column2">
+            In a universe where stars have been holding secrets for millennia, you get to leave a mark that outlives time itself.
+            <a class="blink-02" href={services}>To send your Message, just click here.</a>
+            This whole section is made for messages born from love: letters, promises, memories, little sighs that mean everything.  Here, every word you send turns into light—traveling through the cosmic void as living proof of what we feel.
+            Because love knows no borders… and now it knows no limits either.   This isn’t just a letter.
+            Your love message becomes an offering to the cosmos, a declaration that crosses generations, languages, planets—and stays there for all eternity.
+            Because love deserves to be heard even in the total silence of space.  Every word you launch is a beam of hope, a quiet promise that no matter where or when, it reminds the universe:
+            love is still our most universal language.   Drop your heart into the stars. Let it shine forever.
+        </p>
+
+        <p slot="column3">
+            Your love message is gonna get blasted into space using binary code — that universal language the NASA and other space scientists straight-up use to send messages out there.  It’s not an “idioma” like Spanish or English, but its dead-simple setup makes it insanely powerful for talking across the stars.  Pretty much every piece of modern electronics—from your laptop to giant radio telescopes—is built on binary at its core. Spacecraft, satellites, NASA’s ground stations? All of ’em run on it. No exceptions.  It’s not just messages either. When NASA chats with deep-space probes through their Deep Space Network (DSN), those radio waves are carrying binary-encoded data that gets decoded back on Earth by computers.  The whole thing works basically the same way your phone sends texts or your Wi-Fi streams Netflix… just on a ridiculously bigger, cosmic scale.  Bottom line: binary isn’t some random nerd trick for sending messages.
+            It’s the built-in language of all digital tech — the exact same system NASA and every space agency on the planet uses to make space exploration even possible.  So when you send your love message here, you’re literally speaking the same “language” the Voyager probes used to say hi to the galaxy.
+            Your heart, turned into 1s and 0s, riding radio waves forever.
+        </p>
+    </SeeMoreInfo>
+</Layout>
+<style>
+    body{
+        background: center / 100% 100% no-repeat url(../assets/images/background/new/w49b_lg-1.webp);
+    }
+</style>
+
+

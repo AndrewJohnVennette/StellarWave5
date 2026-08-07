@@ -1,0 +1,611 @@
+---
+
+---
+<section class="servicePage">
+    <h2>Some text some text some text</h2>
+    <article class="card unlocked" id="card-destination">
+        <label>Destination Panel</label>
+        <section class="inputBoxData">
+            <!-- Dropdown -->
+            <p class="section-title">Destination</p>
+            <section class="select-wrap">
+                <select id="destinationSelect">
+                    <option value="">— Select a destination —</option>
+                    <option value="aries">Aries</option>
+                    <option value="taurus">Taurus</option>
+                    <option value="geminis">Geminis</option>
+                    <option value="cancer">Cancer</option>
+                    <option value="leo">Leo</option>
+                    <option value="virgo">Virgo</option>
+                    <option value="libra">Libra</option>
+                    <option value="scorpio">Scorpio</option>
+                    <option value="sagittarius">Sagittarius</option>
+                    <option value="capricorn">Capricorn</option>
+                    <option value="aquarius">Aquarius</option>
+                    <option value="pisces">Pisces</option>
+                    <option value="centauri">Proxima Centauri b</option>
+                    <option value="trappist">Trappist-1</option>
+                    <option value="gliese">Gliese 581g</option>
+                    <option value="teegarden">Teegarden's Star</option>
+                    <option value="kepler">Kepler-186f</option>
+                    <option value="luyten">Luyten b</option>
+                </select>
+                <span class="select-arrow">
+                    <svg width="14" height="9" viewBox="0 0 14 9" fill="none">
+                        <path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            </section>
+
+            <!-- Info Grid -->
+            <section class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Name: </span>
+                    <div class="info-value" id="infoName">—</div>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Distance: </span>
+                    <div class="info-value" id="infoDistance">—</div>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Location: </span>
+                    <div class="info-value" id="infoLocation">—</div>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Arrival Time: </span>
+                    <div class="info-value" id="infoArrival">—</div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- Image -->
+            <section class="image-section">
+                <p class="section-title">Destination Image</p>
+                <div class="destination-image-wrap" id="imageWrap">
+                    <div class="img-placeholder" id="imgPlaceholder">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="24" r="20" stroke="#3d8ef0" stroke-width="1.5" stroke-dasharray="4 3"/>
+                        <line x1="24" y1="4" x2="24" y2="44" stroke="#3d8ef0" stroke-width="1" opacity=".4"/>
+                        <line x1="4" y1="24" x2="44" y2="24" stroke="#3d8ef0" stroke-width="1" opacity=".4"/>
+                    </svg>
+                    <span>Awaiting selection</span>
+                    </div>
+                    <img id="destImage" src="" alt="Destination" />
+                    <div class="corner tl"></div>
+                    <div class="corner tr"></div>
+                    <div class="corner bl"></div>
+                    <div class="corner br"></div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- Comments -->
+            <section class="comments-section">
+                <p class="section-title">Destination Comments</p>
+                <div class="destination-image-wrap" id="imageWrap">
+                    <textarea id="destComments" placeholder="Select a destination to load mission notes…" readonly></textarea>
+                </div>
+            </section>
+
+        </section><!-- /card -->
+    </article>
+</section>
+
+<style>
+
+/* ******************************** DESTINATION PANEL ******************************** */
+
+
+
+    /* ── SECTION LABEL ── */
+    .section-title {
+        font-size: .65rem;
+        font-weight: 600;
+        letter-spacing: .22em;
+        text-transform: uppercase;
+        /* color: var(--accent); */
+        margin-bottom: .75rem;
+    }
+
+    /* ── DROPDOWN ── */
+    .select-wrap {
+        position: relative; 
+        margin-bottom: 2rem;
+        & select {
+            width: 100%;
+            appearance: none;
+            background: var(--panel2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: clamp(.9rem, 2.5vw, 1rem);
+            font-weight: 500;
+            padding: .75rem 3rem .75rem 1.1rem;
+            cursor: pointer;
+            transition: border-color .2s, box-shadow .2s;
+            outline: none;
+            &:focus {
+                border-color: var(--accent);
+                box-shadow: 0 0 0 3px rgba(61,142,240,.2);
+            }
+        } 
+    }
+    .select-arrow {
+        position: absolute; 
+        right: 1rem; 
+        top: 50%; 
+        transform: translateY(-50%);
+        pointer-events: none; 
+        color: var(--accent);
+        & svg { 
+            display: block; 
+        }
+    }
+    /* ── INFO GRID ── */
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: .9rem 1.4rem;
+        margin-bottom: 2rem;
+    }
+    @media (max-width: 420px) {
+        .info-grid { 
+            grid-template-columns: 1fr; 
+        }
+    }
+    .info-item { 
+        display: flex; 
+        flex-direction: column; 
+        gap: .25rem; 
+    }
+    
+
+    /* ── DIVIDER ── */
+    .divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+        margin: 1.5rem 0;
+    }
+
+    /* ── IMAGE BLOCK ── */
+    .image-section { 
+        margin-bottom: 2rem; 
+    }
+    .destination-image-wrap {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16/9;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: var(--panel2);
+        & img {
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover;
+            display: block;
+            transition: opacity .5s ease, transform .6s ease;
+            opacity: 0;
+            &.visible { 
+                opacity: 1; 
+                transform: scale(1.02); 
+            }
+        }
+    }
+    /* .destination-image-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+      transition: opacity .5s ease, transform .6s ease;
+      opacity: 0;
+    } */
+    /* .destination-image-wrap img.visible { 
+        opacity: 1; 
+        transform: scale(1.02); 
+    } */
+    .img-placeholder {
+        position: absolute; inset: 0;
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center;
+        gap: .5rem; color: var(--text-dim);
+        & svg { 
+            opacity: .3; 
+        }
+        & span { 
+            font-size: .8rem; 
+            letter-spacing: .1em; 
+            text-transform: uppercase; 
+        }
+    }
+    /* .img-placeholder svg { opacity: .3; }
+    .img-placeholder span { 
+        font-size: .8rem; 
+        letter-spacing: .1em; 
+        text-transform: uppercase; 
+    } */
+
+    /* corner accents */
+    /* .corner { position: absolute; width: 14px; height: 14px; }
+    .corner.tl { top: 8px; left: 8px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+    .corner.tr { top: 8px; right: 8px; border-top: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+    .corner.bl { bottom: 8px; left: 8px; border-bottom: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+    .corner.br { bottom: 8px; right: 8px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); } */
+
+    /* ── TEXTAREA ── */
+    .comments-section {}
+    textarea {
+        width: 90%;
+        height: 100%;
+        min-height: clamp(100px, 20vw, 140px);
+        background: var(--panel2);
+        /* border: 1px solid var(--border); */
+        /* border-radius: 8px; */
+        color: var(--text);
+        /* font-family: 'Exo 2', sans-serif; */
+        font-size: clamp(.85rem, 2.3vw, .95rem);
+        font-weight: 300;
+        line-height: 1.7;
+        padding: .85rem 1rem;
+        resize: vertical;
+        outline: none;
+        transition: border-color .2s, box-shadow .2s;
+        &:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(61,142,240,.15);
+        }
+        &::placeholder { 
+            color: var(--text-dim); 
+            font-style: italic; 
+        }
+    }
+    /* textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(61,142,240,.15);
+    } */
+    /* textarea::placeholder { 
+        color: var(--text-dim); 
+        font-style: italic; 
+    } */
+
+    /* ── SCAN LINE EFFECT ── */
+    .card::after {
+      /* content: '';
+      display: block;
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,.07) 3px,
+        rgba(0,0,0,.07) 4px
+      );
+      pointer-events: none; */
+    }
+    .card { 
+        /* position: relative; 
+        overflow: hidden;  */
+    }
+
+    /* ── PULSE ANIMATION for new data ── */
+    @keyframes dataPulse {
+      0%   { 
+        /* background-color: rgba(61,142,240,.18);  */
+    }
+      100% { 
+        /* background-color: transparent;  */
+    }
+    }
+    .info-value.pulse { 
+        /* animation: dataPulse .6s ease-out;  */
+    }
+/* ------------------- Media Query section  -------------------*/
+/* 1. Mobile under 400vw */
+@media screen and (max-width: 400px) {
+    /* Your mobile styles here */
+    .card {
+        padding: var(--servicePaddingMobileLess400);
+        margin: var(--serviceMarginMobileLess400);
+        width: var(--serviceWidthMobileLess400);
+    }
+    .inputBoxData{
+        width: 70vw;
+        margin: 1.5rem auto;
+    }
+    .destination-image-wrap {
+        & img {
+            width: 100%; 
+            height: 100%; 
+        }
+    }        
+    
+}
+
+/* 2. Tables between 800px and 1028px (inclusive) */
+@media screen and (min-width: 800px) and (max-width: 1028px) {
+    /* Your tablet/mid-size styles here */
+
+}
+
+/* 3. Everything above 1028px */
+@media screen and (min-width: 1028.01px) { 
+    /* Your desktop/large screen styles here */
+
+}
+</style>
+
+<script>
+    // ─────────────────────────────────────────────────────────────────────────────
+// DESTINATIONS — Stars, Planets & Zodiac Constellations
+//
+// distance        : in light-years (AL = año luz)
+// location        : RA / Dec (J2000) of the primary star or constellation centre
+// arrival : exact time a photon takes to reach the target from Earth
+// image           : public-domain Wikimedia Commons image (no login required)
+// comments        : ~70-word description (in Spanish, matching the original style)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const destinations = {
+
+    // ── STARS & EXOPLANETS ───────────────────────────────────────────────────
+
+    centauri: {
+        name: "Proxima Centauri b",
+        distance: "4.24 AL",
+        location: "RA 14h 29m 43s / Dec −62° 40′ 46″",
+        arrival: "4 años, 2 meses, 28 días, 19 horas, 33 minutos, 36 segundos",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Artist%27s_impression_of_Proxima_Centauri_b.jpg/800px-Artist%27s_impression_of_Proxima_Centauri_b.jpg",
+        comments: "The closest star to the Sun, a red dwarf located in the constellation Centaurus. It hosts the exoplanet Proxima b, which orbits within the habitable zone. At just 4.24 light-years away, it is the most accessible stellar destination for human exploration and the first serious candidate for future interstellar missions."
+    },
+
+    trappist: {
+        name: "TRAPPIST-1",
+        distance: "39.6 AL",
+        location: "RA 23h 06m 29s / Dec −05° 02′ 29″",
+        arrival: "39 años, 7 meses, 4 días, 1 hora, 55 minutos, 12 segundos",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/t/t5/TRAPPIST-1_and_its_seven_planets_2017.jpg/800px-TRAPPIST-1_and_its_seven_planets_2017.jpg",
+        comments: "An ultra-cool dwarf star in Aquarius with seven confirmed rocky planets, three of them within the habitable zone. It is the system with the highest number of Earth-sized worlds ever found. Its relative proximity and planetary richness make it one of the most exciting targets in the search for extraterrestrial life."
+    },
+
+    gliese: {
+        name: "Gliese 581g",
+        distance: "20.3 AL",
+        location: "RA 15h 19m 26s / Dec −07° 43′ 20″",
+        arrival: "20 años, 3 meses, 17 días, 10 horas, 4 minutos, 48 segundos",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Gliese_581_b_planet.jpg/800px-Gliese_581_b_planet.jpg",
+        comments: "A super-Earth candidate within the system of red dwarf Gliese 581, in the constellation Libra. Its existence was one of the first announcements to spark worldwide debate about habitable worlds beyond our Solar System. Though its confirmation remains controversial, it inspired a generation of astrobiologists and became a landmark in exoplanet research."
+    },
+
+    teegarden: {
+        name: "Red Drorf Teegarden",
+        distance: "12.5 AL",
+        location: "RA 02h 53m 01s / Dec +16° 52′ 53″",
+        arrival: "12 años, 5 meses, 29 días, 22 horas, 48 minutos, 0 segundos",
+        image: "/images/destinationBlock/04TeegardensStar.jpeg",
+        comments: "One of the closest red dwarfs to the Sun, only discovered in 2003. It hosts two planets with masses very similar to Earth and stable surface temperatures that could allow liquid water. Its small size makes it nearly invisible to the naked eye, but its worlds make it a star of enormous scientific interest."
+    },
+
+    kepler: {
+        name: "Kepler-186f",
+        distance: "582 AL",
+        location: "RA 19h 54m 37s / Dec +43° 57′ 18″",
+        arrival: "582 años",
+        image: "/images/destinationBlock/05Kepler-186f.jeg",
+        comments: "The first confirmed Earth-sized planet found in the habitable zone of another star. It orbits Kepler-186, an M-dwarf in the constellation Cygnus. Although it receives less energy than Earth and its atmospheric conditions are unknown, its discovery in 2014 marked a historic milestone in modern astronomy."
+    },
+
+    luyten: {
+        name: "Luyten b",
+        distance: "12.2 AL",
+        location: "RA 07h 27m 24s / Dec +05° 13′ 33″",
+        arrival: "12 años, 2 meses, 12 días, 16 horas, 19 minutos, 12 segundos",
+        image: "/images/destinationBlock/06Luyten-b.jpeg",
+        comments: "A super-Earth orbiting Luyten's Star (GJ 273), a red dwarf in Canis Minor. At just 12.2 light-years away and with a mass of ~2.9 Earths, it is one of the closest known potentially habitable exoplanets. It was selected as a target by the Messaging Extraterrestrial Intelligence (METI) project in 2017."
+    },
+
+    // ── ZODIAC ────────────────────────────────────────────
+    
+
+    aries: {
+        name: "Aries — Hamal (α Arietis)",
+        distance: "66 AL",
+        location: "RA 02h 07m 10s / Dec +23° 27′ 45″",
+        arrival: "66 años",
+        image: "/images/destinationBlock/Aries.webp",
+        comments: "Hamal, the brightest star in Aries, is an orange giant roughly 14 times larger than the Sun. The Ram constellation was historically crucial: it marked the vernal equinox in antiquity. Situated between Pisces and Taurus, Aries is modest in brightness but immense in astronomical and mythological significance."
+    },
+
+    taurus: {
+        name: "Tauro — Aldebarán (α Tauri)",
+        distance: "65 AL",
+        location: "RA 04h 35m 55s / Dec +16° 30′ 33″",
+        arrival: "65 años",
+        image: "/images/destinationBlock/Taurus.webp",
+        comments: "Aldebaran, the eye of the Bull, is a red giant 44 times the diameter of the Sun and the 14th brightest star in the sky. Taurus also hosts the Pleiades and the Hyades, two of the most famous star clusters. The constellation has guided sailors and farmers for more than five millennia."
+    },
+
+    geminis: {
+        name: "Géminis — Pólux (β Geminorum)",
+        distance: "34 AL",
+        location: "RA 07h 45m 19s / Dec +28° 01′ 35″",
+        arrival: "34 años",
+        image: "/images/destinationBlock/Geminis.webp",
+        comments: "Pollux, the brightest star in Gemini, is an orange giant with a confirmed exoplanet, Pollux b. At 34 light-years away, it is one of the closest giant stars to the Sun. The Twins constellation represents Castor and Pollux, the divine twin heroes of Greek mythology and patron protectors of sailors."
+    },
+
+    cancer: {
+        name: "Cáncer — Altarf (β Cancri)",
+        distance: "290 AL",
+        location: "RA 08h 16m 31s / Dec +09° 11′ 08″",
+        arrival: "290 años",
+        image: "/images/destinationBlock/Cancer.webp",
+        comments: "Altarf, the brightest star in Cancer, is an orange giant roughly 50 times the diameter of the Sun. The Crab is the faintest zodiac constellation, but it contains Messier 44 (the Beehive Cluster), one of the nearest and most spectacular open clusters visible to the naked eye on clear nights."
+    },
+
+    leo: {
+        name: "Leo — Régulo (α Leonis)",
+        distance: "79 AL",
+        location: "RA 10h 08m 22s / Dec +11° 58′ 02″",
+        arrival: "79 años",
+        image: "/images/destinationBlock/Leo.webp",
+        comments: "Regulus, the heart of the Lion, is a blue-white star spinning so fast its equator bulges noticeably outward. It is the closest first-magnitude star to the ecliptic. The Leo constellation is easily recognised by its sickle-shaped asterism, which resembles a backwards question mark in the night sky."
+    },
+
+    virgo: {
+        name: "Virgo — Espica (α Virginis)",
+        distance: "250 AL",
+        location: "RA 13h 25m 12s / Dec −11° 09′ 41″",
+        arrival: "250 años",
+        image: "/images/destinationBlock/Virgo.webp",
+        comments: "Spica is actually a spectroscopic binary: two massive stars so close they distort each other's shape through gravity. It is the 15th brightest star in the sky. Virgo, the largest zodiac constellation, also hosts the Virgo Cluster — a massive supercluster containing over 1,300 confirmed galaxies."
+    },
+
+    libra: {
+        name: "Libra — Zubenelgenubi (α Librae)",
+        distance: "77 AL",
+        location: "RA 14h 50m 41s / Dec −15° 59′ 50″",
+        arrival: "77 años",
+        image: "/images/destinationBlock/Libra.webp",
+        comments: "Zubenelgenubi, Libra's alpha star, is actually a wide double star system visible to the naked eye. Its Arabic name means 'the southern claw of the scorpion', a reminder that Libra was once considered part of Scorpius. It is the only zodiac constellation representing an inanimate object."
+    },
+
+    scorpio: {
+        name: "Escorpio — Antares (α Scorpii)",
+        distance: "550 AL",
+        location: "RA 16h 29m 24s / Dec −26° 25′ 55″",
+        arrival: "550 años",
+        image: "/images/destinationBlock/Scorpio.webp",
+        comments: "Antares is a colossal red supergiant: if placed where our Sun is, it would engulf Mars. Its name means 'rival of Ares' (Mars), owing to its striking reddish colour. It is one of the most massive stars near us and a strong candidate to explode as a supernova within the next few million years."
+    },
+
+    sagittarius: {
+        name: "Sagitario — Kaus Australis (ε Sagittarii)",
+        distance: "143 AL",
+        location: "RA 18h 24m 10s / Dec −34° 23′ 05″",
+        arrival: "143 años",
+        image: "/images/destinationBlock/Sagittarius.webp",
+        comments: "Kaus Australis is the brightest star in Sagittarius, a blue-white giant 1,400 times more luminous than the Sun. The Archer constellation points directly toward the Milky Way's galactic centre, where Sagittarius A* — the supermassive black hole of 4 million solar masses — anchors our entire galaxy."
+    },
+
+    capricorn: {
+        name: "Capricornio — Deneb Algedi (δ Capricorni)",
+        distance: "39 AL",
+        location: "RA 21h 47m 02s / Dec −16° 07′ 38″",
+        arrival: "39 años",
+        image: "/images/destinationBlock/Capricorn.webp",
+        comments: "Deneb Algedi, the brightest star in Capricornus, is an eclipsing binary system whose brightness varies slightly every 24 hours. The Sea Goat — half goat, half fish in Greek mythology — is the smallest zodiac constellation. Its region borders the so-called 'Celestial Sea', rich in aquatic-themed constellations."
+    },
+
+    aquarius: {
+        name: "Acuario — Sadalsuud (β Aquarii)",
+        distance: "610 AL",
+        location: "RA 21h 31m 34s / Dec −05° 34′ 16″",
+        arrival: "610 años",
+        image: "/images/destinationBlock/Aquarium.webp",
+        comments: "Sadalsuud, the brightest star in Aquarius, is a yellow supergiant 2,200 times more luminous than the Sun. Its Arabic name means 'the luckiest of the lucky'. The Water Bearer constellation is also home to the famous Helix Nebula (NGC 7293), one of the closest and most spectacular planetary nebulae in the sky."
+    },
+
+    pisces: {
+        name: "Piscis — Eta Piscium (η Piscium)",
+        distance: "294 AL",
+        location: "RA 01h 31m 29s / Dec +15° 20′ 45″",
+        arrival: "294 años",
+        image: "/images/destinationBlock/Pisces.webp",
+        comments: "Eta Piscium is the brightest star in Pisces, a yellow giant roughly 316 times more luminous than the Sun. Pisces is the last constellation of the zodiac and currently hosts the vernal equinox point due to the precession of the equinoxes. In mythology, it represents Aphrodite and Eros transformed into fish."
+    }
+
+};
+
+// TODO: I don't need this. Mark for deletion
+// ─────────────────────────────────────────────────────────────────────────────
+// LIGHT-TRAVEL TIME COMPUTATION (for reference / UI use)
+// Given a distance in light-years, this helper returns the exact breakdown.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Converts a distance in light-years to a human-readable travel time
+ * for a photon (moving at c).
+ *
+ * @param {number} ly - Distance in light-years
+ * @returns {string} Formatted string: "X años, Y meses, Z días, H horas, M minutos, S segundos"
+ */
+function arrival(ly) {
+    const SECONDS_PER_YEAR  = 365.25 * 24 * 3600;      // Julian year
+    const SECONDS_PER_MONTH = SECONDS_PER_YEAR / 12;
+    const SECONDS_PER_DAY   = 24 * 3600;
+    const SECONDS_PER_HOUR  = 3600;
+    const SECONDS_PER_MIN   = 60;
+
+    let remaining = ly * SECONDS_PER_YEAR;
+
+    const years   = Math.floor(remaining / SECONDS_PER_YEAR);   remaining %= SECONDS_PER_YEAR;
+    const months  = Math.floor(remaining / SECONDS_PER_MONTH);  remaining %= SECONDS_PER_MONTH;
+    const days    = Math.floor(remaining / SECONDS_PER_DAY);    remaining %= SECONDS_PER_DAY;
+    const hours   = Math.floor(remaining / SECONDS_PER_HOUR);   remaining %= SECONDS_PER_HOUR;
+    const minutes = Math.floor(remaining / SECONDS_PER_MIN);    remaining %= SECONDS_PER_MIN;
+    const seconds = Math.floor(remaining);
+
+    return `${years} años, ${months} meses, ${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
+}
+
+// Example:
+// console.log(arrival(4.24));
+// → "4 años, 2 meses, 28 días, 19 horas, 33 minutos, 36 segundos"
+
+
+    const select = document.getElementById('destinationSelect');
+    const fields = {
+        name:     document.getElementById('infoName'),
+        distance: document.getElementById('infoDistance'),
+        location: document.getElementById('infoLocation'),
+        arrival:  document.getElementById('infoArrival')
+    };
+    const destImage   = document.getElementById('destImage');
+    const imgPlaceholder = document.getElementById('imgPlaceholder');
+    const comments    = document.getElementById('destComments');
+
+    function pulse(el) {
+        el.classList.remove('pulse');
+        void el.offsetWidth; // reflow
+        el.classList.add('pulse');
+    }
+
+    select.addEventListener('change', () => {
+        const key = select.value;
+        if (!key) {
+        Object.values(fields).forEach(f => { f.textContent = '—'; f.classList.remove('populated'); });
+        destImage.src = '';
+        destImage.classList.remove('visible');
+        imgPlaceholder.style.display = 'flex';
+        comments.value = '';
+        comments.placeholder = 'Select a destination to load mission notes…';
+        comments.removeAttribute('style');
+        return;
+        }
+        const d = destinations[key];
+
+        // Fill info
+        const map = { name: d.name, distance: d.distance, location: d.location, arrival: d.arrival };
+        Object.entries(map).forEach(([k, v]) => {
+        fields[k].textContent = v;
+        fields[k].classList.add('populated');
+        pulse(fields[k]);
+        });
+
+        // Image
+        imgPlaceholder.style.display = 'none';
+        destImage.classList.remove('visible');
+        destImage.src = d.image;
+        destImage.onload = () => destImage.classList.add('visible');
+        destImage.onerror = () => { imgPlaceholder.style.display = 'flex'; };
+
+        // Comments
+        comments.removeAttribute('readonly');
+        comments.value = d.comments;
+        comments.style.color = 'var(--text)';
+    });
+</script>

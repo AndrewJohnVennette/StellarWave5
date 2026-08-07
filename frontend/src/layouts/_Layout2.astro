@@ -1,0 +1,30 @@
+---
+const { title } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{title} — MySite</title>
+		<style>
+			* { box-sizing: border-box; margin: 0; padding: 0; }
+			body { font-family: system-ui, sans-serif; background: #f9f9f9; color: #1a1a1a; }
+			nav { background: #30309a; padding: 1rem 2rem; display: flex; gap: 2rem; align-items: center; }
+			nav a { color: #eee; text-decoration: none; font-weight: 500; }
+			nav a:hover { color: #7b8cde; }
+			main { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; }
+			h1 { font-size: 2rem; margin-bottom: 1rem; }
+		</style>
+	</head>
+	<body>
+		<nav>
+			<a href="/">Home</a>
+			<a href="/services">Services</a>
+			<a href="/upload">Upload</a>
+		</nav>
+		<main>
+			<slot />
+		</main>
+	</body>
+</html>

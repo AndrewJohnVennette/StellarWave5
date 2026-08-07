@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+import UserBlock from '../components/UserBlock.astro';
+import DestinationBlock from '../components/DestinationBlock.astro';
+import PayloadBlock from '../components/PayloadBlock.astro';
+
+
+const Name = "Stellarwaves-5";
+---
+<Layout title={Name}>
+	<section class="servicePage">
+        <UserBlock>
+        </UserBlock>
+        <DestinationBlock>
+        </DestinationBlock>
+        <PayloadBlock>
+        </PayloadBlock>
+
+    </section>
+</Layout>
+<style>
+    body{
+        background-image: url(../assets/images/background/star-bottle-7B.webp);
+    }
+</style>

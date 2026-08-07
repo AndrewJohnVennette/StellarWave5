@@ -1,0 +1,37 @@
+{
+  "name": "stellarwave5",
+  "version": "1.0.0",
+  "description": "\"# StellarWave4\"",
+  "keywords": [],
+  "homepage": "https://github.com/AndrewJohnVennette/StellarWave4#readme",
+  "bugs": {
+    "url": "https://github.com/AndrewJohnVennette/StellarWave4/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndrewJohnVennette/StellarWave4.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "devStart": "nodemon server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.8.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "multer": "^2.1.1",
+    "nodemailer": "^9.0.4",
+    "resend": "^6.10.0",
+    "stripe": "^21.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

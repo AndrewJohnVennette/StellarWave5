@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Home">
+  <h1>Welcome to MySite</h1>
+  <p style="margin: 1rem 0; color: #555;">
+    A full-stack site with database, payments, and file uploads.
+  </p>
+  <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+    <a href="/services" style="
+      background: #7b8cde; color: white; padding: 0.75rem 1.5rem;
+      border-radius: 8px; text-decoration: none; font-weight: 600;
+    ">View Services</a>
+    <a href="/upload" style="
+      background: #2ecc71; color: white; padding: 0.75rem 1.5rem;
+      border-radius: 8px; text-decoration: none; font-weight: 600;
+    ">Upload a File</a>
+  </div>
+</Layout>

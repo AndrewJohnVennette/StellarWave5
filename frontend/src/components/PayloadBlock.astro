@@ -1,0 +1,207 @@
+---
+interface Props {
+    item:{
+        itemName:string
+        itemPrice:number
+        itemID:number
+        itemInStock:number
+        itemWeight:number
+    }
+}
+const {item} = Astro.props
+---
+<section class="servicePage">
+    <h2>Some text some text some text</h2>
+    <article class="card unlocked" id="card-payload">
+        <label>Payload</label>
+        <span>* Pick at list one option</span>
+
+        <section class="center">
+            <label class="checkBoxLabel" for="Text1">Text: &ensp; <span id="payloadTextPrice">$7.50</span>   </label>
+            <input type="checkbox" name="" id="Text1" />
+            <article class="select-outer">
+                <h1>HELLO</h1>
+            </article>
+        </section>
+
+        <section class="center">
+            <label class="checkBoxLabel" for="Picture1">Picture: &ensp; <span id="payloadPicturePrice">$8.99</span></label>
+            <input type="checkbox" name="" id="Picture1" />
+            <article class="select-outer">
+                <h1>HELLO</h1>
+            </article>
+        </section>
+
+        <section class="center">
+            <label class="checkBoxLabel" for="Audio1">Audio: &ensp; <span id="payloadAudioPrice">$10.50</span></label>
+            <input type="checkbox" name="" id="Audio1" />
+            <article class="select-outer">
+                <h1>HELLO</h1>
+            </article>
+        </section>
+
+        <section class="center">
+            <label class="checkBoxLabel" for="Video1">Video: &ensp; <span id="payloadTextPrice">$15.55</span></label>
+            <input type="checkbox" name="" id="Video1" />
+            <article class="select-outer">
+                <h1>HELLO</h1>
+            </article>
+        </section>
+
+    </article>
+</section>
+
+<style>
+/* ************** Payload section        ******************* */
+
+    input:checked[type="checkbox"] ~ .select-outer {
+        height: 70px;
+    }
+
+    /* Display section */
+    .select-outer {
+        overflow: hidden;
+        transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 0px;
+        width: 60vw;
+        max-width: 340px;
+        border-top: 2px solid #fff;
+        border-bottom: 2px solid #fff;
+        border-left: solid 1px #fff;
+        border-right: solid 1px #fff;
+        border-radius: 7px;
+        margin-top: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    :root{
+        --test:120px;/*TODO:Change the name of the var so something more meaningful. Calculate the correct value*/
+    }
+    #card-payload{
+        display: grid;
+        align-items: center;
+        justify-content: center;
+
+        position: relative;
+        border: var(--border-w) solid var(--border);
+        border-radius: var(--radius);
+        padding: 2.6rem 2.2rem 2rem;
+        background: var(--surface);
+        margin: 1.8rem auto;
+        width: 45vw;
+        box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset,0 8px 40px rgba(0,0,0,.55);
+        label+span{
+            color: #ed1207;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-weight: 700;
+            font-size: small;
+            position: relative;
+            top: -20px;
+        }
+    }
+    #card-payload section.center{
+        margin: 3vh 0;
+    }
+    #card-payload section.center label.checkBoxLabel{
+        cursor: pointer;
+        margin: -22px 0;
+        position: absolute;
+        color:#fff;
+    }
+    input[type="checkbox"]{
+        cursor: pointer;
+        position: relative;
+        width: var(--test);
+        height: 40px;
+        /* -webkit-appearance: none; */
+        appearance: none;
+        background: linear-gradient(0deg, #333, #000);
+        outline: none;
+        border-radius: 20px;
+        box-shadow: 0 0 0 4px #353535, 0 0 0 5px #3e3e3e, 
+        inset 0 0 10px rgba(0,0,0,1), 0 5px 20px rgba(0,0,0,.5),
+        inset 0 0 15px rgba(0,0,0,.2);
+
+        &:checked[type="checkbox"]{
+            background: linear-gradient(0deg, #6dd1ff, #20b7ff);
+            box-shadow: 0 0 2px #6dd1ff, 0 0 0 4px #353535, 0 0 0 5px #3e3e3e, 
+            inset 0 0 10px rgba(0,0,0,1), 0 5px 20px rgba(0,0,0,.5),
+            inset 0 0 15px rgba(0,0,0,.2);
+        }
+        &::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 40px;
+            background: linear-gradient(0deg, #000, #6b6b6b);
+            border-radius: 20px;
+            box-shadow: 0 0 0 1px #232323;
+            transform: scale(.98,.96);
+            transition: .4s;
+        }
+        &:checked[type="checkbox"]::before{
+            left: 40px;
+        }
+        &::after{
+            content: '';
+            position: absolute;
+            top: calc(50% - 2px);
+            left: 65px;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(0deg, #6b6b6b, #000);
+            border-radius: 50%;
+            transition: .4s;
+        }
+        &:checked[type="checkbox"]::after{
+            background: #63cdff;
+            left: 105px;
+            box-shadow: 0 0 5px #13b3ff, 0 0 15px #13b3ff;
+        }
+    }
+    #card-destination textarea{
+        width: 100%;
+        background: transparent;
+        overflow: none;
+        border: none;
+        color: #fff;
+    }
+
+    /* ------------------- Media Query section  -------------------*/
+/* 1. Mobile under 400vw */
+@media screen and (max-width: 400px) {
+    /* Your mobile styles here */
+    #card-payload{
+        padding: var(--servicePaddingMobileLess400);
+        margin: var(--serviceMarginMobileLess400);
+        width: var(--serviceWidthMobileLess400);
+    }
+    input[type="checkbox"]{
+        height: 20px;
+        &::before{
+            height: 20px;
+        }
+
+    }
+
+
+}
+
+/* 2. Tables between 800px and 1028px (inclusive) */
+@media screen and (min-width: 800px) and (max-width: 1028px) {
+    /* Your tablet/mid-size styles here */
+
+}
+
+/* 3. Everything above 1028px */
+@media screen and (min-width: 1028.01px) { 
+    /* Your desktop/large screen styles here */
+
+}
+</style>
+
+<script>
+
+</script>

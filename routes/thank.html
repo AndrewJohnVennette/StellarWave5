@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - ABC</title>
+    <style>
+        /* CSS Variables for easy customization */
+        :root {
+            --primary-color: #1a73e8;
+            --primary-hover: #1557b0;
+            --text-main: #1f1f1f;
+            --text-muted: #5f6368;
+            --bg-page: #f8f9fa;
+            --bg-card: rgba(73, 54, 166, 0.1);
+            --border-color: #1e1e40;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --spacing-lg: 40px;
+            --spacing-md: 20px;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: var(--spacing-md);
+        }
+
+        /* Replaced Table with a Flexbox Container */
+        .container {
+            background-color: var(--bg-card);
+            max-width: 500px;
+            width: 100%;
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-md);
+            font-size: 1.8rem;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.5;
+        }
+
+        .certificate-img {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            border-radius: 6px;
+            margin-bottom: var(--spacing-lg);
+            border: 1px solid #eee;
+        }
+
+        /* Styled Button */
+        .btn-track {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(26, 115, 232, 0.2);
+        }
+
+        .btn-track:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(26, 115, 232, 0.3);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--spacing-md);
+            }
+            h1 { font-size: 1.5rem; }
+            .btn-track { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <h1>Thank you for using ABC</h1>
+        
+        <p>Your process is complete. Your official certificate has been generated successfully.</p>
+        
+        <img src="../images/ASTRA.webp" alt="Certificate" class="certificate-img">
+
+        <a href="https://www.google.com" class="btn-track">Track</a>
+    </main>
+
+</body>
+</html>

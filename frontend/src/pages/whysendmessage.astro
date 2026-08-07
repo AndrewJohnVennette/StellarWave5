@@ -1,0 +1,194 @@
+---
+import Layout from '../layouts/Layout.astro';
+import InfiniteSlider from '../components/InfiniteSlider.astro';
+import StockTicker from '../components/StockTicker.astro';
+import Carousel from '../components/Carousel.astro';
+import SeeMoreInfo from '../components/SeeMoreInfo.astro';
+const { services = "/services"} = Astro.props;
+
+import mainImage04 from '../assets/images/background/04star-bottle-1.webp';
+
+const Name = "Stellarwaves-5";
+---
+<Layout title={Name}>
+    <SeeMoreInfo titleColum2 = "Why send a message into space?", titleColum3 = "Why even bother sending a message into space?">
+        <p slot="column2">
+            Sending your message into space is no longer just science fiction—today you can do it from this page using high-precision laser technology.  
+            <br>
+            <a class="blink-02" href={services}>To send your message, just click here. </a>
+            <br>
+            We've always looked at the sky with curiosity. Today, with a bit of laser technology, you can send your ideas, emotions, or whatever comes to mind straight into the universe. This page gives you the chance to join this cosmic adventure. Your message will shoot out like a beam of light, crossing the sky and floating out there—who knows how far.Humanity learned to gaze at the sky in wonder, always seeking answers among the stars. Today, thanks to laser light, we can send our own words out into the universe. This page invites you to be part of this cosmic journey: your message will cross the atmosphere and travel like a flash into the unknown, leaving a luminous trail in the infinite.
+        </p>
+
+        <p slot="column3">
+            We’ve always been staring up at the sky like “what’s good up there?” Now, with a little laser tech and a whole lot of vibe, you can straight-up beam your ideas, emotions, random thoughts—whatever pops in your head—right into the universe. This page hooks you up with the chance to jump into this wild cosmic adventure. Your message? It’s gonna launch like a laser beam, slicing through the sky and drifting out there… who knows how far it’ll cruise? Interstellar chit-chat isn’t just sci-fi anymore. With crazy high-precision laser tech, we can now blast thoughts, feels, and data way past Earth’s atmosphere.Ever since we first looked up in total awe, we’ve been hunting answers in the stars. Today? Laser light lets us flip the script and send our words out there. This page is calling you to join the cosmic road trip: your message punches through the atmosphere, streaks like a flash into the unknown, and drops a glowing trail that lasts forever in the endless black.
+        </p>
+    </SeeMoreInfo>
+</Layout>
+<style>
+    body{
+        /* background-image: url(../assets/images/background/star-bottle-4-blu.webp) center / cover no-repeat; */
+        background: center / 100% 100% no-repeat url(../assets/images/background/new/saturn-farewell.webp);
+    }
+    /* p{
+        color: #fff;
+        
+        font-size: 1.65rem;
+        & a{
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            margin: 7px 0;
+        }
+    } */
+
+
+    /* #custom-layout-wrapper {
+        & .grid-container {
+            & .column {
+                & p{
+                    color: #fff;
+                    
+                    font-size: 1.55rem;
+                    & a{
+                        display: block;
+                        text-decoration: none;
+                        text-align: center;
+                        margin: 7px 0;
+                    }
+                }
+                & ol{
+                
+                    & li{
+                        font-size: 1.65rem;
+                        margin: 7px 3px;
+                    }
+                    & li::marker{
+                        font-weight: 900;
+                        color: red;
+                    }
+                }
+                & p, & ol{
+                    line-height: 1.25;
+                    margin: 25px 55px;
+                }
+            }
+        }
+    } */
+
+    .blink-01{
+        /* animation: blinkType01 1s steps(1, end) infinite ; */
+        animation: blinkType00 0.2s infinite ;
+    }
+    .blink-02{
+        /* animation: blinkType01 1s steps(1, end) infinite ; */
+        animation: blinkType02 1.9s infinite ;
+    }
+    .blink-03{
+        /* animation: blinkType01 1s steps(1, end) infinite ; */
+        animation: blinkType00 0.9s infinite ;
+    }
+
+    @keyframes blinkType00 {
+        0%   { border-color: #fff; }
+        50%  { border-color: rgba(14, 219, 86, .9); }
+        100% { border-color: #fff; }
+    }
+
+    @keyframes blinkType01 {
+        0%{
+            opacity: 1;
+        }
+        50%{
+            opacity: 0;
+        }
+        100%{
+            opacity: 1;
+        }
+    }
+    @keyframes blinkType02 {
+        0%{
+            opacity: 1;
+            color: rgb(255,255,255);
+        }
+        
+        50%{
+            opacity: 1;
+            color: rgba(14, 219, 86, .9);
+        }
+        
+        100%{
+            opacity: 0;
+            color: rgb(255,255,255);
+        }
+    }
+    @keyframes blinkType03 {
+        0%{
+            opacity: 1;
+        }
+        50%{
+            opacity: 0;transform: scale(2);
+        }
+        51%{
+            opacity: 0;
+            transform: scale(0);
+        }
+        100%{
+            opacity: 1;
+        }
+    }
+
+
+
+
+    /* Responsive adjustment: stack columns on small screens */
+    @media (max-width: 768px) {
+        /* p{
+            / * color: #fff; * /
+            / * margin: 25px 55px; * /
+            font-size: .75rem;
+            & a{
+                display: block;
+                text-decoration: none;
+                text-align: center;
+                margin: 7px 0;
+            }
+        } */
+
+
+        #custom-layout-wrapper {
+            & .grid-container {
+                & .column {
+                    & p{
+                        /* color: #fff; */
+                        /* margin: 25px 55px; */
+                        font-size: .55rem;
+                        & a{
+                            display: block;
+                            text-decoration: none;
+                            text-align: center;
+                            margin: 7px 0;
+                        }
+                    }
+                    & ol{
+                        /* margin: 25px 55px;; */
+                        & li{
+                            font-size: 1.65rem;
+                            margin: 7px 3px;
+                        }
+                        & li::marker{
+                            font-weight: 900;
+                            color: red;
+                        }
+                    }
+                    & p, & ol{
+                        line-height: 1.25;
+                        margin: 25px 55px;
+                    }
+                }
+            }
+        }
+    }
+
+</style>
+

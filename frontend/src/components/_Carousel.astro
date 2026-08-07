@@ -1,0 +1,572 @@
+---
+
+---
+<div class="carousel">
+    <div class="list">
+        <div class="item">
+            <img src="/imagestar/planet-2-blu-starbottle2.webp">
+            <div class="content">
+                <div class="author">STELLARWAVE</div>
+                <div class="title" id="lng-landingTitle01">SEND A MESSAGE</div>
+                <div class="topic" id="lng-landingTitle01-2">INTO SPACE</div>
+                <div class="des" id="lng-landingShortText01">
+                    With us, you can send your phrases,
+                    thoughts, photos, videos into space and share them with the Universe.
+                    Send your message to the deep sky. Leave your mark.
+                    Make your story travel among the stars. 
+                </div>
+                <div class="buttons">
+                    <button id="openDialog" class="lng-landingButton01">
+                        <a href="whysendmessage.html">VIEW INFO</a>
+                    </button>
+                    <button id="lng-landingButton02">SELECT SERVICES</button>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <img src="/imagestar/star-bottle-4-blu2.webp">
+            <div class="content">
+                <div class="author">STELLARWAVE</div>
+                <div class="title">SEND A MESSAGE TO</div>
+                <div class="topic">YOUR ZODIAC SIGN</div>
+                <!-- <div class="topic">END OF TIME</div> -->
+                <div class="des">
+                    Now you can send a message straight to your zodiac sign—the one you pick: Aries, Taurus, Gemini, Cancer, Leo, Virgo, Libra, Scorpio, Sagittarius, Capricorn, Aquarius, or Pisces. Connect with them. The sky is online just for you now
+                </div>
+                <div class="buttons">
+                    <button>
+                        <a href="zodiacmessage.html">VIEW INFO</a>
+                    </button>
+                    <button>SELECT SERVICES</button>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <img src="/imagestar/star-bottle-background-21-dicembre-scaled.webp">
+            <div class="content">
+                <div class="author">STELLARWAVE</div>
+                <div class="title">SEND LOVE MESSAGE,</div>
+                <div class="topic">BEYOND TIME</div>
+                <!-- <div class="topic">TIEMPO</div> -->
+                <div class="des">
+                    An unsaid 'I love you.' A farewell that should have reached farther. Share your feelings with the universe. Write it. Send it. Let your love travel across galaxies. Send your love message to space.
+                </div>
+                <div class="buttons">
+                    <button>
+                        <a href="lovemessage.html">VIEW INFO</a>
+                    </button>
+                    <button>SELECT SERVICES</button>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <img src="/imagestar/star-bottle-1.webp">
+            <div class="content">
+                <div class="author">STELLARWAVE</div>
+                <div class="title">SEND YOUR MESSAGE YOU</div>
+                <div class="topic">WANT STRAIGHT TO ETERNITY</div>
+                <div class="des">
+                    Want to send a message to an Eternal Love—for someone no longer here with you? Let your words travel across galaxies. Send your message to the deep heavens right now. Don’t wait. Make your words last forever, leaving your trace in the endless universe.
+                </div>
+                <div class="buttons">
+                    <button>
+                        <a href="mesage-mesage.html">VIEW INFO</a>
+                    </button>
+                    <button>SELECT SERVICES</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="thumbnail">
+        <div class="item">
+            <img src="/imagestar/planet-2-blu-starbottle2.webp">
+            <div class="content">
+                <div class="title">MESSAGE</div>
+                <!-- <div class="description">Description</div> -->
+            </div>
+        </div>
+        <div class="item">
+            <img src="/imagestar/star-bottle-4-blu2.webp">
+            <div class="content">
+                <div class="title">ZODIAC</div>
+                <!-- <div class="description">Description</div> -->
+            </div>
+        </div>
+        <div class="item">
+            <img src="/imagestar/star-bottle-background-21-dicembre-scaled.webp">
+            <div class="content">
+                <div class="title">LOVE</div>
+                <!-- <div class="description">Description</div> -->
+            </div>
+        </div>
+        <div class="item">
+            <img src="/imagestar/star-bottle-1.webp">
+            <div class="content">
+                <div class="title">ETERNITY</div>
+                <!-- <div class="description">Description</div> -->
+            </div>
+        </div>
+    </div>
+    <div class="arrows">
+        <button id="prev"><</button>
+        <button id="next">></button>
+    </div>
+    <div class="time"></div>
+</div>
+<style>
+    :root{
+        /* --carouselTopicFontSize: clamp(
+            2.25rem,                       
+            calc(3.5rem * .7 - 1.5vw),    
+            3.05rem                        
+        ); */
+        --carouselTopicFontSize: 2.5rem;
+        --thumbnailWidth: 150px;
+        --thumbnailHeight: 220px;
+    }
+
+
+    /*********************** carousel ***********************/
+    .carousel{
+        height: 100vh;
+        margin-top: -50px;
+        width: 100vw;
+        overflow: hidden;
+        position: relative;
+        .list{
+            .item{
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                inset: 0 0 0 0;
+                img{
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+                .content{
+                    position: absolute;
+                    top: 20%;
+                    width: 1140px;
+                    max-width: 80%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    padding-right: 30%;
+                    box-sizing: border-box;
+                    color: #fff;
+                    text-shadow: 0 5px 10px #0004;
+                }
+                .author{
+                    font-weight: bold;
+                    letter-spacing: 10px;
+                }
+                .title, .topic{
+                    font-size: var(--carouselTopicFontSize);
+                    font-weight: bold;
+                    line-height: 1.3em;
+                }
+                .topic{
+                    color: #f1683a;
+                }
+                .buttons{
+                    display: grid;
+                    grid-template-columns: repeat(2, 130px);
+                    grid-template-rows: 40px;
+                    gap: 5px;
+                    margin-top: 20px;
+                    button{
+                        border: none;
+                        border-radius: 23%;
+                        background-color: #eee;
+                        letter-spacing: 3px;
+                        font-family: Poppins;
+                        font-weight: 500;
+                    }
+                    button:nth-child(2){
+                        background-color: transparent;
+                        border: 1px solid #fff;
+                        color: #eee;
+                    }
+                }
+            }
+        }
+    }
+    /*********************** Thumbnail ***********************/
+.thumbnail{
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    width: max-content;
+    z-index: 100;
+    display: flex;
+    gap: 20px;
+    .item{
+        width: var(--thumbnailWidth);
+        height: var(--thumbnailHeight);
+        flex-shrink: 0;
+        position: relative;
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+        .content{
+            color: #fff;
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            .title{
+                font-weight: 500;
+            }
+            .description{
+                font-weight: 300;
+            }
+        }
+    }
+}
+
+/*********************** arrows ***********************/
+.arrows{
+    position: absolute;
+    top: 80%;
+    right: 52%;
+    z-index: 100;
+    width: 300px;
+    max-width: 30%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    button{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #eee4;
+        border: none;
+        color: #fff;
+        font-family: monospace;
+        font-weight: bold;
+        transition: .5s;
+    }
+    button:hover{
+        background-color: #fff;
+        color: #000;
+    }
+}
+
+
+/*********************** animation ***********************/
+.carousel .list .item:nth-child(1){
+    z-index: 1;
+}
+
+/*********   *********** animation text in first item *********   ***********/
+@keyframes showContent{
+    to{
+        transform: translateY(0px);
+        filter: blur(0px);
+        opacity: 1;
+    }
+}
+
+.carousel .list .item:nth-child(1) .content{
+    .author, .title, .topic, .des, .buttons{
+        transform: translateY(50px);
+        filter: blur(20px);
+        opacity: 0;
+        animation: showContent .5s 1s linear 1 forwards;
+    }
+    .title{
+        animation-delay: 1.2s!important;
+    }
+    .topic{
+        animation-delay: 1.4s!important;
+    }
+    .des{
+        text-shadow: 0 0 10 #000;
+        font-size: 1.2rem;
+        animation-delay: 1.6s!important;
+    }
+    .buttons{
+        animation-delay: 1.8s!important;
+    }
+}
+
+
+/*********   *********** create animation when next click *********   ***********/
+@keyframes showImage{
+    to{
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+}
+.carousel.next .list .item:nth-child(1) img{
+    width: 150px;
+    height: 220px;
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    border-radius: 30px;
+    animation: showImage .5s linear 1 forwards;
+}
+/* ******************************************************************** */
+@keyframes showThumbnail{
+    from{
+        width: 0;
+        opacity: 0;
+    }
+}
+.carousel.next .thumbnail .item:nth-last-child(1){
+    overflow: hidden;
+    animation: showThumbnail .5s linear 1 forwards;
+}
+.carousel.prev .list .item img{
+    z-index: 100;
+}
+/* ******************************************************************** */
+@keyframes effectNext{
+    from{
+        transform: translateX(150px);
+    }
+}
+.carousel.next .thumbnail{
+    animation: effectNext .5s linear 1 forwards;
+}
+/*********************** running time ***********************/
+
+.carousel .time{
+    position: absolute;
+    z-index: 1000;
+    width: 0%;
+    height: 3px;
+    background-color: #f1683a;
+    left: 0;
+    top: 0;
+}
+
+@keyframes runningTime{
+    from{ width: 100%}
+    to{width: 0}
+}
+.carousel{
+    .next, .prev{
+        .time{
+            animation: runningTime 3s linear 1 forwards;
+        }
+    }  
+}
+
+
+
+/*********************** prev click ***********************/
+
+.carousel.prev .list .item:nth-child(2){
+    z-index: 2;
+}
+
+.carousel.prev .list .item:nth-child(2) img{
+    animation: outFrame 0.5s linear 1 forwards;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+@keyframes outFrame{
+    to{
+        width: 150px;
+        height: 220px;
+        bottom: 50px;
+        left: 50%;
+        border-radius: 20px;
+    }
+}
+
+.carousel.prev .thumbnail .item:nth-child(1){
+    overflow: hidden;
+    opacity: 0;
+    animation: showThumbnail .5s linear 1 forwards;
+}
+.carousel .next .arrows button,
+.carousel .prev .arrows button{
+    pointer-events: none;
+}
+
+.carousel.prev .list .item:nth-child(2) .content
+{
+    .author, .title, .topic, .des, .buttons{
+        animation: contentOut 1.5s linear 1 forwards!important; 
+    }
+    
+}
+
+@keyframes contentOut{
+    to{
+        transform: translateY(-150px);
+        filter: blur(20px);
+        opacity: 0;
+    }
+}
+
+/*********************** Responsive ***********************/
+/* Small tweaks only when screen is very narrow (< 360px) */
+@media (max-width: 360px) {
+
+}
+
+@media (max-width: 678px) {
+    .carousel .list .item .content{
+        padding-right: 0;
+        .title, .topic{
+            /* font-size: 30px; */
+        }
+    }
+    :root{
+        --carouselTopicFontSize: 30px;
+        --thumbnailWidth: 65px;
+        --thumbnailHeight: 90px;
+    }
+}
+
+/* Tablets and up */
+@media (min-width: 768px) {
+
+}
+
+/* Small desktop / laptop */
+@media (min-width: 1024px) {
+
+}
+
+/* Large desktop */
+@media (min-width: 1280px) {
+
+}
+
+
+
+
+
+
+/* ==========================================================================
+    DESKTOP-FIRST MEDIA QUERIES
+    Start with large desktop styles (no media query = default)
+    Then reduce / adapt as screen gets smaller
+   ========================================================================== */
+
+/* ───────────────────────────────────────────────
+    Very large screens / 4K-ready / ultra-wide (optional)
+    ≥ 1536px or 1920px — many people cap container here
+   ─────────────────────────────────────────────── */
+@media (min-width: 1536px) {
+
+}
+
+/* ───────────────────────────────────────────────
+    Large desktop (most common wide desktop start)
+    ≥ 1280px — very popular xl breakpoint
+   ─────────────────────────────────────────────── */
+@media (min-width: 1280px) {
+
+}
+
+/* ───────────────────────────────────────────────
+    Standard desktop / small laptop
+    ≥ 1024px — classic lg breakpoint (Tailwind lg, many projects)
+   ─────────────────────────────────────────────── */
+@media (min-width: 1024px) {
+
+}
+
+/* ───────────────────────────────────────────────
+    Tablet landscape / medium screens
+    ≥ 768px — extremely common md / tablet point
+   ─────────────────────────────────────────────── */
+@media (min-width: 768px) {
+
+}
+
+/* ───────────────────────────────────────────────
+    Large mobile / small tablet / phone landscape
+    ≥ 640px — Tailwind sm / very popular transition
+   ─────────────────────────────────────────────── */
+@media (min-width: 640px) {
+
+}
+
+/* ───────────────────────────────────────────────
+    Small mobile / typical cellphone portrait
+    ≤ 639px — this is the "mobile" range in many projects
+    (styles here override larger ones when screen shrinks)
+   ─────────────────────────────────────────────── */
+@media (max-width: 639px) {
+
+}
+
+/* ───────────────────────────────────────────────
+    Very small phones (old devices, narrow viewports)
+    ≤ 360px — useful for extra tweaks
+   ─────────────────────────────────────────────── */
+@media (max-width: 360px) {
+    /* :root{
+        --carouselTopicFontSize: 2.5em;
+    } */
+}
+
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Carousel Logic
+    let nextDom = document.getElementById('next');
+    let prevDom = document.getElementById('prev');
+    let carouselDom = document.querySelector('.carousel');
+    let SliderDom = carouselDom.querySelector('.carousel .list');
+    let thumbnailBorderDom = document.querySelector('.carousel .thumbnail');
+    let thumbnailItemsDom = thumbnailBorderDom.querySelectorAll('.item');
+    let timeDom = document.querySelector('.carousel .time');
+
+    thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
+    let timeRunning = 4000;
+    let timeAutoNext = 8000;
+
+    nextDom.onclick = function() {
+        showSlider('next');
+    }
+
+    prevDom.onclick = function() {
+        showSlider('prev');
+    }
+
+    let runTimeOut;
+    let runNextAuto = setTimeout(() => {
+        nextDom.click();
+    }, timeAutoNext);
+
+    function showSlider(type) {
+        let SliderItemsDom = SliderDom.querySelectorAll('.carousel .list .item');
+        let thumbnailItemsDom = document.querySelectorAll('.carousel .thumbnail .item');
+
+        if (type === 'next') {
+            SliderDom.appendChild(SliderItemsDom[0]);
+            thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
+            carouselDom.classList.add('next');
+        } else {
+            SliderDom.prepend(SliderItemsDom[SliderItemsDom.length - 1]);
+            thumbnailBorderDom.prepend(thumbnailItemsDom[thumbnailItemsDom.length - 1]);
+            carouselDom.classList.add('prev');
+        }
+        clearTimeout(runTimeOut);
+        runTimeOut = setTimeout(() => {
+            carouselDom.classList.remove('next');
+            carouselDom.classList.remove('prev');
+        }, timeRunning);
+
+        clearTimeout(runNextAuto);
+        runNextAuto = setTimeout(() => {
+            nextDom.click();
+        }, timeAutoNext);
+    }
+});    
+</script>

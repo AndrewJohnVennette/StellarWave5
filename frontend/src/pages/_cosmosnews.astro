@@ -1,0 +1,62 @@
+---
+import Layout from '../layouts/Layout.astro';
+import spaceImage from '../assets/images/newsImages/starun2.webp';
+
+// 1. Fetch or define your data inside the Astro frontmatter (Server-side)
+const usersData = {
+    people: [
+        { title: "Alex", image: spaceImage.src, text: "Developer" },
+        { title: "Elena", image: spaceImage.src, text: "Designer" },
+        { title: "Elena", image: spaceImage.src, text: "Designer" },
+        { title: "Elena", image: spaceImage.src, text: "Designer" }
+    ]
+};
+
+// 2. Convert the object into a JSON string so it can be passed to the attribute
+const jsonString = JSON.stringify(usersData);
+
+const Name = "Stellarwaves-5";
+---
+
+<Layout title={Name}>
+    <br><br><br><br>
+    <br><br><br><br>
+
+    <gev-showitems data-json={jsonString}></gev-showitems>
+    
+</Layout>
+
+<style>
+    body {
+        display: grid;
+        place-items: center;
+        position: relative;
+        min-height: 100vh;
+    }
+
+    body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: center / 100% 100% no-repeat
+            url(../assets/images/background/new/msh1552.webp);
+        /* opacity: 0.45; */
+        z-index: -1;
+    }
+    
+    /* main {
+        height: auto;
+        width: 100%;
+        margin: 15rem 0 45vh 0;
+    } */
+</style>
+<style is:global>
+    main { width: 100%; }
+</style> 
+<script>
+  // Assuming your web component file is located at /src/scripts/show-data.js
+  import "../web-components/GEV-showItems.js";
+</script>

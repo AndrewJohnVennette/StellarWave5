@@ -1,0 +1,221 @@
+---
+import astroLogo from '../assets/astro.svg';
+import background from '../assets/background.svg';
+import spaceLogo01 from '../assets/images/slider/LogoAgenciaEspacial01.webp';
+import spaceLogo02 from '../assets/images/slider/LogoAgenciaEspacial02B.webp';
+import spaceLogo03 from '../assets/images/slider/LogoAgenciaEspacial03.webp';
+import spaceLogo04 from '../assets/images/slider/LogoAgenciaEspacial04.webp';
+import spaceLogo05 from '../assets/images/slider/para-pagina-scroll-ok.webp';
+import spaceLogo06 from '../assets/images/slider/LogoAgenciaEspacial05.webp';
+import spaceLogo07 from '../assets/images/slider/LogoAgenciaEspacial06.webp';
+import spaceLogo08 from '../assets/images/slider/LogoAgenciaEspacial07.webp';
+import spaceLogo09 from '../assets/images/slider/para-pagina-scroll-ok.webp';
+import spaceLogo10 from '../assets/images/slider/LogoAgenciaEspacial08.webp';
+import spaceLogo11 from '../assets/images/slider/LogoAgenciaEspacial09.webp';
+import spaceLogo12 from '../assets/images/slider/LogoAgenciaEspacial10.webp';
+import spaceLogo13 from '../assets/images/slider/LogoAgenciaEspacial11.webp';
+import spaceLogo14 from '../assets/images/slider/LogoAgenciaEspacial12.webp';
+import spaceLogo15 from '../assets/images/slider/LogoAgenciaEspacial13B.webp';
+---
+
+<!-- <img src={astroLogo.src} width="115" height="48" alt="Astro Homepage" /> -->
+<main class="infiniteSlider">
+    <section class="slider" reverse="true" style="--speed:50s; --width: 200px; --height: 200px; --quantity: 15; ">
+        <div class="list">
+            <article class="item" style="--position: 1"><img src={spaceLogo01.src} alt="CNSA Space Agency Logo"></article>
+            <article class="item" style="--position: 2"><img src={spaceLogo02.src} alt="CSA Space Agency Logo"></article>
+            <article class="item" style="--position: 3"><img src={spaceLogo03.src} alt="CNES Space Agency Logo"></article>
+            <article class="item" style="--position: 4"><img src={spaceLogo04.src} alt="JAXA Space Agency Logo"></article>
+            <article class="item" style="--position: 5"><img src={spaceLogo05.src} alt="Descramer Text"></article>
+            <article class="item" style="--position: 6"><img src={spaceLogo06.src} alt="NASA Space Agency Logo"></article>
+            <article class="item" style="--position: 7"><img src={spaceLogo07.src} alt="ROSCOSMOS Space Agency Logo"></article>
+            <article class="item" style="--position: 8"><img src={spaceLogo08.src} alt="ASI Space Agency Logo"></article>
+            <article class="item" style="--position: 9"><img src={spaceLogo09.src} alt="Descramer Text"></article>
+            <article class="item" style="--position: 10"><img src={spaceLogo10.src} alt="NASA Space Agency Logo"></article>
+            <article class="item" style="--position: 11"><img src={spaceLogo11.src} alt="ESA Space Agency Logo"></article>
+            <article class="item" style="--position: 12"><img src={spaceLogo12.src} alt="DLR Space Agency Logo"></article>
+            <article class="item" style="--position: 13"><img src={spaceLogo13.src} alt="AEE Space Agency Logo"></article>
+            <article class="item" style="--position: 14"><img src={spaceLogo14.src} alt="CONAE Space Agency Logo"></article>
+            <article class="item" style="--position: 15"><img src={spaceLogo15.src} alt="ISA Space Agency Logo"></article>
+        </div>
+    </section>
+</main>
+
+<style>
+/* Define variables in :root for global scope */
+:root {
+    --sliderWidth: 100px;
+    /* width: var(--sliderWidth); */
+    /* height: var(--sliderHeight);  */
+    --sliderHeight: 50px;
+    
+    --width: calc(var(--width) * 0.6);
+    --height: calc(var(--height) * 0.6);
+    
+}
+
+main.infiniteSlider{
+    width: min(1200px, 90vw);
+    margin: auto;
+}
+.slider{
+    width: 100%;
+    height: var(--height);
+    overflow: hidden;
+    mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 10% 90%,
+        transparent
+    );
+    &[reverse="true"] .item{
+        animation: reversePlay var(--speed) linear infinite;
+    }
+    .list{
+        display: flex;
+        width: 100%;
+        min-width: calc(var(--width) * var(--quantity));
+        position: relative;
+        .item{
+            width: var(--width);
+            height: var(--height);
+            position: absolute;
+            left: 100%;
+            animation: autoRun var(--speed) linear infinite;
+            transition: filter 0.5s;
+            animation-delay: calc( (var(--speed) / var(--quantity)) * (var(--position) - 1) - var(--speed))!important;
+            img{
+                aspect-ratio: 1 / 1;
+                object-fit: cover;
+                width: 65%;
+                height: 65%;
+            }
+            &:hover{
+                filter: grayscale(0);
+            }
+        }
+        &:hover .item{
+            animation-play-state: paused!important;
+            filter: grayscale(1);
+        }
+        & .item:hover{
+            filter: grayscale(0);
+        }
+        &[reverse="true"] .item{
+            animation: reversePlay var(--speed) linear infinite;
+        }
+    }
+}
+@keyframes autoRun{
+    from{
+        left: 100%;
+    }to{
+        left: calc(var(--width) * -1);
+    }
+}
+@keyframes reversePlay{
+    from{
+        left: calc(var(--width) * -1);
+    }to{
+        left: 100%;
+    }
+}
+
+/*********************** Responsive ***********************/
+/* Small tweaks only when screen is very narrow (< 360px) */
+@media (max-width: 360px) {
+
+}
+
+@media (max-width: 678px) {
+    :root{
+        --width: calc(var(--width) * 0.6);
+        --height: calc(var(--height) * 0.6);
+    }
+}
+
+/* Tablets and up */
+@media (min-width: 768px) {
+
+}
+
+/* Small desktop / laptop */
+@media (min-width: 1024px) {
+
+}
+
+/* Large desktop */
+@media (min-width: 1280px) {
+
+}
+
+
+
+
+
+
+/* ==========================================================================
+    DESKTOP-FIRST MEDIA QUERIES
+    Start with large desktop styles (no media query = default)
+    Then reduce / adapt as screen gets smaller
+   ========================================================================== */
+
+/* ───────────────────────────────────────────────
+    Very large screens / 4K-ready / ultra-wide (optional)
+    ≥ 1536px or 1920px — many people cap container here
+   ─────────────────────────────────────────────── */
+@media (min-width: 1536px) {
+
+}
+
+/* ───────────────────────────────────────────────
+    Large desktop (most common wide desktop start)
+    ≥ 1280px — very popular xl breakpoint
+   ─────────────────────────────────────────────── */
+@media (min-width: 1280px) {
+
+}
+
+/* ───────────────────────────────────────────────
+    Standard desktop / small laptop
+    ≥ 1024px — classic lg breakpoint (Tailwind lg, many projects)
+   ─────────────────────────────────────────────── */
+@media (min-width: 1024px) {
+
+}
+
+/* ───────────────────────────────────────────────
+    Tablet landscape / medium screens
+    ≥ 768px — extremely common md / tablet point
+   ─────────────────────────────────────────────── */
+@media (min-width: 768px) {
+
+}
+
+/* ───────────────────────────────────────────────
+    Large mobile / small tablet / phone landscape
+    ≥ 640px — Tailwind sm / very popular transition
+   ─────────────────────────────────────────────── */
+@media (min-width: 640px) {
+
+}
+
+/* ───────────────────────────────────────────────
+    Small mobile / typical cellphone portrait
+    ≤ 639px — this is the "mobile" range in many projects
+    (styles here override larger ones when screen shrinks)
+   ─────────────────────────────────────────────── */
+@media (max-width: 639px) {
+
+}
+
+/* ───────────────────────────────────────────────
+    Very small phones (old devices, narrow viewports)
+    ≤ 360px — useful for extra tweaks
+   ─────────────────────────────────────────────── */
+@media (max-width: 360px) {
+    /* :root{
+        --carouselTopicFontSize: 2.5em;
+    } */
+}
+</style>

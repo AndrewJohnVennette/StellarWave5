@@ -1,0 +1,278 @@
+---
+import stellarLogo from '../assets/Stellarwave.png';
+const { services = "/services2"} = Astro.props;
+---
+<header id="GEV-navBar" class="flex">
+            <!-- Company Logo -->
+            <div>
+                <img src={stellarLogo.src} alt="Logo of Corp" class="logo">
+            </div>
+            <!-- Dynamic Hamburger -->
+            <button class="mobile-nav-toggle " aria-controls="primary-navigation" aria-expanded="false">
+                <div class="menu-btn">
+                    <div class="menu-btn_burger"></div>
+                </div>
+            </button>
+            <!-- Menu Section -->
+            <nav>
+                <ul data-visible="false" class="primary-navigation flex">
+                    <li class="active">
+                        <a class="ff-sans-cond uppercase text-white letter-spacing" href="/">
+                            <span aria-hidden="true">Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href={services}>
+                            <span aria-hidden="true">Services</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span aria-hidden="true">Info</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span aria-hidden="true">Language</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- End Menu Section -->
+        </header>
+
+<style>
+    /********************** NavBar Section **********************/
+:root {
+    --gap: 2rem;
+    --textColor: #fff;
+    --textSize: 1rem;
+    --borderBottomLeftRadius: 55%;
+}
+
+#GEV-navBar {
+    position: fixed;      /* sticks to viewport, doesn't scroll away */
+    top: 0;               /* pins to the very top */
+    left: 0;
+    right: 0;             /* stretches full width */
+    z-index: 9999;        /* floats above everything else */
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap, 1rem);
+    & nav{
+        font-size: var(--textSize, 16px);
+    }
+    & ul{
+            margin: 0;
+            padding: 0;
+            border-bottom-left-radius:var(--borderBottomLeftRadius, 50%);
+            display: flex;
+            gap: var(--gap, 1rem);
+    }
+    & .logo{
+            width: 20px;
+            height: inherit;
+            margin: 2rem;
+    }
+    & .mobile-nav-toggle {
+        display: none;
+    }
+    & .primary-navigation{
+        @supports(backdrop-filter: blur(2rem)) {
+            background: hsla(184, 21%, 25%, 0.1);
+            backdrop-filter: blur(1rem);
+        }
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        & a {
+            text-decoration: none;
+            color: var(--textColor);
+        }
+        & a>[aria-hidden="true"] {
+            font-weight: 700;
+            margin-inline-end: .75rem;
+        }
+    }
+}
+
+/* #GEV-navBar nav {
+    font-size: var(--textSize, 16px);
+} */
+
+/* #GEV-navBar ul {
+    margin: 0;
+    padding: 0;
+    border-bottom-left-radius:var(--borderBottomLeftRadius, 50%);
+    display: flex;
+    gap: var(--gap, 1rem);
+} */
+
+/* #GEV-navBar .logo {
+    width: 20px;
+    height: inherit;
+    margin: 2rem;
+} */
+
+/* #GEV-navBar .mobile-nav-toggle {
+    display: none;
+} */
+
+/* #GEV-navBar .primary-navigation {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    / * background: hsl(0 0% 0% / .5);
+    backdrop-filter: blur(2rem); * /
+} */
+
+/* @supports(backdrop-filter: blur(2rem)) {
+    #GEV-navBar .primary-navigation {
+        background: hsl(0 0% 100% / .1);
+        backdrop-filter: blur(2rem);
+    }
+} */
+
+/* #GEV-navBar .primary-navigation a {
+    text-decoration: none;
+    color: var(--textColor);
+} */
+
+/* #GEV-navBar .primary-navigation a>[aria-hidden="true"] {
+    font-weight: 700;
+    margin-inline-end: .75rem;
+} */
+
+@media(min-width: 35rem) {
+    #GEV-navBar .primary-navigation {
+        --gap: clamp(1.5rem, 5vw, 3rem);
+        padding-block: 2rem;
+        padding-inline: clamp(3rem, 8vw, 10rem);
+    }
+}
+
+@media(max-width: 35rem) {
+    #GEV-navBar .primary-navigation {
+        --gap: 2rem;
+        position: fixed;
+        inset: 0 0 0 30%;
+        flex-direction: column;
+        padding: min(30vh, 10rem) 2rem;
+        z-index: 1000;
+        transform: translateX(100%);
+        transition: transform 350ms ease-out;
+    }
+
+    #GEV-navBar .primary-navigation[data-visible="true"] {
+        transform: translateX(0%);
+    }
+
+    #GEV-navBar .mobile-nav-toggle {
+        display: block;
+        position: absolute;
+        background-color: transparent;
+        /* background-image: url(./Hamburger_icon.svg.png); */
+        background-repeat: no-repeat;
+        width: 4rem;
+        aspect-ratio: 1;
+        border: 0;
+        top: 2rem;
+        right: 2rem;
+        z-index: 5000;
+        border: 1px solid transparent;
+        background-color: transparent;
+    }
+
+    #GEV-navBar .mobile-nav-toggle[aria-expanded="true"] {
+        content: '';
+    }
+
+    #GEV-navBar .menu-btn {
+        display: block;
+    }
+}
+
+@media(min-width: 35rem)and (max-width: 55rem) {
+    #GEV-navBar .primary-navigation a>[aria-hidden="true"] {
+        display: none;
+    }
+}
+
+@media(min-width: 55rem) {
+    
+}
+
+/* Hamburger */
+#GEV-navBar .menu-btn{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    transition: all .5s ease-in-out;
+    /* border: 3px solid #fff; */
+}
+#GEV-navBar .menu-btn_burger{
+    width: 50px;
+    height: 6px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(255, 101, 47, .2);
+    transition: all .5s ease-in-out;
+    left: 0;
+    position: absolute;
+}
+#GEV-navBar .menu-btn_burger::before,
+#GEV-navBar .menu-btn_burger::after{
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 6px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(255, 101, 47, .2);
+    transition: all .5s ease-in-out;
+    left: 0;
+}
+#GEV-navBar .menu-btn_burger::before{
+    transform: translateY(-16px);
+}
+#GEV-navBar .menu-btn_burger::after{
+    transform: translateY(16px);
+}
+
+/* Animation */
+#GEV-navBar .menu-btn.open .menu-btn_burger{
+    transform: translate(-50px);
+    background: transparent;
+    box-shadow: none;
+}
+#GEV-navBar .menu-btn.open .menu-btn_burger::before{
+    transform: translate(50px);
+    transform: rotate(45deg) translate(35px, -35px);
+}
+#GEV-navBar .menu-btn.open .menu-btn_burger::after{
+    transform: translate(50px);
+    transform: rotate(-45deg) translate(35px, 35px);
+}
+</style>
+
+<script>
+    const primaryNav = document.querySelector('.primary-navigation');
+const navToggle = document.querySelector('.mobile-nav-toggle');
+const menuBtn = document.querySelector('.menu-btn'); //.mobile-nav-toggle
+
+navToggle.addEventListener('click', () => {
+    const isVisible = primaryNav.dataset.visible === 'true';
+    primaryNav.dataset.visible = !isVisible;
+    navToggle.setAttribute('aria-expanded', !isVisible);
+    menuBtn.classList.toggle('open');
+});
+
+
+</script>

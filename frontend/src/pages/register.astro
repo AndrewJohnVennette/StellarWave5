@@ -1,0 +1,213 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Register">
+  <h1>Create Your Account</h1>
+  <p style="color: #666; margin: 0.5rem 0 2rem;">
+    Fill in all three fields and we'll do the rest.
+  </p>
+
+  <!-- Registration form -->
+  <div id="form-container" style="
+    background: white; border: 1px solid #e0e0e0;
+    border-radius: 16px; padding: 2rem; max-width: 480px;
+  ">
+    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+
+      <!-- First Name -->
+      <div>
+        <label for="firstName" style="
+          display: block; font-weight: 600;
+          font-size: 0.85rem; margin-bottom: 0.4rem; color: #444;
+        ">First name</label>
+        <input
+          id="firstName"
+          type="text"
+          placeholder="e.g. Neil"
+          autocomplete="given-name"
+          style="
+            width: 100%; padding: 0.75rem 1rem;
+            border: 1.5px solid #ddd; border-radius: 8px;
+            font-size: 1rem; outline: none; transition: border-color 0.2s;
+          "
+        />
+      </div>
+
+      <!-- Last Name -->
+      <div>
+        <label for="lastName" style="
+          display: block; font-weight: 600;
+          font-size: 0.85rem; margin-bottom: 0.4rem; color: #444;
+        ">Last name</label>
+        <input
+          id="lastName"
+          type="text"
+          placeholder="e.g. Armstrong"
+          autocomplete="family-name"
+          style="
+            width: 100%; padding: 0.75rem 1rem;
+            border: 1.5px solid #ddd; border-radius: 8px;
+            font-size: 1rem; outline: none; transition: border-color 0.2s;
+          "
+        />
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label for="email" style="
+          display: block; font-weight: 600;
+          font-size: 0.85rem; margin-bottom: 0.4rem; color: #444;
+        ">Email address</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="e.g. neil@nasa.gov"
+          autocomplete="email"
+          style="
+            width: 100%; padding: 0.75rem 1rem;
+            border: 1.5px solid #ddd; border-radius: 8px;
+            font-size: 1rem; outline: none; transition: border-color 0.2s;
+          "
+        />
+      </div>
+
+      <!-- Status indicator: shown when fields are partially filled -->
+      <div id="status-row" style="
+        display: flex; gap: 0.5rem; align-items: center;
+        font-size: 0.85rem; color: #888; min-height: 1.2rem;
+      ">
+        <span id="status-dot" style="
+          width: 8px; height: 8px; border-radius: 50%;
+          background: #ddd; flex-shrink: 0; transition: background 0.2s;
+        "></span>
+        <span id="status-text">Enter your details above</span>
+      </div>
+
+      <!-- Submit button — disabled until all fields filled -->
+      <button
+        id="submit-btn"
+        disabled
+        style="
+          width: 100%; padding: 0.85rem;
+          background: #ccc; color: white;
+          border: none; border-radius: 10px;
+          font-size: 1rem; font-weight: 600; cursor: not-allowed;
+          transition: background 0.25s, transform 0.1s;
+        "
+      >
+        Complete registration
+      </button>
+    </div>
+  </div>
+
+  <!-- Success state (hidden until registration completes) -->
+  <div id="success-container" style="display: none; max-width: 480px;">
+    <div style="
+      background: #f0fdf4; border: 1.5px solid #86efac;
+      border-radius: 16px; padding: 2.5rem; text-align: center;
+    ">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">&#10024;</div>
+      <h2 style="color: #166534; margin-bottom: 0.75rem;">You're registered!</h2>
+      <p id="success-message" style="color: #15803d; margin-bottom: 1.5rem;"></p>
+      <p style="color: #4a7c59; font-size: 0.9rem;">
+        A welcome email has been sent to <strong id="success-email"></strong>.
+        Check your inbox (and spam folder, just in case).
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const firstNameEl = document.getElementById('firstName');
+    const lastNameEl  = document.getElementById('lastName');
+    const emailEl     = document.getElementById('email');
+    const submitBtn   = document.getElementById('submit-btn');
+    const statusDot   = document.getElementById('status-dot');
+    const statusText  = document.getElementById('status-text');
+
+    // ── Auto-detect: watch all three fields ──────────────────
+    function getFilledCount() {
+      return [firstNameEl, lastNameEl, emailEl]
+        .filter(el => el.value.trim().length > 0).length;
+    }
+
+    function isEmailValid(v) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    }
+
+    function updateState() {
+      const filled = getFilledCount();
+      const allFilled = filled === 3;
+      const emailOk = isEmailValid(emailEl.value.trim());
+      const ready = allFilled && emailOk;
+
+      // Update status indicator
+      if (filled === 0) {
+        statusDot.style.background = '#ddd';
+        statusText.textContent = 'Enter your details above';
+      } else if (filled < 3) {
+        statusDot.style.background = '#f59e0b';
+        statusText.textContent = `${3 - filled} field${3 - filled > 1 ? 's' : ''} remaining`;
+      } else if (!emailOk) {
+        statusDot.style.background = '#f59e0b';
+        statusText.textContent = 'Enter a valid email address';
+      } else {
+        statusDot.style.background = '#22c55e';
+        statusText.textContent = 'Ready to register!';
+      }
+
+      // Enable/disable button
+      submitBtn.disabled = !ready;
+      submitBtn.style.background = ready ? '#1a1a2e' : '#ccc';
+      submitBtn.style.cursor = ready ? 'pointer' : 'not-allowed';
+    }
+
+    // Attach listeners to all three fields
+    [firstNameEl, lastNameEl, emailEl].forEach(el => {
+      el.addEventListener('input', updateState);
+      // Highlight field border on focus
+      el.addEventListener('focus', () => { el.style.borderColor = '#7b8cde'; });
+      el.addEventListener('blur',  () => { el.style.borderColor = '#ddd'; });
+    });
+
+    // ── Submit handler ────────────────────────────────────────
+    submitBtn.addEventListener('click', async () => {
+      const firstName = firstNameEl.value.trim();
+      const lastName  = lastNameEl.value.trim();
+      const email     = emailEl.value.trim();
+
+      submitBtn.textContent = 'Registering...';
+      submitBtn.disabled = true;
+
+      try {
+        const res = await fetch('http://localhost:3000/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ firstName, lastName, email }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          // Show success state, hide form
+          document.getElementById('form-container').style.display = 'none';
+          document.getElementById('success-container').style.display = 'block';
+          document.getElementById('success-message').textContent = data.message;
+          document.getElementById('success-email').textContent = email;
+        } else {
+          // Show inline error
+          statusDot.style.background = '#ef4444';
+          statusText.textContent = data.error || 'Something went wrong. Try again.';
+          submitBtn.textContent = 'Complete registration';
+          submitBtn.disabled = false;
+          submitBtn.style.background = '#1a1a2e';
+        }
+      } catch (err) {
+        statusDot.style.background = '#ef4444';
+        statusText.textContent = 'Network error — is the server running?';
+        submitBtn.textContent = 'Complete registration';
+        submitBtn.disabled = false;
+        submitBtn.style.background = '#1a1a2e';
+      }
+    });
+  </script>
+</Layout>

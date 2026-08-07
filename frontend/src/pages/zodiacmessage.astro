@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/Layout.astro';
+import InfiniteSlider from '../components/InfiniteSlider.astro';
+import StockTicker from '../components/StockTicker.astro';
+import Carousel from '../components/Carousel.astro';
+import SeeMoreInfo from '../components/SeeMoreInfo.astro';
+const { services = "/services"} = Astro.props;
+
+import mainImage04 from '../assets/images/background/04star-bottle-1.webp';
+
+
+
+const Name = "Stellarwaves-5";
+---
+<Layout title={Name}>
+    <SeeMoreInfo titleColum2 = "SEND YOUR MESSAGE TO THE ZODIAC, NON-STOP", titleColum3 = "Can messages be sent to my <br> sign of the zodiac?">
+        <p slot="column2">
+            You can now connect with the constellation that represents your zodiac sign. Send your message to the Zodiac.
+            <a class="blink-02" href={services}>To send your Message, just click here.</a>
+            Establish a bond with the stars that have accompanied you since your birth. Let your energy travel toward them. Communicate with your sign like never before.
+            The stars that form your sign are light-years away, but that light still reaches us. Now, through our website, you can send an encoded message to the celestial region where your zodiac constellation resides.
+            Each zodiac constellation is a myth suspended in the sky. Send your message to the constellation that holds the sign you choose. Let your story become inscribed in the epic of the firmament. Connect with the energy of your sign. Send a message to the sky that witnessed your birth. Now you can do it.
+        </p>
+
+        <p slot="column3">
+            Of course! Your sign is waiting for you. Now you can send a message directly to your horoscope sign, straight to the constellation it belongs to.
+            The zodiac signs are not all in a single constellation; each sign corresponds to its own distinct constellation within the celestial band known as the zodiac.
+            In that band called the zodiac, you’ll find each of the individual signs.
+            Aries, Taurus, Gemini, Cancer, Leo, Virgo, Libra, Scorpio, Sagittarius, Capricorn, Aquarius, Pisces—they are all within your reach. Communicate with them.
+            The constellations are groupings of stars located along that same strip of sky.
+            This strip is the apparent path the Sun follows throughout the year, and it is where the zodiac constellations are positioned.
+            We will send a beam of light piercing through space—a <strong> laser carrying messages toward the zodiac constellations</strong>. This is not merely a technological experiment: it is a cosmic ritual. Each sign becomes a beacon toward which we aim our words.
+            The beam travels onward, crossing atmospheres and silences, until it brushes against the stars.
+            On this journey, the laser does not only transmit data: it carries <strong> your hope, your identity, and your poetry</strong>. It is humanity projecting itself toward the universe, as though each sign were a receiving station for our luminous voice. Perhaps no one will answer, perhaps the echo will be lost in the vastness, but what truly matters is that we leave our mark in the cosmos, written in light.
+        </p>
+    </SeeMoreInfo>
+</Layout>
+<style>
+    body{
+        /* background-image: url(../assets/images/background/star-bottle-4-blu.webp); */
+        /* 
+        
+        background: center / cover no-repeat url('../assets/images/background/star-bottle-4-blu.webp');3dmodels-cygnus-astro-74ffde
+        
+        */
+        background: center / 100% 100% no-repeat url(../assets/images/background/new/3dmodels-cygnus-astro-74ffde.webp);
+    }
+</style>

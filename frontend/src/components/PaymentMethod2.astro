@@ -1,0 +1,419 @@
+---
+
+---
+
+
+<section class="completeCard">
+    <div class="card front-face">
+        <header>
+            <span class="logo">
+                <!-- <img src="images/logo.png" alt="" /> -->
+                <svg class="chip" version="1.1" id="Layer_1" xmlns:x="ns_extend;" xmlns:i="ns_ai;" xmlns:graph="ns_graphs;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 116.5 72" style="enable-background:new 0 0 116.5 72;" xml:space="preserve">
+                    <style type="text/css">
+                      .st0{fill:#FF5F00;}
+                      .st1{fill:#EB001B;}
+                      .st2{fill:#F79E1B;}
+                    </style>
+                    <metadata>
+                    <sfw xmlns="ns_sfw;">
+                    <slices>
+                    </slices>
+                    <sliceSourceBounds bottomLeftOrigin="true" height="72" width="116.5" x="17.9" y="18">
+                    </sliceSourceBounds>
+                    </sfw>
+                    </metadata>
+                    <g>
+                    <g>
+                    <rect x="42.5" y="7.7" class="st0" width="31.5" height="56.6">
+                    </rect>
+                    <path class="st1" d="M44.5,36c0-11,5.1-21.5,13.7-28.3C42.6-4.6,20-1.9,7.7,13.8C-4.6,29.4-1.9,52,13.8,64.3
+                                c13.1,10.3,31.4,10.3,44.5,0C49.6,57.5,44.5,47,44.5,36z">
+                    </path>
+                    <path class="st2" d="M116.5,36c0,19.9-16.1,36-36,36c-8.1,0-15.9-2.7-22.2-7.7c15.6-12.3,18.3-34.9,6-50.6c-1.8-2.2-3.8-4.3-6-6
+                                c15.6-12.3,38.3-9.6,50.5,6.1C113.8,20.1,116.5,27.9,116.5,36z">
+                    </path>
+                    <path class="st2" d="M113.1,58.3v-1.2h0.5v-0.2h-1.2v0.2h0.5v1.2H113.1z M115.4,58.3v-1.4H115l-0.4,1l-0.4-1h-0.4v1.4h0.3v-1.1
+                                l0.4,0.9h0.3l0.4-0.9v1.1H115.4z">
+                    </path>
+                    </g>
+                    </g>
+                </svg>
+                <h5>Master Card</h5>
+            </span>
+            <svg class="chip" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" >
+                <defs>
+                    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#FFEFA6" />
+                    <stop offset="40%" stop-color="#E2B14B" />
+                    <stop offset="100%" stop-color="#A16928" />
+                    </linearGradient>
+                </defs>
+
+                <rect x="5" y="5" width="230" height="150" rx="35" ry="35" fill="url(#goldGradient)" stroke="#000000" stroke-width="4" stroke-linejoin="round" />
+
+                <g fill="none" stroke="#000000" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                    
+                    <rect x="85" y="55" width="70" height="50" />
+
+                    <line x1="120" y1="5" x2="120" y2="55" />
+
+                    <line x1="120" y1="105" x2="120" y2="155" />
+
+                    <line x1="5" y1="80" x2="85" y2="80" />
+                    <path d="M 5,35 L 55,35 L 85,55" />
+                    <path d="M 5,125 L 55,125 L 85,105" />
+
+                    <line x1="155" y1="80" x2="235" y2="80" />
+                    <path d="M 235,35 L 185,35 L 155,55" />
+                    <path d="M 235,125 L 185,125 L 155,105" />
+
+                </g>
+            </svg>
+        </header>
+
+        <div class="card-details">
+            <div class="name-number">
+                <h6>Card Number</h6>
+                <input id="cardNumber" class="number" type="text" placeholder="0000 0000 0000 0000">
+                <h6>Card Holder Name</h6>
+                <input id="cardName" class="name" type="text" placeholder="Your Name Here">
+            </div>
+
+            <div class="valid-date">
+                <h6>Valid Thru</h6>
+                <input id="expDate" type="text" placeholder="00/00">
+            </div>
+        </div>
+    </div>
+
+    <div class="card back-face">
+        <h6>
+            For customer service call +977 4343 3433 or email at
+            mastercard@gmail.com
+        </h6>
+        <span class="magnetic-strip"></span>
+        <div class="signature">
+            <input id="CVC" type="text" placeholder="000">
+        </div>
+        <h5>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia
+            maiores sed doloremque nesciunt neque beatae voluptatibus doloribus.
+            Libero et quis magni magnam nihil temporibus? Facere consectetur
+            dolore reiciendis et veniam.
+        </h5>
+    </div>
+</section>
+
+
+
+<style>
+:root{
+
+  }
+  .flipped{
+    transform: rotateY(180deg);
+  }
+  .blink {
+    animation: fieldPulse 0.5s infinite !important;
+    /* border-color: #fff !important; */
+}
+  .completeCard{
+    color: #fff;
+    position: relative;
+    height: 225px;
+    width: 375px;
+    z-index: 100;
+    transition: 0.6s;
+    transform-style: preserve-3d;
+    & ::placeholder {/* Placeholder text color for inputs */
+      color: rgba(255, 255, 255, 0.4);
+      opacity: 1; /* Firefox */
+    }
+    & input {
+      background: transparent;
+      border: solid 1px transparent;
+      color: #fff;
+      font-family: "Poppins", sans-serif;
+      font-size: 16px;
+      width: 100%;
+      padding: 0;
+      & :focus {
+        outline: none;
+        border: 1px solid red;
+      }
+    }
+    & h5 {
+      font-size: 16px;
+      font-weight: 400;
+      & .number {
+        font-size: 18px;
+        letter-spacing: 1px;
+      }
+      & .name {
+        margin-top: 20px;
+      }
+    }
+    & h6 {
+      font-size: .9rem;
+      font-weight: 400;
+      margin: 10px 0px;
+    } 
+    & .card {
+      position: absolute;
+      height: 135%;
+      width: 135%;
+      padding: 25px;
+      border-radius: 25px;
+      backdrop-filter: blur(25px);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backface-visibility: hidden; /* Ensure backface-visibility is set */
+      transform-style: preserve-3d;
+      & input {
+      background: transparent;
+      border: solid 1px transparent;
+      color: #fff;
+      font-family: "Poppins", sans-serif;
+      font-size: 16px;
+      width: 100%;
+      padding: 0;
+      & :focus {
+        outline: none;
+        border: 1px solid red;
+      }
+    }
+      &.front-face {
+        & .number {/* Specific styles for card number */
+          font-size: 1.85rem;
+          letter-spacing: 1px;
+
+        }
+        & .name {/* Specific styles for card name */
+          margin-top: 20px;
+        }
+        backface-visibility: hidden;
+        & header{
+          justify-content: space-between;
+        }
+        & .logo{
+          & img {
+            width: 48px;
+            margin-right: 10px;
+          }
+        }
+        & header,
+        & .logo {
+          display: flex;
+          align-items: center;
+          h5{
+            padding: 0 0 0 3px;
+          }
+        }
+        & .chip {
+          width: 50px;
+        }
+        & .card-details {
+          display: flex;
+          margin-top: 40px;
+          align-items: flex-end;
+          justify-content: space-between;
+        }
+        & #expDate{
+          width: 43px;
+        }
+      }
+      &.back-face {
+        border: solid 1px transparent;
+        padding: 15px 25px 25px 25px;
+        transform: rotateY(180deg);
+        backface-visibility: hidden; /* Ensure backface-visibility is set */
+        & h6 {
+          font-size: 8px;
+        }
+        & .magnetic-strip {
+          position: absolute;
+          top: 40px;
+          left: 0;
+          height: 45px;
+          width: 100%;
+          background: #000;
+        }
+        & h5 {
+          font-size: 8px;
+          margin-top: 15px;
+        }
+        & .signature {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          margin-top: 80px;
+          height: 40px;
+          width: 85%;
+          border-radius: 6px;
+          background: repeating-linear-gradient(#fff,
+              #fff 3px,
+              #efefef 0px,
+              #efefef 9px);
+          & i {
+            color: #000;
+            font-size: 12px;
+            padding: 4px 6px;
+            border-radius: 4px;
+            background-color: #fff;
+            margin-right: -30px;
+            z-index: -1;
+          }
+          & input {/* Styling for CVC on back-face */
+            color: #000;
+            font-size: .85rem;
+            font-weight: 700;
+            padding: 4px 6px;
+            border-radius: 4px;
+            background-color: #fff;
+            margin-right: -55px;
+            z-index: -1;
+            width: 35px;
+            &:focus {
+              outline: none;
+              border: 1px solid red;
+            }
+            &::placeholder {/* Adjustments for back-face input */
+              color: #000;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes fieldPulse {
+    0%   { border-color: #fff; }
+    50%  { border-color: rgba(14, 219, 86, .9); }
+    100% { border-color: #fff; }
+  }
+
+</style>
+
+<script>
+// ── BLINK SEQUENCE ──────────────────────────────────────────────────────────
+
+const _cnRx = /^(?:[0-9]{4}\s){3}[0-9]{4}$/;
+const _edRx = /^(0[1-9]|1[0-2])\/([2-9][6-9]|[3-9][0-9])$/;
+
+function updateBlink() {
+    const cardNumber = document.getElementById('cardNumber').value.trim();
+    const cardName   = document.getElementById('cardName').value.trim();
+    const expDate    = document.getElementById('expDate').value.trim();
+    const cvc        = document.getElementById('CVC').value.trim();
+
+    // Remove .blink from every input first
+    ['cardNumber', 'cardName', 'expDate', 'CVC'].forEach(function(id) {
+        document.getElementById(id).classList.remove('blink');
+    });
+
+    // Add .blink to the first field that is not yet complete
+    if (!_cnRx.test(cardNumber)) {
+        document.getElementById('cardNumber').classList.add('blink');
+    } else if (cardName === '') {
+        document.getElementById('cardName').classList.add('blink');
+    } else if (!_edRx.test(expDate)) {
+        document.getElementById('expDate').classList.add('blink');
+    } else if (cvc.length < 3) {
+        document.getElementById('CVC').classList.add('blink');
+    }
+    // If all four are complete, nothing gets .blink — animation stops entirely
+}
+
+// Kick off on page load
+document.addEventListener('DOMContentLoaded', updateBlink);
+
+// Re-evaluate after every existing field event
+document.getElementById('cardNumber').addEventListener('input',  updateBlink);
+document.getElementById('cardNumber').addEventListener('blur',   updateBlink);
+document.getElementById('cardName').addEventListener('input',    updateBlink);
+document.getElementById('expDate').addEventListener('input',     updateBlink);
+document.getElementById('expDate').addEventListener('blur',      updateBlink);
+document.getElementById('CVC').addEventListener('input',         updateBlink);
+
+// Combined validation for cardNumber
+function validateCardNumber(e) {
+    let value = e.target.value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim();
+    e.target.value = value.slice(0, 19); // Ensure only 16 digits + 3 spaces
+
+    const cardNumberRegex = /^(?:[0-9]{4}\s){3}[0-9]{4}$/;
+    if (!cardNumberRegex.test(e.target.value)) {
+        if (e.type === 'blur') { // Only show alert on blur
+            alert('Invalid card number format. Please use 16 digits with spaces after every 4 digits.');
+        }
+        e.target.style.borderBottom = '1px solid red';
+    } else {
+        e.target.style.borderBottom = ''; // or any other valid state style
+    }
+    checkFieldsAndFlip();
+}
+
+// Attach to cardNumber events
+document.getElementById('cardNumber').addEventListener('input', validateCardNumber);
+document.getElementById('cardNumber').addEventListener('blur', validateCardNumber);
+
+// Function to check fields and flip the card in sequence
+function checkFieldsAndFlip() {
+    const cardNumber = document.getElementById('cardNumber').value.trim();
+    const cardName = document.getElementById('cardName').value.trim();
+    const expDate = document.getElementById('expDate').value.trim();
+    const cvc = document.getElementById('CVC').value.trim();
+    const completeCard = document.querySelector('.completeCard');
+
+    const cardNumberRegex = /^(?:[0-9]{4}\s){3}[0-9]{4}$/;
+    const expDateRegex = /^(0[1-9]|1[0-2])\/([2-9][6-9]|[3-9][0-9])$/;
+
+    // Step 1: Check if front-face fields are filled and valid to flip to back
+    const frontFieldsFilled = cardNumber !== '' && cardName !== '' && expDate !== '' &&
+                            cardNumberRegex.test(cardNumber) && expDateRegex.test(expDate);
+
+    if (frontFieldsFilled && cvc === '' && !completeCard.classList.contains('flipped')) {
+        completeCard.classList.add('flipped'); // Flip to back when front fields are complete
+    } 
+    // Step 2: Check if CVC is filled to flip back
+    else if (frontFieldsFilled && cvc !== '' && cvc.length === 3 && completeCard.classList.contains('flipped')) {
+        completeCard.classList.remove('flipped'); // Flip back when CVC is complete
+    }
+    // If front fields are not all filled and valid, ensure card is not flipped
+    else if (!frontFieldsFilled && completeCard.classList.contains('flipped')) {
+        completeCard.classList.remove('flipped');
+    }
+}
+
+// Add event listeners to other fields to check and flip on input
+document.getElementById('cardName').addEventListener('input', checkFieldsAndFlip);
+document.getElementById('expDate').addEventListener('input', function(e) {
+    const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+    if (value.length >= 2) {
+        e.target.value = value.slice(0, 2) + (value.length > 2 ? '/' : '') + value.slice(2, 4);
+    } else {
+        e.target.value = value;
+    }
+    checkFieldsAndFlip();
+});
+document.getElementById('CVC').addEventListener('input', checkFieldsAndFlip);
+
+// Add blur event for expDate validation
+document.getElementById('expDate').addEventListener('blur', function(e) {
+    const expDateRegex = /^(0[1-9]|1[0-2])\/([2-9][6-9]|[3-9][0-9])$/;
+    if (!expDateRegex.test(e.target.value)) {
+        alert('Invalid expiration date. Please use MM/YY format with MM from 01 to 12 and YY greater than 25.');
+        e.target.style.borderBottom = '1px solid red';
+    } else {
+        e.target.style.borderBottom = '';
+    }
+    checkFieldsAndFlip();
+});
+
+// Prevent flipping on input click
+document.querySelector('.completeCard').addEventListener('click', function(e) {
+    if (e.target.tagName !== 'INPUT') {
+        // Logic here is now handled by checkFieldsAndFlip, so this can be optional
+    }
+});
+</script>

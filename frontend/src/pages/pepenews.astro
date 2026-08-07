@@ -1,0 +1,265 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const PageTitle = "Stellarwave-5 — News Editor";
+const cmsKey = process.env.CMS_KEY || 'changeme-some-random-shared-secret';
+---
+
+<Layout title={PageTitle}>
+    <section class="cms-wrap">
+        <article class="cms-card">
+            <label>News Editor</label>
+
+            <h2>Add a News Entry</h2>
+            <p class="cms-hint">
+                This page is not listed in the menu. Only the editor knows this URL.
+            </p>
+
+            <section class="inputBoxData">
+                <input id="news-title" type="text" autocomplete="off" />
+                <label for="news-title">Title *</label>
+            </section>
+
+            <section class="inputBoxData">
+                <input id="news-image" type="text" autocomplete="off" />
+                <label for="news-image">Image (optional)</label>
+                <p class="cms-field-note">
+                    Leave blank to use the default image: <strong>Sagittarius.webp</strong>.
+                </p>
+            </section>
+
+            <section class="inputBoxData">
+                <textarea id="news-article" rows="6"></textarea>
+                <label for="news-article">Article *</label>
+            </section>
+
+            <button id="news-submit" type="button">Publish Entry</button>
+
+            <p id="news-status" class="cms-status" aria-live="polite"></p>
+        </article>
+    </section>
+</Layout>
+
+<style is:global>
+    body {
+        background: center / 100% 100% no-repeat url('../assets/images/background/new/msh1552.webp');
+    }
+</style>
+
+<style>
+    .cms-wrap {
+        margin-top: 18vh;
+        margin-bottom: 6rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .cms-card {
+        position: relative;
+        width: min(34rem, 90vw);
+        border: var(--border-w) solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        backdrop-filter: blur(1rem);
+        padding: 2.6rem 2.2rem 2rem;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, .55);
+        box-sizing: border-box;
+    }
+
+    .cms-card > label {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--label-bg);
+        color: var(--accent);
+        padding: var(--label-pad-y) var(--label-pad-x);
+        border-radius: 30%;
+        outline: var(--border-w) solid var(--border);
+        outline-offset: 0px;
+        font-size: .88rem;
+        font-weight: 500;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .cms-card h2 {
+        margin: 0 0 .35rem;
+        color: var(--text);
+        font-size: 1.05rem;
+        font-weight: 500;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .cms-hint {
+        margin: 0 0 1.6rem;
+        color: var(--text-muted);
+        font-size: .72rem;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .inputBoxData {
+        position: relative;
+        width: 100%;
+        margin: 0 0 1.4rem;
+    }
+    .inputBoxData input,
+    .inputBoxData textarea {
+        background: transparent;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 19px 12px;
+        border: solid 1px var(--boxBorder);
+        border-radius: 5px;
+        outline: none;
+        color: var(--text);
+        font-size: 1rem;
+        font-family: var(--basicFontFamily);
+        transition: border-color .5s;
+        resize: vertical;
+    }
+    .inputBoxData textarea {
+        min-height: 120px;
+        line-height: 1.6;
+    }
+    .inputBoxData label {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 10px;
+        pointer-events: none;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, .25);
+        text-transform: uppercase;
+        transition: .5s;
+    }
+    .inputBoxData input:focus ~ label,
+    .inputBoxData input:not(:placeholder-shown) ~ label,
+    .inputBoxData textarea:focus ~ label,
+    .inputBoxData textarea:not(:placeholder-shown) ~ label {
+        color: #00dfc4;
+        transform: translateX(10px) translateY(-7px);
+        font-size: .65rem;
+        padding: 0 10px;
+        background: #1d2b3a;
+        border-left: solid 1px #00dfc4;
+        border-right: solid 1px #00dfc4;
+        letter-spacing: .2rem;
+    }
+    .inputBoxData input:focus,
+    .inputBoxData input:not(:placeholder-shown),
+    .inputBoxData textarea:focus,
+    .inputBoxData textarea:not(:placeholder-shown) {
+        border: solid 1px #00dfc4;
+    }
+
+    .cms-field-note {
+        margin: .5rem 0 0;
+        color: var(--text-muted);
+        font-size: .68rem;
+        line-height: 1.6;
+    }
+
+    #news-submit {
+        display: block;
+        width: 100%;
+        padding: .8rem;
+        background: linear-gradient(135deg, #1e4fad, #3d8ef0);
+        color: #fff;
+        font-family: var(--basicFontFamily);
+        font-size: .85rem;
+        font-weight: 600;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 18px rgba(61, 142, 240, .35);
+        transition: transform .15s ease, box-shadow .15s ease;
+    }
+    #news-submit:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 24px rgba(61, 142, 240, .5);
+    }
+    #news-submit:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .cms-status {
+        min-height: 1.2rem;
+        margin: 1.1rem 0 0;
+        font-size: .8rem;
+        line-height: 1.5;
+        text-align: center;
+    }
+    .cms-status.ok { color: #4ade80; }
+    .cms-status.err { color: #f87171; }
+</style>
+
+<script define:vars={{ cmsKey }}>
+    const titleEl  = document.getElementById('news-title');
+    const imageEl  = document.getElementById('news-image');
+    const articleEl = document.getElementById('news-article');
+    const submitBtn = document.getElementById('news-submit');
+    const statusEl  = document.getElementById('news-status');
+
+    submitBtn.addEventListener('click', async () => {
+        const title = titleEl.value.trim();
+        const image = imageEl.value.trim();
+        const article = articleEl.value.trim();
+
+        if (!title) {
+            statusEl.textContent = 'Title is required.';
+            statusEl.className = 'cms-status err';
+            titleEl.focus();
+            return;
+        }
+        if (!article) {
+            statusEl.textContent = 'Article is required.';
+            statusEl.className = 'cms-status err';
+            articleEl.focus();
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Publishing…';
+        statusEl.textContent = '';
+        statusEl.className = 'cms-status';
+
+        try {
+            const res = await fetch('http://localhost:3000/api/news', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'CMS_KEY': cmsKey,
+                },
+                body: JSON.stringify({ title, image, article }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                statusEl.textContent = 'Entry published successfully.';
+                statusEl.className = 'cms-status ok';
+                titleEl.value = '';
+                imageEl.value = '';
+                articleEl.value = '';
+            } else {
+                statusEl.textContent = data.error || 'Publish failed. Try again.';
+                statusEl.className = 'cms-status err';
+            }
+        } catch (err) {
+            statusEl.textContent = 'Network error — is the server running?';
+            statusEl.className = 'cms-status err';
+        }
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Publish Entry';
+    });
+</script>

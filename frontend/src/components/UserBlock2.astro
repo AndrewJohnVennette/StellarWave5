@@ -1,0 +1,325 @@
+---
+
+---
+
+<section class="servicePage">
+    <h2>Some text some text some text</h2>
+    <article class="card" id="card-user">
+        <label>User</label>
+        <section class="inputBoxData">
+            <input type="text" id="first-name"required="required">
+            <label for="user-fname">First Name:</label>
+        </section>
+        <section class="inputBoxData">
+            <!-- <input type="text" name="" id="user-lname" required="required"> -->
+            <input type="text" id="last-name" required="required">
+            <label for="user-lname">Last Name:</label>
+        </section>
+        <section class="inputBoxData">
+            <!-- <input type="email" name="" id="user-email" required="required"> -->
+            <input type="email" id="email" required="required">
+            <label for="user-email">Email:</label>
+        </section>
+    </article>
+</section>
+
+<style>
+.card {
+    position: relative;
+    border: var(--border-w) solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.6rem 2.2rem 2rem;
+    background: var(--surface);
+    margin: 1.8rem auto;
+    width: 45vw;
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.04) inset,
+        0 8px 40px rgba(0,0,0,.55);
+    
+    &>label{
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        background: var(--label-bg);
+        color: var(--accent);
+        padding: var(--label-pad-y) var(--label-pad-x);
+        border-radius: 30%;
+
+        outline: var(--border-w) solid var(--border);
+        outline-offset: 0px;
+
+        /* font-family: 'Playfair Display', Georgia, serif; */
+        font-size: .88rem;
+        font-weight: 500;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        white-space: nowrap;
+
+        animation: labelDrop .6s cubic-bezier(.22,1,.36,1) both;
+    }
+}
+
+/* ── Locked state ────────────────────────────────── */
+.card.locked {
+    border-color: rgba(255, 255, 255, .18);
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.02) inset,
+        0 4px 20px rgba(0,0,0,.4);
+
+    & > label {
+        color: var(--text-muted);
+        outline-color: rgba(255, 255, 255, .18);
+    }
+}
+
+/* Hide fields when locked */
+.card.locked .card__fields {
+    display: none;
+}
+
+/* ── Unlock animation ────────────────────────────── */
+.card.unlocking {
+    animation: cardUnlock .55s cubic-bezier(.22,1,.36,1) both;
+    & > label {
+        color: var(--accent);
+        outline-color: var(--border);
+        animation: labelPop .95s cubic-bezier(.22,1,.36,1) both;
+    }
+}
+
+.card.unlocking .card__fields {
+    display: block;
+    animation: fieldsReveal .6s .1s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* ── Content ─────────────────────────────────────── */
+.card__content {
+    color: var(--text);
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.75;
+    letter-spacing: .01em;
+    text-align: center;
+
+    animation: fadeUp .7s .15s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* ── Input Text Box ──────────────────────────────── */
+.inputBoxData{
+    position: relative;
+    width: 70%;
+    margin: 1.5rem auto;
+    & input{
+        background: transparent;
+        width: 100%;
+        padding: 19px 0;
+        border: solid 1px rgba(255, 255, 255, .25);
+        border-radius: 5px;
+        outline: none;
+        color: #fff;
+        font-size: 1rem;
+        transition: .5s;
+    }
+    & label{
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 10px;
+        pointer-events: none;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, .25);
+        text-transform: uppercase;
+        transition: .5s;
+    }
+    & input:valid ~ label,
+    & input:focus ~ label{
+        color: #00dfc4;
+        transform: translateX(10px) translateY(-7px);
+        font-size: .65rem;
+        padding: 0 10px;
+        background: #1d2b3a;
+        border-left: solid 1px #00dfc4;
+        border-right: solid 1px #00dfc4;
+        letter-spacing: .2rem;
+    }
+    & input:valid,
+    & input:focus{
+        border: solid 1px #00dfc4;
+    }
+}
+
+/* ── Animations ──────────────────────────────────── */
+@keyframes labelDrop {
+    from{ 
+        opacity: 0; transform: translate(-50%, -70%); 
+    }
+    to{ 
+        opacity: 1; transform: translate(-50%, -50%); 
+    }
+}
+
+@keyframes fadeUp {
+    from{ 
+        opacity: 0; transform: translateY(10px); 
+    }
+    to{ 
+        opacity: 1; transform: translateY(0); 
+    }
+}
+
+@keyframes cardUnlock {
+    0%{ 
+        border-color: rgba(255,255,255,.18);
+        box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset, 
+            0 4px 20px rgba(0,0,0,.4);
+    }
+    40%{
+        border-color: #00dfc4;
+        box-shadow: 0 0 0 1px rgba(0,223,196,.08) inset, 
+            0 0 28px rgba(0,223,196,.18), 0 8px 40px rgba(0,0,0,.55);
+    }
+    100%{
+        border-color: var(--border);
+        box-shadow: 0 0 0 1px rgba(255,255,255,.04) inset, 
+            0 8px 40px rgba(0,0,0,.55);
+    }
+}
+
+@keyframes labelPop {
+    0%{ 
+        transform: translate(-50%, -50%) scale(1);    
+        color: var(--text-muted); 
+    }
+    40%{ 
+        transform: translate(-50%, -50%) scale(1.12); 
+        color: #00dfc4; 
+    }
+    100%{ 
+        transform: translate(-50%, -50%) scale(1);    
+        color: var(--accent);
+    }
+}
+
+@keyframes fieldsReveal {
+    from{ 
+        opacity: 0; transform: translateY(-12px); 
+    }
+    to{ 
+        opacity: 1; transform: translateY(0); 
+    }
+}
+
+/* ------------------- Media Query section  -------------------*/
+/* 1. Mobile under 400vw */
+@media screen and (max-width: 400px) {
+    /* Your mobile styles here */
+    .card {
+        padding: var(--servicePaddingMobileLess400);
+        margin: var(--serviceMarginMobileLess400);
+        width: var(--serviceWidthMobileLess400);
+    }
+    .inputBoxData{
+        width: 70vw;
+        margin: 1.5rem auto;
+    }
+    
+}
+
+/* 2. Tables between 800px and 1028px (inclusive) */
+@media screen and (min-width: 800px) and (max-width: 1028px) {
+    /* Your tablet/mid-size styles here */
+
+}
+
+/* 3. Everything above 1028px */
+@media screen and (min-width: 1028.01px) { 
+    /* Your desktop/large screen styles here */
+
+}
+
+</style>
+
+<script>
+// ─────────────────────────────────────────────────────────────────
+// UserBlock — Auto-save & session variable
+//
+// Behaviour:
+//   1. Listens for `input` events on all three fields.
+//   2. Once first-name, last-name, and a valid email are all filled,
+//      it waits 600 ms of inactivity, then:
+//        a) POSTs { firstName, lastName, email } to POST /api/users
+//           which inserts the row into the `users` table.
+//        b) Writes the same data to sessionStorage under the key
+//           "cosmoscarrier"  →  { firstName, lastName, email }
+//   3. A de-dupe guard prevents re-sending the exact same values.
+// ─────────────────────────────────────────────────────────────────
+ 
+const _fnInput    = document.getElementById('first-name');
+const _lnInput    = document.getElementById('last-name');
+const _emInput    = document.getElementById('email');
+ 
+let   _saveTimer  = null;
+let   _savedKey   = '';         // prevents duplicate requests
+ 
+/** True when every field is non-empty and email is well-formed. */
+function _allFilled() {
+    const fn = _fnInput.value.trim();
+    const ln = _lnInput.value.trim();
+    const em = _emInput.value.trim();
+    return fn !== '' && ln !== '' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em);
+}
+ 
+/** Saves to DB and to sessionStorage. */
+async function _saveUser() {
+    const firstName = _fnInput.value.trim();
+    const lastName  = _lnInput.value.trim();
+    const email     = _emInput.value.trim();
+ 
+    // Skip if nothing changed since the last successful save
+    const key = `${firstName}|${lastName}|${email}`;
+    if (key === _savedKey) return;
+ 
+    // ── 1. Write sessionStorage variable "cosmoscarrier" ──────────
+    const cosmoscarrier = { firstName, lastName, email };
+    sessionStorage.setItem('cosmoscarrier', JSON.stringify(cosmoscarrier));
+    console.log('[UserBlock] cosmoscarrier set:', cosmoscarrier);
+ 
+    // ── 2. Persist to the users table via the API ──────────────────
+    try {
+        const res = await fetch('http://localhost:3000/api/users', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ firstName, lastName, email }),
+        });
+ 
+        const data = await res.json();
+ 
+        if (res.ok) {
+            _savedKey = key;
+            console.log('[UserBlock] User saved to DB:', data);
+        } else if (res.status === 409) {
+            // Email already exists — still mark as "saved" so we stop retrying
+            _savedKey = key;
+            console.log('[UserBlock] Email already in users table — skipping insert.');
+        } else {
+            console.warn('[UserBlock] Server error:', data.error);
+        }
+    } catch (err) {
+        console.error('[UserBlock] Network error:', err);
+    }
+}
+ 
+/** Debounced input handler — waits 600 ms after the user stops typing. */
+function _onInput() {
+    clearTimeout(_saveTimer);
+    if (!_allFilled()) return;
+    _saveTimer = setTimeout(_saveUser, 600);
+}
+ 
+_fnInput.addEventListener('input', _onInput);
+_lnInput.addEventListener('input', _onInput);
+_emInput.addEventListener('input', _onInput);
+</script>

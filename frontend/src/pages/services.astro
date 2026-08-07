@@ -1,0 +1,262 @@
+---
+import Layout from '../layouts/Layout.astro';
+import UserBlock from '../components/UserBlock.astro';
+import DestinationBlock from '../components/DestinationBlock.astro';
+import PayloadBlock from '../components/PayloadBlock.astro';
+import PreSend from '../components/PreSend.astro';
+const Name = "Stellarwaves-5";
+
+---
+<Layout title={Name}>
+    <UserBlock/>
+    <DestinationBlock/>
+    <PayloadBlock/>
+    <PreSend/>
+    <br><br><br><br><br>
+</Layout>
+
+<!-- ── Validation Modal ─────────────────────────────────────────────────────
+     Placed here so it's outside all section stacking contexts and always
+     renders on top. Controlled entirely by the script below.
+────────────────────────────────────────────────────────────────────────── -->
+<div id="sw-modal-overlay" aria-modal="true" role="dialog" aria-labelledby="sw-modal-title" hidden>
+    <div id="sw-modal-box">
+        <div id="sw-modal-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2.5"/>
+                <line x1="24" y1="14" x2="24" y2="27" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="24" cy="34" r="2.2" fill="currentColor"/>
+            </svg>
+        </div>
+        <h2 id="sw-modal-title">Mission Incomplete</h2>
+        <p id="sw-modal-body">Please complete all required fields before proceeding.</p>
+        <ul id="sw-modal-issues"></ul>
+        <button id="sw-modal-close" autofocus>Got it</button>
+    </div>
+</div>
+
+<style is:global>
+    body {
+        background: center / 100% 100% no-repeat url('../assets/images/background/sky01.webp');
+    }
+
+    /* ── Validation Modal ───────────────────────────────────────── */
+    #sw-modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.72);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        animation: swOverlayIn 0.25s ease both;
+    }
+
+    #sw-modal-overlay[hidden] {
+        display: none;
+    }
+
+    #sw-modal-box {
+        position: relative;
+        background: linear-gradient(160deg, #0d1b2a 0%, #112236 100%);
+        border: 1px solid rgba(61, 142, 240, 0.35);
+        border-radius: 16px;
+        padding: 2.4rem 2.8rem 2rem;
+        max-width: 420px;
+        width: 90vw;
+        text-align: center;
+        box-shadow:
+            0 0 0 1px rgba(255,255,255,.05) inset,
+            0 24px 60px rgba(0,0,0,.7),
+            0 0 40px rgba(61,142,240,.08);
+        animation: swBoxIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    #sw-modal-icon {
+        width: 52px;
+        height: 52px;
+        margin: 0 auto 1.1rem;
+        color: #f59e0b;
+    }
+
+    #sw-modal-icon svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    #sw-modal-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #fff;
+        margin: 0 0 0.6rem;
+    }
+
+    #sw-modal-body {
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.6);
+        margin: 0 0 1rem;
+        line-height: 1.6;
+    }
+
+    #sw-modal-issues {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.6rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        text-align: left;
+    }
+
+    #sw-modal-issues li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.55rem;
+        font-size: 0.88rem;
+        color: rgba(255,255,255,0.85);
+        background: rgba(245, 158, 11, 0.08);
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        border-radius: 8px;
+        padding: 0.5rem 0.75rem;
+        line-height: 1.45;
+    }
+
+    #sw-modal-issues li::before {
+        content: '⚠';
+        color: #f59e0b;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    #sw-modal-close {
+        display: inline-block;
+        padding: 0.65rem 2.2rem;
+        background: linear-gradient(135deg, #1e4fad, #3d8ef0);
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 4px 18px rgba(61,142,240,.35);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    #sw-modal-close:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 24px rgba(61,142,240,.5);
+    }
+
+    #sw-modal-close:active {
+        transform: translateY(0);
+    }
+
+    @keyframes swOverlayIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+
+    @keyframes swBoxIn {
+        from { opacity: 0; transform: translateY(18px) scale(0.97); }
+        to   { opacity: 1; transform: translateY(0)    scale(1);    }
+    }
+</style>
+
+<script>
+// =============================================================================
+// services.astro — Validation-on-submit orchestrator
+//
+// All four blocks are visible and interactive on load.
+// When #proceed-to-payment is clicked:
+//   1. Collect which conditions are NOT met.
+//   2. If any → show modal listing the issues; block navigation.
+//   3. If all met → allow the <a> to navigate to /payment.
+// =============================================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // ── Element refs ─────────────────────────────────────────────────────────
+    const fnInput          = document.getElementById('first-name');
+    const lnInput          = document.getElementById('last-name');
+    const emInput          = document.getElementById('email');
+    const destSelect       = document.getElementById('destinationSelect');
+    const payloadCheckboxes = [
+        document.getElementById('Text1'),
+        document.getElementById('Picture1'),
+        document.getElementById('Audio1'),
+        document.getElementById('Video1'),
+    ].filter(Boolean);
+
+    const paymentLink  = document.getElementById('proceed-to-payment');
+    const overlay      = document.getElementById('sw-modal-overlay');
+    const issuesList   = document.getElementById('sw-modal-issues');
+    const closeBtn     = document.getElementById('sw-modal-close');
+
+    // ── Validators ───────────────────────────────────────────────────────────
+    function validEmail(v) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+    }
+
+    function collectIssues() {
+        const issues = [];
+
+        const fn = fnInput?.value.trim() ?? '';
+        const ln = lnInput?.value.trim() ?? '';
+        const em = emInput?.value.trim()  ?? '';
+
+        if (!fn)              issues.push('First name is required.');
+        if (!ln)              issues.push('Last name is required.');
+        if (!validEmail(em))  issues.push('A valid email address is required.');
+        if (!destSelect?.value) issues.push('Please select a destination.');
+        if (!payloadCheckboxes.some(cb => cb.checked)) issues.push('Select at least one payload option (Text, Picture, Audio, or Video).');
+
+        return issues;
+    }
+
+    // ── Modal helpers ─────────────────────────────────────────────────────────
+    function showModal(issues) {
+        issuesList.innerHTML = issues
+            .map(msg => `<li>${msg}</li>`)
+            .join('');
+        overlay.removeAttribute('hidden');
+        closeBtn.focus();
+    }
+
+    function hideModal() {
+        overlay.setAttribute('hidden', '');
+    }
+
+    // ── Intercept payment link click ──────────────────────────────────────────
+    if (paymentLink) {
+        paymentLink.addEventListener('click', (e) => {
+            const issues = collectIssues();
+            if (issues.length > 0) {
+                e.preventDefault();   // block navigation
+                showModal(issues);
+            }
+            // If issues.length === 0, the default <a href> navigation proceeds normally
+        });
+    }
+
+    // ── Close modal ───────────────────────────────────────────────────────────
+    closeBtn?.addEventListener('click', hideModal);
+
+    // Close on overlay backdrop click
+    overlay?.addEventListener('click', (e) => {
+        if (e.target === overlay) hideModal();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !overlay.hasAttribute('hidden')) hideModal();
+    });
+
+    console.log('[services] validation-on-submit ready');
+});
+</script>

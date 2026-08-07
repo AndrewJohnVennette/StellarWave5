@@ -1,0 +1,92 @@
+---
+
+---
+
+<section class="stock-ticker">
+    <article>
+        <p>
+            <strong>Tommy:</strong> Today I left our memory orbiting forever. 
+            <strong>Hellen:</strong> Our love is now part of the cosmos. 
+            <strong>Mom:</strong> I sent your name to the sky. May the universe watch over you for me.
+            <strong>My love Lindsey:</strong> I spoke to Aries so it may give you courage when you need it. 
+            <strong>Dear Paul:</strong> I sent a beam to Leo, so your light never goes out. 
+            <strong>Dear Lindsey:</strong> I sent my message and it is already traveling toward Gemini, so your two worlds may find balance.
+            <strong>Today I wrote something I want the universe to remember:</strong> I love you, Rafael.
+            <strong>Dear Lindsey:</strong> My wish no longer belongs to me: now it belongs to the cosmos.
+            <strong>Maggie, my love:</strong> This "I love you" will keep traveling when we are no longer here.
+            <strong>Nancy:</strong> I love you to infinity. May this phrase become a bright spot in the night.
+            <strong>Raul:</strong> I sent a message to space... because you are one of my favorite people. 
+            <strong>Cinthy:</strong> I left a greeting up there, so our friendship never fades.
+            <strong>My beloved Elizabeth:</strong> I love you like I’ve never loved anyone; I want the universe to keep this message.
+            <strong>I sent something I want to last longer than my own story, and it is my love for you, Charlie:</strong> Aperiam 
+            <strong>This message is so that something lasts longer than my story. John:</strong> Aperiam  
+            <strong>Our friendship already has its own point of light, dear Sophie:</strong> Aperiam 
+        </p>
+    </article>
+    <article aria-hidden="true">
+        <p>
+            <strong>Tommy:</strong> Today I left our memory orbiting forever. 
+            <strong>Hellen:</strong> Our love is now part of the cosmos. 
+            <strong>Mom:</strong> I sent your name to the sky. May the universe watch over you for me.
+            <strong>My love Lindsey:</strong> I spoke to Aries so it may give you courage when you need it. 
+            <strong>Dear Paul:</strong> I sent a beam to Leo, so your light never goes out. 
+            <strong>Dear Lindsey:</strong> I sent my message and it is already traveling toward Gemini, so your two worlds may find balance.
+            <strong>Today I wrote something I want the universe to remember:</strong> I love you, Rafael.
+            <strong>Dear Lindsey:</strong> My wish no longer belongs to me: now it belongs to the cosmos.
+            <strong>Maggie, my love:</strong> This "I love you" will keep traveling when we are no longer here.
+            <strong>Nancy:</strong> I love you to infinity. May this phrase become a bright spot in the night.
+            <strong>Raul:</strong> I sent a message to space... because you are one of my favorite people. 
+            <strong>Cinthy:</strong> I left a greeting up there, so our friendship never fades.
+            <strong>My beloved Elizabeth:</strong> I love you like I’ve never loved anyone; I want the universe to keep this message.
+            <strong>I sent something I want to last longer than my own story, and it is my love for you, Charlie:</strong> Aperiam 
+            <strong>This message is so that something lasts longer than my story. John:</strong> Aperiam  
+            <strong>Our friendship already has its own point of light, dear Sophie:</strong> Aperiam
+        </p>
+    </article>
+</section>
+
+    <style>
+:root{
+    --stock-tickerGap: 20px;
+    --stock-tickerScrollSpeed: 70s;
+}
+.stock-ticker {
+    font-size: 15px;
+    padding-block: 8px;
+    border-block: 1px solid rgb(81, 84, 90);
+    overflow: hidden;
+    user-select: none;
+    display: flex;
+    gap: var(--stock-tickerGap);
+    mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 10% 90%,
+        transparent
+    );
+    & > *{
+        list-style: none;
+        flex-shrink: 0;
+        min-width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--stock-tickerGap);
+        animation: scroll var(--stock-tickerScrollSpeed) linear infinite;
+        strong{
+            color: red;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+    }
+    &:hover > *{
+        animation-play-state: paused;
+    }
+}
+@keyframes scroll {
+    to {
+        transform: translateX(calc(-100% - var(--stock-tickerGap)));
+    }
+}
+
+    </style>

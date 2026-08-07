@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+import InfiniteSlider from '../components/InfiniteSlider.astro';
+import StockTicker from '../components/StockTicker.astro';
+import Carousel from '../components/Carousel.astro';
+import SeeMoreInfo from '../components/SeeMoreInfo.astro';
+const { services = "/services"} = Astro.props;
+
+import mainImage04 from '../assets/images/background/04star-bottle-1.webp';
+
+
+
+const Name = "Stellarwaves-5";
+let TopColum2 = "Can I really send a message out to infinity?"
+let TopColum3 = "why even send a message into space?"
+---
+<Layout title={Name}>
+    <SeeMoreInfo titleColum2 = {TopColum2}, titleColum3 = {TopColum3}>
+        <p slot="column2">
+            Not only can you blast your message toward infinity, but you can share your whole story way beyond time itself. Drop your letters that cross entire galaxies, fire off words straight to Eternity, turn your thoughts into a literal time capsule drifting forever.  Send a message to an eternal love. A shoutout to someone who’s no longer by your side.  Picture this: a thousand years from now, some random soul stumbles across your words floating among the stars.   Your heart, encoded in light, out there vibing eternally. Just hit send and let it soar.
+            <a class="blink-02" href={services}>To send your Message, just click here.</a>
+            Publish your own space-time capsule.  This site doesn’t just send words into the void:
+            it sends memories, dreams, goodbyes, hopes.  Your message becomes part of a huge collection that captures
+            who we are, what we feel, what we wish for.  Share your thoughts with the entire universe.   Drop your heart out there—let it float forever.
+            Let your story cross galaxies.  Your message deserves a spot in the deep sky.
+            Your memories, your dreams—they can travel way beyond.
+            Make them part of the heavens.
+            Let your words punch through time and space.
+            Leave your mark on the vastness.
+            Leave your mark for eternity.   How do I make my words last forever?
+            It’s honestly super simple.
+        </p>
+
+        <p slot="column3">
+            We’ve always been staring up at the sky like “what’s the deal up there?”
+            Now, with a splash of laser tech and a ton of good vibes, you can straight-up shoot your ideas, your emotions, or whatever random thing pops into your head directly into the universe.
+            This page is your VIP pass to jump into this insane cosmic adventure.
+            Your message is gonna blast off like a beam of light, slice through the sky, and just keep floating out there… who even knows how far it’ll go?   Interstellar messaging isn’t just sci-fi fantasy anymore.
+            With crazy-accurate laser tech, we can now send thoughts, feelings, and data way past Earth’s atmosphere—like, actually out there.  Ever since we first looked up in total awe, we’ve been chasing answers among the stars.
+            Today we get to flip the script: thanks to laser light, we’re the ones sending our own words out into the cosmos.
+            This page is straight-up inviting you to join the journey: your message punches through the atmosphere, streaks like a flash into the unknown, and leaves a glowing trail shining forever in the infinite black.   Ready to make your mark on eternity? Just click and let it fly.
+        </p>
+    </SeeMoreInfo>
+</Layout>
+<style>
+    body{
+        /* background-image: url(../assets/images/background/star-bottle-4-blu.webp); 
+        
+       planet_9_art_1_1400 
+        
+        */
+        background: center / 100% 100% no-repeat url(../assets/images/background/new/planet_9_art_1_1400.webp);
+    }
+</style>
+
+

@@ -1,0 +1,220 @@
+---
+const { titleColum1 = "Sending your message is easy:" } = Astro.props;
+const { titleColum2 } = Astro.props;
+const { titleColum3 } = Astro.props;
+---
+<main id="custom-layout-wrapper">
+    <section class="grid-container">
+        <article class="column">
+            <h2>{titleColum1}</h2>
+            <ol>
+                <li>Write whatever you want to share</li>
+                <li>We encode it and turn it into a light pulse.</li>
+                <li>We beam it from our Earth station out into deep space.</li>
+                <li>Each message is logged in our digital capsule — you can check exactly when and in which direction it was sent. </li>
+                <li>We use state-of-the-art technology to make sure your light travels the greatest possible distance.</li>
+                <li>We’ll provide you with confirmation that we successfully transmitted what you sent us.</li>
+            </ol>
+        </article>
+        <article class="column">
+            <h2>{titleColum2}</h2>
+            <slot name="column2" />
+        </article>
+        <article class="column">
+            <h2>{titleColum3}</h2>
+            <slot name="column3" />
+        </article>
+    </section>
+</main>
+
+<style>
+    #custom-layout-wrapper {
+        /* font-family: 'Arial Bold', sans-serif; */
+        /* font-family: Poppins, Dancing, sans-serif;; */
+        margin: 3rem 0 0 0;
+        padding: 7vh 3vw 1rem 3vw;
+        color: #fff;
+        & .grid-container {
+            display: grid;
+            /* Creates 3 equal columns */
+            grid-template-columns: repeat(3, 1fr);
+            /* Gap between rows and columns */
+            gap: 3vw;
+            background-color: transparent;  
+            padding: 20px;
+            border-radius: 8px;
+            & .column {
+                background: hsl(0 0% 100% / .07);
+                backdrop-filter: blur(2.2rem);
+                padding: 20px;
+                border: 1px solid #b0bce5;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                padding: 0;
+                /* width: 30%; */
+                & h2{
+                    background-color: rgba(92, 54, 229, 0.1);
+                    backdrop-filter: blur(2.2rem);
+                    height: 20%;
+                    padding: 2vh 0 0 0;
+                    width: 100%;
+                    font-size: 1.7rem;
+                    height: 173px;
+                    min-height: 7rem;
+                    text-align: center;
+                    margin: 0 0 auto 0;
+                    display: flex;
+                    align-items: center;      /* Vertical center */
+                    justify-content: center;
+                    color: #fff;
+                    text-transform: uppercase;
+                    border-radius: 10px 10px 0 0;
+                }
+
+                & :global(p){
+                    color: #fff;
+                    /* margin: 25px 55px; */
+                    font-size: 1.55rem;
+                    & a{
+                        display: block;
+                        text-decoration: none;
+                        text-align: center;
+                        margin: 7px 0;
+                    }
+                }
+
+                & ol{
+                    /* margin: 25px 55px;; */
+                    & li{
+                        font-size: 1.65rem;
+                        margin: 0px 0px 7vh 0px;
+                    }
+                    & li::marker{
+                        font-size: 1.7rem;
+                        font-weight: 900;
+                        color: red;
+                    }
+                }
+                & p, & ol{
+                    line-height: 1.25;
+                    margin: 7vh 2vw;
+                }
+            }
+        }
+    }
+
+    .blink-01{
+        /* animation: blinkType01 1s steps(1, end) infinite ; */
+        animation: blinkType00 2s infinite ;
+    }
+    .blink-02{
+        /* animation: blinkType01 1s steps(1, end) infinite ; */
+        animation: blinkType00 1.9s infinite ;
+    }
+    .blink-03{
+        /* animation: blinkType01 1s steps(1, end) infinite ; */
+        animation: blinkType00 1s infinite ;
+    }
+
+    @keyframes blinkType00 {
+        0%   { border-color: #fff; }
+        50%  { border-color: rgba(14, 219, 86, .9); }
+        100% { border-color: #fff; }
+    }
+
+    @keyframes blinkType01 {
+        0%{
+            opacity: 1;
+        }
+        50%{
+            opacity: 0;
+        }
+        100%{
+            opacity: 1;
+        }
+    }
+    @keyframes blinkType02 {
+        0%{
+            opacity: 1;
+            color: rgb(255, 255, 255);
+        }
+        
+        50%{
+            opacity: 1;
+            color: rgb(9, 236, 77);
+        }
+        
+        100%{
+            opacity: 0;
+            color: rgb(255, 255, 255);
+        }
+    }
+    @keyframes blinkType03 {
+        0%{
+            opacity: 1;
+        }
+        50%{
+            opacity: 0;transform: scale(2);
+        }
+        51%{
+            opacity: 0;
+            transform: scale(0);
+        }
+        100%{
+            opacity: 1;
+        }
+    }
+
+
+
+
+    /* Responsive adjustment: stack columns on small screens */
+    @media (max-width: 768px) {
+        #custom-layout-wrapper
+        { 
+            & .grid-container 
+            {
+                grid-template-columns: 1fr;
+                & .column 
+                {
+                    background: hsl(0 0% 100% / .07);
+                    backdrop-filter: blur(2.2rem);
+                    padding: 20px;
+                    border: 1px solid #b0bce5;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                    padding: 0;
+                    /* width: 30%; */
+                    & h2{
+                        font-size: 1.1rem;
+                    }
+                    
+                    & :global(p){
+                    /* color: #fff; */
+                    margin: 5vh 5.3vw;
+                    font-size: .75rem;
+                    & a{
+                        display: block;
+                        text-decoration: none;
+                        text-align: center;
+                        margin: 7px 0;
+                    }
+        }
+                    & ol{
+                        margin: 20px 5px;;
+                        & li{
+                            font-size: .75rem;
+                            margin: 0px 5.3vw 5vh 5.1vw;
+                        }
+                        & li::marker{
+                            font-size: .9rem;
+                            font-weight: 900;
+                            color: red;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+</style>

@@ -1,0 +1,23 @@
+{
+  "name": "frontend",
+  "version": "0.0.1",
+  "description": "```sh npm create astro@latest -- --template basics ```",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "devStart": "astro dev",
+    "build": "astro build",
+    "start": "node dist/server/entry.mjs",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/node": "^11.1.0",
+    "astro": "^7.2.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

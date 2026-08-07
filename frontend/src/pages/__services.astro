@@ -1,0 +1,77 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const services = [
+  { name: 'Basic Plan',    price: 2900,  description: 'Perfect for individuals' },
+  { name: 'Pro Plan',      price: 7900,  description: 'Great for small teams' },
+  { name: 'Enterprise',    price: 19900, description: 'Unlimited everything' },
+];
+
+const success   = Astro.url.searchParams.get('success');
+const cancelled = Astro.url.searchParams.get('cancelled');
+---
+<Layout title="Services">
+  <h1>Our Services</h1>
+
+  {success   && <p style="color:green; margin:1rem 0">✓ Payment successful! Thank you.</p>}
+  {cancelled && <p style="color:red;   margin:1rem 0">✗ Payment cancelled.</p>}
+
+  <div style="display: grid; gap: 1.5rem; margin-top: 1.5rem;">
+    {services.map(svc => (
+      <div style="
+        background: white; border: 1px solid #ddd;
+        border-radius: 12px; padding: 1.5rem;
+        display: flex; justify-content: space-between; align-items: center;
+      ">
+        <div>
+          <h2 style="font-size: 1.2rem;">{svc.name}</h2>
+          <p style="color: #666; margin-top: 0.25rem;">{svc.description}</p>
+          <p style="font-size: 1.4rem; font-weight: 700; margin-top: 0.5rem;">
+            ${(svc.price / 100).toFixed(2)}
+          </p>
+        </div>
+        <button
+          class="pay-btn"
+          data-service={svc.name}
+          data-price={svc.price}
+          style="
+            background: #635bff; color: white;
+            border: none; padding: 0.75rem 1.5rem;
+            border-radius: 8px; cursor: pointer; font-weight: 600;
+          "
+        >
+          Pay with Stripe
+        </button>
+      </div>
+    ))}
+  </div>
+
+  <script>
+    document.querySelectorAll('.pay-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const service = btn.dataset.service;
+        const price   = btn.dataset.price;
+        const email   = prompt('Enter your email to continue:');
+        if (!email) return;
+
+        btn.textContent = 'Redirecting...';
+        btn.disabled = true;
+
+        const res  = await fetch('http://localhost:3000/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ service, price: Number(price), email }),
+        });
+        const data = await res.json();
+
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert('Error: ' + data.error);
+          btn.textContent = 'Pay with Stripe';
+          btn.disabled = false;
+        }
+      });
+    });
+  </script>
+</Layout>
