@@ -1,0 +1,284 @@
+---
+import Layout from '../layouts/Layout.astro';
+import planetBottle from '../assets/images/webp-images/planet-2-blu-starbottle.webp';
+import laserShip from '../assets/images/webp-images/laser.webp';
+import starBottle from '../assets/images/newsImages/star-bottle-7B.webp';
+import saturnFarewell from '../assets/images/background/new/saturn-farewell.webp';
+
+const Name = "Stellarwave-5";
+const PageTitle = "Stellarwave-5 — Info";
+---
+
+<Layout title={PageTitle}>
+    <section class="info-hero">
+        <h1 class="info-hero__title">
+            <span aria-hidden="true">Stellarwave</span>
+            <span class="info-hero__accent">-5</span>
+        </h1>
+        <p class="info-hero__tagline">
+            NUESTRA COMPAÑÍA
+        </p>
+        <p class="info-hero__lead">
+            Detrás de esta experiencia simple hay un equipo que combina ciencia, tecnología y humanidad. Contamos 
+            con un <b>ingeniero que trabajó en la NASA</b>, cuya experiencia real en proyectos espaciales nos permite 
+            trabajar con precisión, seguridad en cada envío. Junto a él, un <b>Life Coach especializado en 
+            Neurociencia</b> aporta la mirada emocional mostrando cómo un mensaje al universo puede convertirse en un 
+            acto de liberación, de amor, de cierre o de esperanza. Y nuestro <b>ingeniero en informática</b> se encarga 
+            de que todo funcione de manera accesible, rápida y clara, para que cualquier persona —sin 
+            conocimientos técnicos— pueda participar.
+        </p>
+    </section>
+
+    <section class="info-block">
+        <h2>NUESTRA MISIÓN</h2>
+        <p>
+            Nuestra misión es acercar el universo a la gente, para que cualquiera pueda enviar un mensaje hacia el cielo, sin complicaciones y con mucha emoción.
+        </p>
+        <p>
+            Queremos que cualquier persona pueda sentir que el cielo está un poquito más cerca y que a través de un haz de luz, y desde cualquier lugar, puede enviar su mensaje de una manera simple y emocionante.
+        </p>
+    </section>
+
+    <section class="info-block">
+        <h2>NUESTRA VISIÓN</h2>
+        <p>
+            Nuestra visión es convertir el cielo en un lugar cercano, donde cualquier persona pueda enviar un mensaje que trascienda.
+        </p>
+        <p>
+            Soñamos con un mundo donde hablarle al universo sea tan natural como enviar un mensaje a alguien que queremos.
+        </p>
+    </section>
+
+    <section class="info-feature">
+        <article class="info-feature__card">
+            <img src={planetBottle.src} alt="Planet featured image" class="info-feature__img" />
+            <label>COMO FUNCIONA</label>
+            <p>
+                Detrás de esta experiencia simple hay un proceso fascinante:
+                <b>Utilizamos Código binario</b>: el lenguaje universal adoptado por NASA y SETI desde 1984.
+                <b>Haz de luz</b>: la forma más rápida de enviar información al espacio.
+                <b>Dirección del envío</b>: cada lanzamiento se orienta hacia regiones del cielo donde consideramos que el mensaje pueda viajar sin obstáculos.
+                <b>Distancia</b>: tu mensaje puede recorrer cientos, miles, millones y eventualmente billones de kilómetros.
+
+            </p>
+        </article>
+        <article class="info-feature__card">
+            <img src={laserShip.src} alt="Transmission beam featured image" class="info-feature__img" />
+            <label>PORQUE HACERLO</label>
+            <p>
+                Porque enviar un mensaje al universo es un gesto que te conecta con algo más grande. Es una forma de dejar una huella, de decir “estuve aquí”, de compartir lo que sentís con un cielo que siempre está escuchando.
+                Es un acto íntimo, emocional y eterno. Un regalo para vos, para alguien que amás, o para el futuro.
+            </p>
+        </article>
+        <article class="info-feature__card">
+            <img src={starBottle.src} alt="Constellation bottle featured image" class="info-feature__img" />
+            <label>QUÉ PUEDES ENVIAR</label>
+            <p>
+                <p>
+                    Tu mensaje puede ser lo que vos quieras:
+                    <br>
+                    Un mensaje de amor.
+                    <br>
+                    Un deseo para el futuro.
+                    <br>
+                    Un pensamiento para tu signo del zodiaco.
+                </p>
+            </p>
+        </article>
+    </section>
+
+    <section class="info-block">
+        <h2>SOBRE NOSOTROS</h2>
+        <p>
+            StellarWave nació de una idea simple: <b>hacer que cualquier persona pueda enviar su voz al universo.</b>
+            Detrás de esta experiencia hay un equipo pequeño, humano y apasionado, formado por profesionales que creen que el cielo no es solo para mirar, sino también para hablarle.
+            Entre nuestros miembros contamos con:
+        </p>
+        <p>
+            <b>Un ingeniero que trabajó en la NASA</b>, con experiencia real en proyectos espaciales y comunicaciones científicas. Su conocimiento nos permite transformar una idea poética en un proceso seguro, preciso y técnicamente sólido.
+            <b>Un Life Coach especializado en Neurociencia</b>, que aporta la mirada humana: cómo nos conectamos con nuestras emociones, por qué necesitamos dejar huellas, cómo un mensaje al universo puede convertirse en un acto de sanación, amor o trascendencia.
+            <b>Un ingeniero en informática</b>, encargado de convertir tus palabras en código binario, proteger cada mensaje y asegurar que la tecnología funcione de manera simple, rápida y accesible para todos.
+            Somos un equipo que combina ciencia, tecnología y emoción. Creemos que el universo no es un lugar lejano, sino un espacio abierto donde cada persona puede enviar un pensamiento, un deseo, un recuerdo o un mensaje de amor.
+            Creamos StellarWave para que vos, desde donde estés, puedas sentir que tus palabras pueden viajar más lejos de lo que imaginas.
+            Porque el cielo no es solo un paisaje: <b>es un destino.</b>
+        </p>
+        <div class="info-banner">
+            <img src={saturnFarewell.src} alt="Saturn featured image" class="info-banner__img" />
+            <div class="info-banner__text">
+                <h3>MAS ALLA DEL HORIZONTE</h3>
+                <p>
+                    Hay un punto en el cielo donde la mirada humana deja de alcanzar. Un límite silencioso, invisible, donde termina lo que conocemos y comienza,lo que apenas intuimos. Ese lugar —más allá del horizonte— es el destino de cada mensaje que enviamos. Creemos que el universo no es un territorio reservado para científicos, telescopios o laboratorios. Creemos que el cielo pertenece a todos. A quienes aman, a quienes sueñan, a quienes buscan dejar una huella, a quienes desean que sus palabras viajen más lejos de lo que sus pasos permiten. Por eso creamos esta plataforma: para abrir una puerta entre la vida cotidiana y el cosmos, y permitir que cualquier persona pueda enviar su voz hacia el cielo. Este sitio existe, para recordarte que tu voz importa. Que tus palabras pueden cruzar fronteras invisibles. Que el universo, inmenso y silencioso, también puede ser un lugar donde depositar lo que llevás dentro.
+                </p>
+                <p>
+                    Más allá del horizonte, tu mensaje sigue viajando. Y eso, para nosotros, es magia.
+                </p>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style is:global>
+    body {
+        background: center / 100% 100% no-repeat url('../assets/images/background/new/w49b_lg-1.webp');
+    }
+</style>
+
+<style>
+    .info-hero {
+        margin-top: 18vh;
+        padding: 3rem 6vw 2rem;
+        text-align: center;
+    }
+    .info-hero__title {
+        font-size: clamp(2.6rem, 8vw, 4.6rem);
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        margin: 0 0 .5rem;
+        color: var(--text);
+        font-weight: 400;
+    }
+    .info-hero__accent {
+        color: var(--accent);
+    }
+    .info-hero__tagline {
+        font-size: clamp(.85rem, 2.4vw, 1.05rem);
+        letter-spacing: .45em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 1.4rem;
+    }
+    .info-hero__lead {
+        max-width: 56ch;
+        margin: 0 auto;
+        color: var(--text);
+        font-size: clamp(.85rem, 2.4vw, 1rem);
+        line-height: 1.8;
+        letter-spacing: .02em;
+        font-weight: 300;
+    }
+
+    .info-block {
+        width: min(60rem, 90vw);
+        margin: 3.5rem auto;
+        padding: 2.2rem 2.4rem;
+        border: var(--border-w) solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        backdrop-filter: blur(1rem);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, .55);
+        box-sizing: border-box;
+    }
+    .info-block h2 {
+        position: relative;
+        color: var(--accent);
+        font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: .22em;
+        text-transform: uppercase;
+        margin: 0 0 1.2rem;
+        text-align: center;
+    }
+    .info-block p {
+        color: var(--text);
+        font-size: clamp(.8rem, 2.2vw, .92rem);
+        font-weight: 300;
+        line-height: 1.85;
+        letter-spacing: .01em;
+        text-align: center;
+        margin: 0 0 1rem;
+    }
+    .info-block p:last-child {
+        margin-bottom: 0;
+    }
+
+    .info-feature {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        width: min(72rem, 92vw);
+        margin: 3.5rem auto;
+    }
+    .info-feature__card {
+        position: relative;
+        border: var(--border-w) solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        backdrop-filter: blur(1rem);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, .55);
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+    .info-feature__card > label {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        background: var(--label-bg);
+        color: var(--accent);
+        padding: var(--label-pad-y) var(--label-pad-x);
+        border-radius: 30%;
+        outline: var(--border-w) solid var(--border);
+        outline-offset: 0px;
+        font-size: .72rem;
+        font-weight: 500;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+    .info-feature__img {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        display: block;
+        border-bottom: var(--border-w) solid var(--border);
+    }
+    .info-feature__card p {
+        color: var(--text);
+        font-size: clamp(.78rem, 2.2vw, .88rem);
+        font-weight: 300;
+        line-height: 1.75;
+        letter-spacing: .01em;
+        text-align: center;
+        margin: 0;
+        padding: 1.4rem 1.3rem 1.6rem;
+    }
+
+    .info-banner {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 1.6rem;
+        align-items: center;
+        margin-top: 1.6rem;
+        padding-top: 1.6rem;
+        border-top: 1px solid var(--boxBorder);
+    }
+    .info-banner__img {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        border: var(--border-w) solid var(--border);
+        border-radius: var(--radius);
+    }
+    .info-banner__text h3 {
+        color: var(--accent);
+        font-size: .9rem;
+        font-weight: 500;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        margin: 0 0 .8rem;
+        text-align: center;
+    }
+    .info-banner__text p {
+        margin-bottom: 0;
+    }
+
+    @media screen and (max-width: 768px) {
+        .info-feature {
+            grid-template-columns: 1fr;
+        }
+        .info-banner {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
