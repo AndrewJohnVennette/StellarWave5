@@ -21,7 +21,8 @@
 
 const express        = require('express');
 const Stripe         = require('stripe');
-const { db, queries } = require('../db/database');
+//TODO: delete this line const { db, queries } = require('../db/database');
+const { queries } = require('../db/database');
 
 const router = express.Router();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);   // sk_test_…
@@ -51,7 +52,8 @@ router.post('/create-intent', async (req, res) => {
 
         // Record the order as "pending" in the DB
         try {
-            queries.insertOrder.run(email, description, cents, intent.id);
+            //TODO: delete this line queries.insertOrder.run(email, description, cents, intent.id);
+            await queries.insertOrder(email, description, cents, intent.id);
         } catch (dbErr) {
             // Non-fatal — log but don't block the payment
             console.error('[DB] insertOrder failed:', dbErr.message);
@@ -81,9 +83,10 @@ router.post('/confirm', async (req, res) => {
 
         // Update DB status
         try {
-            db.prepare(
-                "UPDATE orders SET status = ? WHERE stripe_session_id = ?"
-            ).run(succeeded ? 'paid' : intent.status, paymentIntentId);
+            //TODO: delete this line db.prepare(
+            //TODO: delete this line     "UPDATE orders SET status = ? WHERE stripe_session_id = ?"
+            //TODO: delete this line ).run(succeeded ? 'paid' : intent.status, paymentIntentId);
+            await queries.updateOrderStatus(succeeded ? 'paid' : intent.status, paymentIntentId);
         } catch (dbErr) {
             console.error('[DB] update order status failed:', dbErr.message);
         }

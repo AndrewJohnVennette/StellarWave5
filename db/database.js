@@ -1,153 +1,165 @@
-const Database = require('better-sqlite3');
-const path = require('path');
+const { Pool } = require('pg');
 
-const db = new Database(path.join(__dirname, 'site.db'));
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    // Most hosted Postgres providers (Render, Supabase, Neon, etc.) require SSL.
+    // Local Postgres usually does not. Toggle via env instead of hardcoding.
+    ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
+});
 
-// Create tables on first run
-db.exec(`
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        Fname TEXT NOT NULL,
-        Lname TEXT NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
+// Postgres connections are async, so table creation + seeding can no longer
+// happen at module-load time like better-sqlite3 did. This is called once
+// from server.js before the app starts listening.
+async function initDb() {
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            "Fname" TEXT NOT NULL,
+            "Lname" TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            created_at TIMESTAMPTZ DEFAULT NOW()
+        );
 
-    CREATE TABLE IF NOT EXISTS orders (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_email TEXT,
-        service TEXT,
-        amount INTEGER,
-        stripe_session_id TEXT,
-        status TEXT DEFAULT 'pending',
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
+        CREATE TABLE IF NOT EXISTS orders (
+            id SERIAL PRIMARY KEY,
+            user_email TEXT,
+            service TEXT,
+            amount INTEGER,
+            stripe_session_id TEXT,
+            status TEXT DEFAULT 'pending',
+            created_at TIMESTAMPTZ DEFAULT NOW()
+        );
 
-    CREATE TABLE IF NOT EXISTS uploads (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        original_name TEXT,
-        stored_name TEXT,
-        size INTEGER,
-        uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
+        CREATE TABLE IF NOT EXISTS uploads (
+            id SERIAL PRIMARY KEY,
+            original_name TEXT,
+            stored_name TEXT,
+            size INTEGER,
+            uploaded_at TIMESTAMPTZ DEFAULT NOW()
+        );
 
         CREATE TABLE IF NOT EXISTS registrations (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        first_name TEXT NOT NULL,
-        last_name  TEXT NOT NULL,
-        email      TEXT NOT NULL,
-        registered_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
+            id SERIAL PRIMARY KEY,
+            first_name TEXT NOT NULL,
+            last_name  TEXT NOT NULL,
+            email      TEXT NOT NULL,
+            registered_at TIMESTAMPTZ DEFAULT NOW()
+        );
 
-    CREATE TABLE IF NOT EXISTS items (
-        itemID INTEGER PRIMARY KEY,
-        itemName TEXT NOT NULL,
-        itemWeight INTEGER,
-        itemPrice INTEGER
-    );
+        CREATE TABLE IF NOT EXISTS items (
+            "itemID" INTEGER PRIMARY KEY,
+            "itemName" TEXT NOT NULL,
+            "itemWeight" INTEGER,
+            "itemPrice" INTEGER
+        );
 
-    CREATE TABLE IF NOT EXISTS news (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        image TEXT NOT NULL,
-        article TEXT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
-`);
+        CREATE TABLE IF NOT EXISTS news (
+            id SERIAL PRIMARY KEY,
+            title TEXT NOT NULL,
+            image TEXT NOT NULL DEFAULT 'Sagittarius.webp',
+            article TEXT NOT NULL,
+            created_at TIMESTAMPTZ DEFAULT NOW()
+        );
+    `);
 
-// Seed items table with default rows (only if empty)
-const itemsCount = db.prepare('SELECT COUNT(*) AS count FROM items').get().count;
-if (itemsCount === 0) {
-    // NOTE: the `items` table (see CREATE TABLE above) only has 4 columns
-    // (itemID, itemName, itemWeight, itemPrice). The insert below used to
-    // reference itemInStock/itemImage, which don't exist on this table and
-    // threw "table items has no column named itemInStock". Trimmed to match
-    // the actual schema.
-    const insertItem = db.prepare(
-        'INSERT INTO items (itemID, itemName, itemWeight, itemPrice) VALUES (?, ?, ?, ?)'
-    );
-    const defaultItems = [
-        [8539734, 'Text', 256, 300],
-        [2226735, 'Photo', 5, 500],
-        [6684982, 'Audio', 7, 700],
-        [3626937, 'Video', 10, 900]
-    ];
-    const insertMany = db.transaction((items) => {
-        for (const item of items) insertItem.run(...item);
-    });
-    insertMany(defaultItems);
+    // Defensive migration for databases created before the DEFAULT above
+    // existed. A DEFAULT only kicks in when a column is omitted from an
+    // INSERT — it does NOT rescue code that explicitly passes NULL — so
+    // this is a safety net, not the fix. The real fix is in routes/news.js,
+    // which no longer ever passes null for `image`.
+    await pool.query(`
+        ALTER TABLE news ALTER COLUMN image SET DEFAULT 'Sagittarius.webp';
+    `);
+
+    // Seed items (only if empty)
+    const { rows: [{ count: itemsCount }] } = await pool.query('SELECT COUNT(*) AS count FROM items');
+    if (Number(itemsCount) === 0) {
+        const defaultItems = [
+            [8539734, 'Text', 256, 300],
+            [2226735, 'Photo', 5, 500],
+            [6684982, 'Audio', 7, 700],
+            [3626937, 'Video', 10, 900],
+        ];
+        for (const item of defaultItems) {
+            await pool.query(
+                'INSERT INTO items ("itemID", "itemName", "itemWeight", "itemPrice") VALUES ($1, $2, $3, $4)',
+                item
+            );
+        }
+    }
+
+    // Seed news (only if empty)
+    const { rows: [{ count: newsCount }] } = await pool.query('SELECT COUNT(*) AS count FROM news');
+    if (Number(newsCount) === 0) {
+        const defaultNews = [
+            ["News1", '05Kepler-186f.jpg', "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas consectetur sunt fugiat suscipit modi nemo! Maxime nostrum dicta placeat dolore!"],
+            ["News2", '06Luyten-b.jpeg', "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas consectetur sunt fugiat suscipit modi nemo! Maxime nostrum dicta placeat dolore!"],
+            ["News3", '04TeegardensStar.jpeg', "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas consectetur sunt fugiat suscipit modi nemo! Maxime nostrum dicta placeat dolore!"],
+            ["News4", 'Sagittarius.webp', "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas consectetur sunt fugiat suscipit modi nemo! Maxime nostrum dicta placeat dolore!"],
+        ];
+        for (const item of defaultNews) {
+            await pool.query(
+                'INSERT INTO news (title, image, article) VALUES ($1, $2, $3)',
+                item
+            );
+        }
+    }
 }
 
-// Seed news table with default rows (only if empty)
-// NOTE: this used to redeclare `const itemsCount`, which is a SyntaxError
-// ("Identifier 'itemsCount' has already been declared") since a name can't
-// be declared twice with `const` in the same scope. That crashed the entire
-// module on load. Renamed to `newsCount`.
-const newsCount = db.prepare('SELECT COUNT(*) AS count FROM news').get().count;
-if (newsCount === 0) {
-    // NOTE: dropped `created_at` from the insert. The table already defines
-    // `created_at DATETIME DEFAULT CURRENT_TIMESTAMP`, so forcing in a plain
-    // string like '10/11/2026' both overrides that default and stores a
-    // non-ISO format that won't sort/compare correctly against real
-    // timestamps. Letting the column default apply is consistent with how
-    // the `items` seed above does it.
-    const insertItem = db.prepare(
-        'INSERT INTO news (title, image, article) VALUES (?, ?, ?)'
-    );
-    const defaultItems = [
-        // NOTE: filenames corrected to match what's actually on disk in
-        // frontend/public/images/destinationBlock/ — both of these were
-        // mismatched and would have produced broken <img> tags:
-        //   '06Luyten-b.jpg'        -> actual file is '06Luyten-b.jpeg'
-        //   '04TeegardensStar.jepg' -> typo, actual file is '...jpeg'
-        ["News1", '05Kepler-186f.jpg', "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas consectetur sunt fugiat suscipit modi nemo! Maxime nostrum dicta placeat dolore!"],
-        ["News2", '06Luyten-b.jpeg', "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas consectetur sunt fugiat suscipit modi nemo! Maxime nostrum dicta placeat dolore!"],
-        ["News3", '04TeegardensStar.jpeg', "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas consectetur sunt fugiat suscipit modi nemo! Maxime nostrum dicta placeat dolore!"],
-        ["News4", 'Sagittarius.webp', "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas consectetur sunt fugiat suscipit modi nemo! Maxime nostrum dicta placeat dolore!"]
-    ];
-    const insertMany = db.transaction((news) => {
-        for (const item of news) insertItem.run(...item);
-    });
-    insertMany(defaultItems);
-}
-
-// Reusable query helpers
+// Reusable query helpers — each returns a Promise resolving to a pg
+// QueryResult ({ rows, rowCount, ... }), so every call site needs `await`
+// and to read `.rows` (or `.rows[0]`) instead of calling `.get()/.run()/.all()`.
 const queries = {
-    insertUser: db.prepare(
-        'INSERT INTO users (Fname, Lname, email) VALUES (?, ?, ?)'
-    ),
-    userEmailExists: db.prepare(
-        'SELECT id FROM users WHERE email = ?'
-    ),
-    getUser: db.prepare(
-        'SELECT * FROM users WHERE email = ?'
-    ),
-    insertOrder: db.prepare(
-        'INSERT INTO orders (user_email, service, amount, stripe_session_id) VALUES (?, ?, ?, ?)'
-    ),
-    insertUpload: db.prepare(
-        'INSERT INTO uploads (original_name, stored_name, size) VALUES (?, ?, ?)'
-    ),
-    getAllUploads: db.prepare(
-        'SELECT * FROM uploads ORDER BY uploaded_at DESC'
-    ),
-    insertRegistration: db.prepare(
-        'INSERT INTO registrations (first_name, last_name, email) VALUES (?, ?, ?)'
-    ),
-    emailExists: db.prepare(
-        'SELECT id FROM registrations WHERE email = ?'
-    ),
-    getAllItems: db.prepare(
-        'SELECT * FROM items'
-    ),
-    getItem: db.prepare(
-        'SELECT * FROM items WHERE itemID = ?'
-    ),
-    // Added: was missing entirely, so there was no way for a route to read
-    // the news table back out. Needed for GET /api/news.
-    getAllNews: db.prepare(
-        'SELECT * FROM news ORDER BY created_at DESC'
-    ),
+    insertUser: (firstName, lastName, email) =>
+        pool.query(
+            'INSERT INTO users ("Fname", "Lname", email) VALUES ($1, $2, $3) RETURNING id',
+            [firstName, lastName, email]
+        ),
+    userEmailExists: (email) =>
+        pool.query('SELECT id FROM users WHERE email = $1', [email]),
+    getUser: (email) =>
+        pool.query('SELECT * FROM users WHERE email = $1', [email]),
+    insertOrder: (email, service, amount, stripeSessionId) =>
+        pool.query(
+            'INSERT INTO orders (user_email, service, amount, stripe_session_id) VALUES ($1, $2, $3, $4)',
+            [email, service, amount, stripeSessionId]
+        ),
+    updateOrderStatus: (status, stripeSessionId) =>
+        pool.query(
+            'UPDATE orders SET status = $1 WHERE stripe_session_id = $2',
+            [status, stripeSessionId]
+        ),
+    insertUpload: (originalName, storedName, size) =>
+        pool.query(
+            'INSERT INTO uploads (original_name, stored_name, size) VALUES ($1, $2, $3)',
+            [originalName, storedName, size]
+        ),
+    getAllUploads: () =>
+        pool.query('SELECT * FROM uploads ORDER BY uploaded_at DESC'),
+    insertRegistration: (firstName, lastName, email) =>
+        pool.query(
+            'INSERT INTO registrations (first_name, last_name, email) VALUES ($1, $2, $3)',
+            [firstName, lastName, email]
+        ),
+    emailExists: (email) =>
+        pool.query('SELECT id FROM registrations WHERE email = $1', [email]),
+    getAllItems: () =>
+        pool.query('SELECT * FROM items'),
+    getItem: (itemId) =>
+        pool.query('SELECT * FROM items WHERE "itemID" = $1', [itemId]),
+    getAllNews: () =>
+        pool.query('SELECT * FROM news ORDER BY created_at DESC'),
+    getNewsById: (id) =>
+        pool.query('SELECT * FROM news WHERE id = $1', [id]),
+    deleteNews: (id) =>
+        pool.query('DELETE FROM news WHERE id = $1', [id]),
+    updateNewsImage: (id, image) =>
+        pool.query('UPDATE news SET image = $1 WHERE id = $2', [image, id]),
+    insertNews: (title, image, article) =>
+        pool.query(
+            'INSERT INTO news (title, image, article) VALUES ($1, $2, $3) RETURNING id',
+            [title, image, article]
+        ),
 };
 
-module.exports = { db, queries };
+module.exports = { pool, queries, initDb };

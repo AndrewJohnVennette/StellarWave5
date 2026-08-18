@@ -189,13 +189,16 @@ router.post('/', async (req, res) => {
   //   return res.status(400).json({ error: 'Invalid email address.' });
   // }
 
-  const existing = queries.emailExists.get(email);
-  if (existing) {
+// TODO: delete this line  const existing = queries.emailExists.get(email);
+// TODO: delete this line   if (existing) {
+  const { rows: existing } = await queries.emailExists(email);
+  if (existing.length) {  
     return res.status(409).json({ error: 'This email is already registered.' });
   }
 
   try {
-    queries.insertRegistration.run(firstName, lastName, email);
+    //TODO: delete this line queries.insertRegistration.run(firstName, lastName, email);
+    await queries.insertRegistration(firstName, lastName, email);
     // console.log("Im here!!")
   } catch (err) {
     console.log("DB bad")

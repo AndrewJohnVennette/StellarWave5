@@ -6,7 +6,8 @@ const router = express.Router();
 // POST /api/users
 // Body: { firstName, lastName, email }
 // Inserts a row into the `users` table (Fname, Lname, email).
-router.post('/', (req, res) => {
+//TODO: delete this line router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const { firstName, lastName, email } = req.body;
 
     if (!firstName || !lastName || !email) {
@@ -19,14 +20,18 @@ router.post('/', (req, res) => {
     }
 
     // Duplicate check
-    const existing = queries.userEmailExists.get(email);
-    if (existing) {
+    //TODO: delete this line const existing = queries.userEmailExists.get(email);
+    //TODO: delete this line if (existing) {
+    const { rows: existing } = await queries.userEmailExists(email);
+    if (existing.length) {
         return res.status(409).json({ error: 'Email already exists in users table.' });
     }
 
     try {
-        const result = queries.insertUser.run(firstName, lastName, email);
-        return res.status(201).json({ success: true, id: result.lastInsertRowid });
+        //TODO: delete this line const result = queries.insertUser.run(firstName, lastName, email);
+        //TODO: delete this line return res.status(201).json({ success: true, id: result.lastInsertRowid });
+        const { rows } = await queries.insertUser(firstName, lastName, email);
+        return res.status(201).json({ success: true, id: rows[0].id });
     } catch (err) {
         console.error('[DB] insertUser failed:', err.message);
         return res.status(500).json({ error: 'Database error.' });

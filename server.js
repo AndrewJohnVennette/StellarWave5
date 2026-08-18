@@ -9,6 +9,8 @@ const usersRoute    = require('./routes/users');
 const paymentRoute  = require('./routes/payment');   // ← NEW
 const newsRoute     = require('./routes/news');       // ← NEW: GET /api/news
 
+const { initDb } = require('./db/database');
+
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
@@ -44,6 +46,13 @@ app.use('/api/payment/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// News images/videos now live in images/newsImages (see routes/news.js).
+// Mounted BEFORE the general /files → uploads/ static route below so it
+// takes priority for this specific sub-path. The broader /files mount
+// still runs after as a fallback, so any files already sitting in the old
+// uploads/newsImages location (from before this change) keep working too.
+app.use('/files/newsImages', express.static(path.join(__dirname, 'images', 'newsImages')));
+
 app.use('/files', express.static(path.join(__dirname, 'uploads')));
 
 // ── Routes ─────────────────────────────────────────────────────────────────
@@ -58,6 +67,16 @@ app.get('/api/health', (req, res) => {
 });
 
 // ── Start ───────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+//TODO: delete this line app.listen(PORT, () => {
+//TODO: delete this line     console.log(`Server running at http://localhost:${PORT}`);
+//TODO: delete this line });
+initDb()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server running at http://localhost:${PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.error('[DB] Failed to initialize database:', err.message);
+        process.exit(1);
 });

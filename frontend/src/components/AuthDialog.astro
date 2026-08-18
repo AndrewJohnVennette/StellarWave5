@@ -1,0 +1,265 @@
+---
+// Login gate for the CMS editor. Client-side check against the
+// credentials injected from the page's frontmatter (env vars).
+// When valid, stores a flag in localStorage (never cookies) so the
+// editor stays unlocked across visits until logout.
+const { expectedUser, expectedPass, storageKey } = Astro.props;
+---
+
+<dialog id="auth-dialog">
+    <article class="auth-card">
+        <label>Restricted</label>
+
+        <h2>Editor Login</h2>
+        <p class="auth-hint">
+            This area is reserved for the news editor. Sign in to continue.
+        </p>
+
+        <section class="inputBoxData">
+            <input id="auth-user" type="text" autocomplete="username" placeholder=" " />
+            <label for="auth-user">Username</label>
+        </section>
+
+        <section class="inputBoxData">
+            <input id="auth-pass" type="password" autocomplete="current-password" placeholder=" " />
+            <label for="auth-pass">Password</label>
+        </section>
+
+        <button id="auth-submit" type="button">Sign In</button>
+
+        <p id="auth-status" class="auth-status" aria-live="polite"></p>
+    </article>
+</dialog>
+
+<style>
+    #auth-dialog {
+        border: var(--border-w) solid var(--border);
+        border-radius: var(--radius);
+        background: transparent;
+        padding: 0;
+        margin: auto;
+        max-width: none;
+        width: auto;
+        animation: authPop .45s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    #auth-dialog::backdrop {
+        background: rgba(0, 0, 0, .7);
+        backdrop-filter: blur(.35rem);
+    }
+
+    .auth-card {
+        position: relative;
+        width: min(24rem, 90vw);
+        border: var(--border-w) solid var(--border);
+        border-radius: var(--radius);
+        background: var(--surface);
+        backdrop-filter: blur(1rem);
+        padding: 2.6rem 2.2rem 2rem;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, .55);
+        box-sizing: border-box;
+    }
+
+    .auth-card > label {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--label-bg);
+        color: var(--accent);
+        padding: var(--label-pad-y) var(--label-pad-x);
+        border-radius: 30%;
+        outline: var(--border-w) solid var(--border);
+        outline-offset: 0px;
+        font-size: .88rem;
+        font-weight: 500;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .auth-card h2 {
+        margin: 0 0 .35rem;
+        color: var(--text);
+        font-size: 1.05rem;
+        font-weight: 500;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .auth-hint {
+        margin: 0 0 1.6rem;
+        color: var(--text-muted);
+        font-size: .72rem;
+        line-height: 1.6;
+        text-align: center;
+    }
+
+    .inputBoxData {
+        position: relative;
+        width: 100%;
+        margin: 0 0 1.4rem;
+    }
+    .inputBoxData input {
+        background: transparent;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 19px 12px;
+        border: solid 1px var(--boxBorder);
+        border-radius: 5px;
+        outline: none;
+        color: var(--text);
+        font-size: 1rem;
+        font-family: var(--basicFontFamily);
+        transition: border-color .5s;
+    }
+    .inputBoxData label {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 10px;
+        pointer-events: none;
+        font-size: 1rem;
+        color: rgba(255, 255, 255, .25);
+        text-transform: uppercase;
+        transition: .5s;
+    }
+    .inputBoxData input:focus ~ label,
+    .inputBoxData input:not(:placeholder-shown) ~ label {
+        color: #00dfc4;
+        transform: translateX(10px) translateY(-7px);
+        font-size: .65rem;
+        padding: 0 10px;
+        background: #1d2b3a;
+        border-left: solid 1px #00dfc4;
+        border-right: solid 1px #00dfc4;
+        letter-spacing: .2rem;
+    }
+    .inputBoxData input:focus,
+    .inputBoxData input:not(:placeholder-shown) {
+        border: solid 1px #00dfc4;
+    }
+
+    #auth-submit {
+        display: block;
+        width: 100%;
+        padding: .8rem 1rem .8rem 1.2rem;
+        background: linear-gradient(135deg, #1e4fad, #3d8ef0);
+        color: #fff;
+        font-family: var(--basicFontFamily);
+        font-size: .85rem;
+        font-weight: 600;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 18px rgba(61, 142, 240, .35);
+        transition: transform .15s ease, box-shadow .15s ease;
+    }
+    #auth-submit:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 24px rgba(61, 142, 240, .5);
+    }
+    #auth-submit:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .auth-status {
+        min-height: 1.2rem;
+        margin: 1rem 0 0;
+        font-size: .8rem;
+        line-height: 1.5;
+        text-align: center;
+    }
+    .auth-status.err { color: #f87171; }
+
+    @keyframes authPop {
+        from { opacity: 0; transform: translateY(-1.2rem) scale(.96); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+</style>
+
+<script define:vars={{ expectedUser, expectedPass, storageKey }}>
+    const dialog  = document.getElementById('auth-dialog');
+    const userEl  = document.getElementById('auth-user');
+    const passEl  = document.getElementById('auth-pass');
+    const submitBtn = document.getElementById('auth-submit');
+    const statusEl  = document.getElementById('auth-status');
+
+    const isAuthed = () => localStorage.getItem(storageKey) === 'true';
+
+    function fail(msg) {
+        statusEl.textContent = msg;
+        statusEl.className = 'auth-status err';
+    }
+
+    function clearStatus() {
+        statusEl.textContent = '';
+        statusEl.className = 'auth-status';
+    }
+
+    function unlock() {
+        localStorage.setItem(storageKey, 'true');
+        passEl.value = '';
+        clearStatus();
+        dialog.close();
+        window.dispatchEvent(new CustomEvent('auth:success'));
+    }
+
+    function lock() {
+        localStorage.removeItem(storageKey);
+        clearStatus();
+        dialog.showModal();
+    }
+
+    // ── Gate on load ────────────────────────────────────────────────
+    if (isAuthed()) {
+        window.dispatchEvent(new CustomEvent('auth:success'));
+    } else {
+        dialog.showModal();
+    }
+
+    // ── Submit ──────────────────────────────────────────────────────
+    submitBtn.addEventListener('click', () => {
+        const u = userEl.value.trim();
+        const p = passEl.value;
+
+        if (!u || !p) {
+            fail('Enter a username and password.');
+            return;
+        }
+        if (u === expectedUser && p === expectedPass) {
+            unlock();
+        } else {
+            fail('Invalid username or password.');
+            userEl.focus();
+        }
+    });
+
+    dialog.addEventListener('submit', (e) => e.preventDefault());
+
+    // Prevent dismissing the gate before authenticating (ESC, backdrop).
+    dialog.addEventListener('cancel', (e) => {
+        if (!isAuthed()) {
+            e.preventDefault();
+            if (!dialog.open) dialog.showModal();
+        }
+    });
+    dialog.addEventListener('click', (e) => {
+        if (e.target === dialog && !isAuthed() && !dialog.open) { dialog.showModal(); }
+    });
+
+    // ── Logout from elsewhere in the app ────────────────────────────
+    window.addEventListener('auth:logout', () => lock());
+
+    userEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') submitBtn.click();
+    });
+    passEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') submitBtn.click();
+    });
+</script>

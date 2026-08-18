@@ -39,17 +39,24 @@ const upload = multer({
 });
 
 // POST /api/upload
-router.post('/', upload.single('file'), (req, res) => {
+// TODO: delete this line router.post('/', upload.single('file'), (req, res) => {
+router.post('/', upload.single('file'), async (req, res) => {  
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
 
   // Save upload record to DB
-  queries.insertUpload.run(
-    req.file.originalname,
-    req.file.filename,
-    req.file.size
-  );
+  //TODO: delete this block
+  // queries.insertUpload.run(
+  //   req.file.originalname,
+  //   req.file.filename,
+  //   req.file.size
+  // );
+  try {
+        await queries.insertUpload(req.file.originalname, req.file.filename, req.file.size);
+  } catch (dbErr) {
+        console.error('[DB] insertUpload failed:', dbErr.message);
+  }
 
   res.json({
     success: true,
