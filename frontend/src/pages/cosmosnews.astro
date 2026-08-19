@@ -13,9 +13,16 @@ import spaceImage from '../assets/images/newsImages/starun2.webp';
 // tag further down, since that's the only place a `document` exists.
 // ─────────────────────────────────────────────────────────────────────────
 
+// FIX: was hardcoded to http://localhost:3000, which only works when the
+// backend happens to run on that exact host/port — breaks the moment
+// frontend and backend are deployed as separate services (they are; see
+// server.js's commented-out stellarwave-frontend.onrender.com entry).
+// Same env var pepenews.astro already uses.
+const apiBase = process.env.API_URL ?? 'http://localhost:3000';
+
 let data = [];
 try {
-    const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/news`);
+    const res = await fetch(`${apiBase}/api/news`);
     if (res.ok) {
         const json = await res.json();
         data = json.news ?? [];
@@ -36,7 +43,10 @@ const Name = "Stellarwaves-5";
     <main id="newsSection">
         <template id="newsPanel">
             <article class="GEV-showItem-main-container" data-direction="left">
-                <img class="image-area article-Image" src="" alt="" />
+                <div class="image-area">
+                    <img class="article-Image" src="" alt="" />
+                    <video class="article-Video" muted loop playsinline controls hidden></video>
+                </div>
                 <section class="content-area">
                     <h2 class="title-cell article-Title"></h2>
                     <textarea class="text-cell article-Text"></textarea>
@@ -46,7 +56,7 @@ const Name = "Stellarwaves-5";
     </main>
 </Layout>
 
-<script define:vars={{ data }}>
+<script define:vars={{ data, apiBase }}>
     // ─────────────────────────────────────────────────────────────────────
     // FIX: this is the forEach/template-cloning logic, now running client-
     // side (a real <script> tag) where `document` actually exists. `data`
@@ -55,19 +65,55 @@ const Name = "Stellarwaves-5";
     const newsSection = document.querySelector('#newsSection');
     const template = document.querySelector('#newsPanel');
 
+    // Seed entries ship as bare filenames (e.g. "05Kepler-186f.jpg") that
+    // live in the frontend's own public/images/destinationBlock — those
+    // resolve directly, no network round trip needed. Entries published
+    // through the CMS (pepenews.astro) are uploaded to the BACKEND instead
+    // (images/newsImages there, served at <apiBase>/files/newsImages/<n>)
+    // since the backend is the only piece with a writable, persistent
+    // filesystem in this app's deployment (frontend + backend are separate
+    // services — see server.js). So every image has two possible homes;
+    // we try the frontend path first (cheap, same-origin) and fall back to
+    // the API on 404.
+    //
+    // FIX: this used to be `img.src = '/images/destinationBlock/' + ...`
+    // unconditionally, with no fallback — any image published through the
+    // CMS (which never lands in that frontend folder) silently 404'd. Title
+    // and article text rendered fine regardless, since neither depends on
+    // a file existing, which is exactly why only the image looked broken.
+    const VIDEO_EXTENSIONS = ['mp4', 'webm', 'ogg', 'ogv', 'mov', 'm4v'];
+    function isVideoFile(name) {
+        if (!name) return false;
+        const ext = String(name).split('.').pop().toLowerCase();
+        return VIDEO_EXTENSIONS.includes(ext);
+    }
+
     if (newsSection && template) {
         data.forEach((element, index) => {
             const clone = template.content.cloneNode(true);
 
-            const img = clone.querySelector('img');
-            // FIX: was `.attibuteValue = element.image`, which is not a real
-            // DOM property (typo) and silently did nothing — the <img> kept
-            // src="" forever. Set `.src` instead, and prefix with the
-            // public folder path since the DB only stores the bare filename
-            // (e.g. "05Kepler-186f.jpg") and the files actually live in
-            // public/images/destinationBlock/.
-            img.src = `/images/destinationBlock/${element.image}`;
-            img.alt = element.title ?? '';
+            const area = clone.querySelector('.image-area');
+            const imgEl = area.querySelector('.article-Image');
+            const videoEl = area.querySelector('.article-Video');
+            const filename = element.image || 'Sagittarius.webp';
+            const destUrl = `/images/destinationBlock/${filename}`;
+            const apiUrl = `${apiBase}/files/newsImages/${filename}`;
+
+            if (isVideoFile(filename)) {
+                // Videos only ever come from the API — the seed set has no
+                // video entries, so there's no frontend path to try first.
+                imgEl.hidden = true;
+                videoEl.hidden = false;
+                videoEl.src = apiUrl;
+            } else {
+                imgEl.hidden = false;
+                videoEl.hidden = true;
+                imgEl.src = destUrl;
+                imgEl.alt = element.title ?? '';
+                imgEl.addEventListener('error', () => {
+                    if (imgEl.getAttribute('src') !== apiUrl) imgEl.setAttribute('src', apiUrl);
+                }, { once: true });
+            }
 
             clone.querySelector('h2').textContent = element.title;
 
@@ -144,10 +190,19 @@ const Name = "Stellarwaves-5";
             display: flex;
             justify-content: center;
             align-items: center;
-            object-fit: cover;
             color: #555;
             font-size: 2em;
             font-style: italic;
+        }
+        & .image-area img,
+        & .image-area video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        & .image-area img[hidden],
+        & .image-area video[hidden] {
+            display: none;
         }
         & .content-area {
             grid-area: content;
