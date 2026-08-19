@@ -7,23 +7,7 @@ const cmsKey = process.env.CMS_KEY || 'changeme-some-random-shared-secret';
 const cmsUser = process.env.CMS_USER || 'admin';
 const cmsPass = process.env.CMS_PASS || 'changeme';
 const authStorageKey = 'pepenews-auth';
-const apiBase = process.env.API_URL ?? 'http://localhost:3000';
-
-// News entries are fetched on the server (this project uses output:'server'),
-// then injected into the client script below via define:vars — same pattern
-// as cosmosnews.astro. The DOM/template work happens client-side.
-let data = [];
-try {
-    const res = await fetch(`${apiBase}/api/news`);
-    if (res.ok) {
-        const json = await res.json();
-        data = json.news ?? [];
-    } else {
-        console.error('Failed to fetch news:', res.status);
-    }
-} catch (err) {
-    console.error('Error fetching news:', err);
-}
+const apiUrl = import.meta.env.PUBLIC_API_URL;
 ---
 
 <Layout title={PageTitle}>
@@ -34,9 +18,9 @@ try {
             <label>News Editor</label>
 
             <h2>Add a News Entry</h2>
-            <!-- <p class="cms-hint">
+            <p class="cms-hint">
                 This page is not listed in the menu. Only the editor knows this URL.
-            </p> -->
+            </p>
 
             <section class="inputBoxData">
                 <input id="news-title" type="text" autocomplete="off" />
@@ -44,30 +28,16 @@ try {
             </section>
 
             <section class="inputBoxData">
-                <textarea id="news-article" rows="6"></textarea>
-                <label for="news-article">Article *</label>
+                <input id="news-image" type="text" autocomplete="off" />
+                <label for="news-image">Image (optional)</label>
+                <p class="cms-field-note">
+                    Leave blank to use the default image: <strong>Sagittarius.webp</strong>.
+                </p>
             </section>
 
             <section class="inputBoxData">
-                <input id="news-image" type="text" autocomplete="off" readonly />
-                <label for="news-image">Image or Video (optional)</label>
-
-                <div id="news-media-drop" class="media-drop" tabindex="0" role="button"
-                     aria-label="Drag and drop an image or video here, or click to browse">
-                    <p id="news-media-drop-text" class="media-drop-text">
-                        Drag &amp; drop an image or video here, or click to browse
-                    </p>
-
-                    <div id="news-media-preview" class="media-preview" hidden>
-                        <img id="news-media-preview-img" alt="" hidden />
-                        <video id="news-media-preview-video" muted loop playsinline controls hidden></video>
-                        <span id="news-media-preview-name" class="media-preview-name"></span>
-                        <button type="button" id="news-media-clear" class="media-clear-btn"
-                                title="Remove selected media" aria-label="Remove selected media">✕</button>
-                    </div>
-                </div>
-                <input id="news-media-file" type="file" accept="image/*,video/*" hidden />
-                <p id="news-media-status" class="cms-field-note"></p>
+                <textarea id="news-article" rows="6"></textarea>
+                <label for="news-article">Article *</label>
             </section>
 
             <button id="news-submit" type="button">Publish Entry</button>
@@ -77,30 +47,6 @@ try {
             <button id="news-logout" type="button">Log Out</button>
         </article>
     </section>
-
-    <!-- Management list — same newsSection/template layout as cosmosnews.astro,
-         plus a delete block on the right of every panel and a drag & drop
-         image area (uploaded images go to uploads/newsImages). -->
-    <main id="newsSection" class="mng-wrap" hidden>
-        <h2 class="mng-heading">Manage Existing Entries</h2>
-        <p class="mng-hint">Drop a new image or video onto a panel's thumbnail to replace it. Use the block on the right to delete an entry (its media is removed too).</p>
-
-        <template id="newsPanel">
-            <article class="GEV-showItem-main-container" data-direction="left">
-                <div class="image-area">
-                    <img class="article-Image" src="" alt="" />
-                    <video class="article-Video" muted loop playsinline controls hidden></video>
-                </div>
-                <section class="content-area">
-                    <h2 class="title-cell article-Title"></h2>
-                    <textarea class="text-cell article-Text" readonly></textarea>
-                </section>
-                <aside class="delete-area">
-                    <button type="button" class="delete-btn" title="Delete entry" aria-label="Delete entry">✕</button>
-                </aside>
-            </article>
-        </template>
-    </main>
 </Layout>
 
 <style is:global>
@@ -110,10 +56,9 @@ try {
 </style>
 
 <style>
-    /* ===== Add-entry form (kept from the original pepenews) ===== */
     .cms-wrap {
         margin-top: 18vh;
-        margin-bottom: 4rem;
+        margin-bottom: 6rem;
         display: flex;
         justify-content: center;
     }
@@ -228,76 +173,6 @@ try {
         font-size: .68rem;
         line-height: 1.6;
     }
-    .cms-field-note.err { color: #f87171; }
-
-    /* ===== Drag & drop zone for #news-image (Add a News Entry form) ===== */
-    .media-drop {
-        margin-top: .6rem;
-        padding: 1.1rem .9rem;
-        border: 1px dashed var(--boxBorder);
-        border-radius: 6px;
-        text-align: center;
-        cursor: pointer;
-        transition: border-color .2s ease, background-color .2s ease;
-    }
-    .media-drop:hover,
-    .media-drop:focus-visible {
-        border-color: #00dfc4;
-        outline: none;
-    }
-    .media-drop.drag-over {
-        border-color: #00dfc4;
-        background: rgba(0, 223, 196, .08);
-    }
-    .media-drop.uploading {
-        opacity: .55;
-        pointer-events: none;
-    }
-    .media-drop-text {
-        margin: 0;
-        color: var(--text-muted);
-        font-size: .72rem;
-        line-height: 1.6;
-    }
-
-    .media-preview {
-        display: flex;
-        align-items: center;
-        gap: .6rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    .media-preview img,
-    .media-preview video {
-        max-width: 6rem;
-        max-height: 4rem;
-        border-radius: 4px;
-        object-fit: cover;
-    }
-    .media-preview-name {
-        color: var(--text);
-        font-size: .72rem;
-        word-break: break-all;
-    }
-    .media-clear-btn {
-        width: 1.6rem;
-        height: 1.6rem;
-        flex-shrink: 0;
-        border-radius: 50%;
-        border: 1px solid #ff6b6b;
-        background: rgba(255, 107, 107, .12);
-        color: #ff6b6b;
-        font-size: .85rem;
-        line-height: 1;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .media-clear-btn:hover {
-        background: #ff6b6b;
-        color: #fff;
-    }
 
     #news-submit {
         display: block;
@@ -357,517 +232,27 @@ try {
     }
     .cms-status.ok { color: #4ade80; }
     .cms-status.err { color: #f87171; }
-
-    /* ===== Management list (matches cosmosnews.astro #newsSection) ===== */
-    .mng-wrap {
-        width: 100%;
-        margin: 2rem auto 10vh;
-        padding-bottom: 4rem;
-    }
-    .mng-wrap[hidden] { display: none; }
-
-    .mng-heading {
-        text-align: center;
-        color: var(--text);
-        font-size: 1.15rem;
-        font-weight: 500;
-        letter-spacing: .18em;
-        text-transform: uppercase;
-        margin-bottom: .5rem;
-    }
-
-    .mng-hint {
-        text-align: center;
-        color: var(--text-muted);
-        font-size: .72rem;
-        letter-spacing: .05em;
-        margin-bottom: 2rem;
-    }
-
-    .GEV-showItem-main-container {
-        display: grid;
-        min-height: 10vh;
-        width: 90vw;
-        max-width: 1000px;
-        margin: 0 auto 30px auto;
-        border: 2px solid #fff;
-        border-radius: 10%;
-        overflow: hidden;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        &[data-direction="left"] {
-            grid-template-columns: 250px 1fr 3.5rem;
-            grid-template-areas: "img content del";
-            & .image-area {
-                border-right: 2px solid black;
-                border-left: none;
-            }
-        }
-        &[data-direction="right"] {
-            grid-template-columns: 1fr 250px 3.5rem;
-            grid-template-areas: "content img del";
-            & .image-area {
-                border-left: 2px solid #fff;
-                border-right: none;
-            }
-        }
-        & .image-area {
-            grid-area: img;
-            width: 15vw;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #555;
-            font-size: 2em;
-            font-style: italic;
-            cursor: pointer;
-            transition: filter .2s ease;
-        }
-        & .image-area img,
-        & .image-area video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        & .image-area img[hidden],
-        & .image-area video[hidden] {
-            display: none;
-        }
-        & .image-area.drag-over {
-            outline: 3px dashed #00dfc4;
-            outline-offset: -4px;
-            filter: brightness(1.3);
-        }
-        & .image-area.uploading {
-            opacity: .55;
-            pointer-events: none;
-        }
-        & .content-area {
-            grid-area: content;
-            display: grid;
-            grid-template-rows: auto 1fr;
-            & .title-cell {
-                padding: 20px 40px;
-                border-bottom: 2px solid black;
-                color: #fff;
-                font-size: clamp(2rem, 5vw + 1rem, 2.7rem);
-                font-weight: bold;
-                align-self: end;
-                margin: 0;
-            }
-            & .text-cell {
-                padding: 40px;
-                color: #fff;
-                font-size: 1.5em;
-                align-self: center;
-                width: 100%;
-                height: 100%;
-                border: none;
-                resize: none;
-                background: transparent;
-            }
-        }
-        & .delete-area {
-            grid-area: del;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: .75rem;
-            background: rgba(120, 0, 0, .28);
-            border-left: 2px solid rgba(255, 255, 255, .35);
-        }
-        & .delete-btn {
-            width: 2.1rem;
-            height: 2.1rem;
-            border-radius: 50%;
-            border: 2px solid #ff6b6b;
-            background: rgba(255, 107, 107, .12);
-            color: #ff6b6b;
-            font-size: 1.1rem;
-            line-height: 1;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background .15s ease, color .15s ease, transform .15s ease;
-        }
-        & .delete-btn:hover {
-            background: #ff6b6b;
-            color: #fff;
-            transform: scale(1.08);
-        }
-    }
-</style>
-<style is:global>
-    main { width: 100%; }
 </style>
 
-<script define:vars={{ data, cmsKey, authStorageKey, apiBase }}>
-    const API = apiBase;
-    const titleEl   = document.getElementById('news-title');
-    const imageEl   = document.getElementById('news-image');
+<script define:vars={{ cmsKey, authStorageKey, apiUrl }}>
+    const titleEl  = document.getElementById('news-title');
+    const imageEl  = document.getElementById('news-image');
     const articleEl = document.getElementById('news-article');
     const submitBtn = document.getElementById('news-submit');
     const statusEl  = document.getElementById('news-status');
     const logoutBtn = document.getElementById('news-logout');
     const cmsWrap   = document.querySelector('.cms-wrap');
-    const newsSection = document.getElementById('newsSection');
-    const newsTemplate = document.getElementById('newsPanel');
-
-    // Drag & drop elements for the "Add a News Entry" media field.
-    const mediaDrop        = document.getElementById('news-media-drop');
-    const mediaDropText    = document.getElementById('news-media-drop-text');
-    const mediaFileInput   = document.getElementById('news-media-file');
-    const mediaStatusEl    = document.getElementById('news-media-status');
-    const mediaPreview     = document.getElementById('news-media-preview');
-    const mediaPreviewImg  = document.getElementById('news-media-preview-img');
-    const mediaPreviewVid  = document.getElementById('news-media-preview-video');
-    const mediaPreviewName = document.getElementById('news-media-preview-name');
-    const mediaClearBtn    = document.getElementById('news-media-clear');
-
-    // Tracks the file uploaded via drag & drop / browse for the entry
-    // currently being drafted, so it can be cleaned up server-side if the
-    // user clears it or picks a different file before hitting "Publish".
-    let pendingUpload = null; // { filename, type }
-
-    let rendered = false;
 
     // ── Auth gate ──────────────────────────────────────────────────
-    // AuthDialog's own <script> runs earlier in document order than this
-    // one. If the user is already authenticated (localStorage from a
-    // previous visit), AuthDialog dispatches 'auth:success' immediately on
-    // load — before the addEventListener call below even exists yet — so
-    // the event is missed entirely. That's why the "Add a News Entry" form
-    // (which re-checks localStorage directly, see below) used to show up
-    // fine on a repeat visit while "Manage Existing Entries" (which only
-    // ever reacted to the event) silently never did: activateCms() below
-    // is now the single path both the direct check and the event use, so
-    // neither can get out of sync with the other again.
-    function activateCms() {
-        cmsWrap.hidden = false;
-        newsSection.hidden = false;
-        if (!rendered) {
-            renderPanels();
-            rendered = true;
-        }
-    }
     if (localStorage.getItem(authStorageKey) === 'true') {
-        activateCms();
+        cmsWrap.hidden = false;
     }
-    window.addEventListener('auth:success', activateCms);
-    window.addEventListener('auth:logout', () => {
-        cmsWrap.hidden = true;
-        newsSection.hidden = true;
-    });
+    window.addEventListener('auth:success', () => { cmsWrap.hidden = false; });
+    window.addEventListener('auth:logout', () => { cmsWrap.hidden = true; });
     logoutBtn.addEventListener('click', () => {
         window.dispatchEvent(new CustomEvent('auth:logout'));
     });
 
-    // ── Build the news panels (cosmosnews.astro template) ───────────
-    const VIDEO_EXTENSIONS = ['mp4', 'webm', 'ogg', 'ogv', 'mov', 'm4v'];
-
-    function isVideoFile(name) {
-        if (!name) return false;
-        const ext = String(name).split('.').pop().toLowerCase();
-        return VIDEO_EXTENSIONS.includes(ext);
-    }
-
-    function resolveImageUrl(name) {
-        const safe = name || 'Sagittarius.webp';
-        return {
-            dest: `/images/destinationBlock/${safe}`,
-            news: `${API}/files/newsImages/${safe}`,
-        };
-    }
-
-    // Show the right tag (img vs video) inside a panel's .image-area and
-    // point it at the given filename. `dest` is the frontend-bundled seed
-    // path (images only); videos always come from the API's uploads folder.
-    function setPanelMedia(area, filename, { dest, useFallback } = {}) {
-        const imgEl = area.querySelector('.article-Image');
-        const videoEl = area.querySelector('.article-Video');
-        const newsUrl = `${API}/files/newsImages/${filename || 'Sagittarius.webp'}`;
-
-        if (isVideoFile(filename)) {
-            imgEl.hidden = true;
-            imgEl.removeAttribute('src');
-            videoEl.hidden = false;
-            videoEl.src = newsUrl;
-        } else {
-            videoEl.hidden = true;
-            videoEl.removeAttribute('src');
-            imgEl.hidden = false;
-            imgEl.src = useFallback ? dest : newsUrl;
-            if (useFallback) {
-                // Seed images live in the frontend /images/destinationBlock;
-                // images uploaded via drag & drop live on the API at
-                // /files/newsImages. Fall back from one to the other on 404.
-                imgEl.addEventListener('error', () => {
-                    if (imgEl.getAttribute('src') !== newsUrl) imgEl.setAttribute('src', newsUrl);
-                }, { once: true });
-            }
-        }
-    }
-
-    function renderPanels() {
-        if (!newsSection || !newsTemplate || !Array.isArray(data)) return;
-
-        data.forEach((entry, index) => {
-            const clone = newsTemplate.content.cloneNode(true);
-
-            const article = clone.querySelector('article');
-            article.dataset.id = entry.id;
-            article.dataset.title = entry.title || '';
-
-            const area = clone.querySelector('.image-area');
-            const { dest } = resolveImageUrl(entry.image);
-            setPanelMedia(area, entry.image, { dest, useFallback: true });
-            clone.querySelector('.article-Image').alt = entry.title ?? '';
-
-            clone.querySelector('h2').textContent = entry.title;
-            clone.querySelector('textarea').value = entry.article;
-
-            // Alternate left/right layout per card, same as cosmosnews
-            article.dataset.direction = index % 2 === 0 ? 'left' : 'right';
-
-            newsSection.appendChild(clone);
-        });
-    }
-
-    // ── Delete block ────────────────────────────────────────────────
-    newsSection.addEventListener('click', (e) => {
-        const delBtn = e.target.closest('.delete-btn');
-        if (!delBtn) return;
-        const article = delBtn.closest('article');
-        if (!article) return;
-
-        const title = article.dataset.title || 'this entry';
-        if (!window.confirm(`Delete "${title}"? Its image will also be removed.`)) return;
-
-        fetch(`${API}/api/news/${article.dataset.id}`, {
-            method: 'DELETE',
-            headers: { 'CMS_KEY': cmsKey },
-        })
-            .then((res) => (res.ok ? res.json() : Promise.reject(new Error('Delete failed.'))))
-            .then(() => article.remove())
-            .catch((err) => window.alert(err.message));
-    });
-
-    // ── Image/video upload (drag & drop or click to pick) ────────────
-    // Browsers (Windows drag & drop especially) sometimes hand us an empty
-    // or generic file.type ('', 'application/octet-stream') for a perfectly
-    // valid image/video — the OS just had no MIME association for it. That
-    // used to make isMediaFile() reject the drop before it ever reached the
-    // server, silently — which looked like drops just doing nothing. Fall
-    // back to the file extension when the browser's type looks untrustworthy.
-    const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-    const MEDIA_EXTENSIONS = [...IMAGE_EXTENSIONS, ...VIDEO_EXTENSIONS];
-
-    function isMediaFile(file) {
-        if (!file) return false;
-        if (file.type.startsWith('image/') || file.type.startsWith('video/')) return true;
-        const ext = file.name.split('.').pop().toLowerCase();
-        return MEDIA_EXTENSIONS.includes(ext);
-    }
-
-    function uploadImage(id, file, area) {
-        if (!file) return;
-        if (!isMediaFile(file)) {
-            window.alert('Only images or videos can be dropped here.');
-            return;
-        }
-
-        const fd = new FormData();
-        fd.append('image', file);
-
-        area.classList.add('uploading');
-        fetch(`${API}/api/news/${id}/image`, {
-            method: 'POST',
-            headers: { 'CMS_KEY': cmsKey },
-            body: fd,
-        })
-            .then((res) => (res.ok ? res.json() : Promise.reject(new Error('Upload failed.'))))
-            .then((res) => {
-                area.classList.remove('uploading');
-                setPanelMedia(area, res.image);
-            })
-            .catch((err) => {
-                area.classList.remove('uploading');
-                window.alert(err.message);
-            });
-    }
-
-    newsSection.addEventListener('dragover', (e) => {
-        const area = e.target.closest('.image-area');
-        if (area) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'copy';
-            area.classList.add('drag-over');
-        }
-    });
-
-    newsSection.addEventListener('dragleave', (e) => {
-        const area = e.target.closest('.image-area');
-        if (area) area.classList.remove('drag-over');
-    });
-
-    newsSection.addEventListener('drop', (e) => {
-        const area = e.target.closest('.image-area');
-        if (!area) return;
-        e.preventDefault();
-        area.classList.remove('drag-over');
-        const article = area.closest('article');
-        const file = e.dataTransfer.files && e.dataTransfer.files[0];
-        uploadImage(article.dataset.id, file, area);
-    });
-
-    // Click the image/video to open a file picker (drag & drop fallback).
-    // Ignore clicks on the video element itself so its native play/pause/
-    // seek controls keep working instead of always opening a file picker.
-    newsSection.addEventListener('click', (e) => {
-        const area = e.target.closest('.image-area');
-        if (!area) return;
-        if (e.target.tagName === 'VIDEO') return;
-
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*,video/*';
-        input.addEventListener('change', () => {
-            const file = input.files && input.files[0];
-            if (file) {
-                const article = area.closest('article');
-                uploadImage(article.dataset.id, file, area);
-            }
-        });
-        input.click();
-    });
-
-    // ── Add-entry media field: drag & drop / click to browse ────────
-    // Files are uploaded immediately to POST /api/news/upload (no entry id
-    // needed yet). The returned filename is put in #news-image's value, so
-    // it rides along with the rest of the form when "Publish Entry" posts
-    // to POST /api/news, and ends up stored as the `image` column in the DB.
-    function setMediaStatus(msg, isErr) {
-        mediaStatusEl.textContent = msg;
-        mediaStatusEl.className = isErr ? 'cms-field-note err' : 'cms-field-note';
-    }
-
-    function showMediaPreview(file, filename, type) {
-        mediaPreview.hidden = false;
-        mediaPreviewName.textContent = filename;
-        const objectUrl = URL.createObjectURL(file);
-        if (type === 'video') {
-            mediaPreviewVid.src = objectUrl;
-            mediaPreviewVid.hidden = false;
-            mediaPreviewImg.hidden = true;
-            mediaPreviewImg.removeAttribute('src');
-        } else {
-            mediaPreviewImg.src = objectUrl;
-            mediaPreviewImg.hidden = false;
-            mediaPreviewVid.hidden = true;
-            mediaPreviewVid.removeAttribute('src');
-        }
-        mediaDropText.hidden = true;
-    }
-
-    function clearMediaPreview() {
-        mediaPreview.hidden = true;
-        mediaPreviewImg.hidden = true;
-        mediaPreviewVid.hidden = true;
-        mediaPreviewImg.removeAttribute('src');
-        mediaPreviewVid.removeAttribute('src');
-        mediaPreviewName.textContent = '';
-        mediaDropText.hidden = false;
-    }
-
-    // Removes a previously-uploaded-but-not-yet-published file from the
-    // server so drops that get replaced or abandoned don't leak files.
-    function discardPendingUpload() {
-        if (!pendingUpload) return;
-        fetch(`${API}/api/news/upload/${encodeURIComponent(pendingUpload.filename)}`, {
-            method: 'DELETE',
-            headers: { 'CMS_KEY': cmsKey },
-        }).catch(() => { /* best-effort cleanup */ });
-        pendingUpload = null;
-    }
-
-    function uploadMediaFile(file) {
-        if (!file) return;
-        if (!isMediaFile(file)) {
-            setMediaStatus('Only images or videos are allowed.', true);
-            return;
-        }
-
-        // Replacing a previous drop before publishing — clean up the old file.
-        discardPendingUpload();
-
-        const fd = new FormData();
-        fd.append('image', file);
-
-        mediaDrop.classList.add('uploading');
-        setMediaStatus('Uploading…', false);
-
-        fetch(`${API}/api/news/upload`, {
-            method: 'POST',
-            headers: { 'CMS_KEY': cmsKey },
-            body: fd,
-        })
-            .then((res) => (res.ok ? res.json() : res.json().then((j) => Promise.reject(new Error(j.error || 'Upload failed.')))))
-            .then((res) => {
-                pendingUpload = { filename: res.filename, type: res.type };
-                imageEl.value = res.filename;
-                showMediaPreview(file, res.filename, res.type);
-                setMediaStatus('Ready to publish with this ' + res.type + '.', false);
-            })
-            .catch((err) => {
-                setMediaStatus(err.message, true);
-            })
-            .finally(() => {
-                mediaDrop.classList.remove('uploading');
-            });
-    }
-
-    mediaDrop.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'copy';
-        mediaDrop.classList.add('drag-over');
-    });
-    mediaDrop.addEventListener('dragleave', () => {
-        mediaDrop.classList.remove('drag-over');
-    });
-    mediaDrop.addEventListener('drop', (e) => {
-        e.preventDefault();
-        mediaDrop.classList.remove('drag-over');
-        const file = e.dataTransfer.files && e.dataTransfer.files[0];
-        uploadMediaFile(file);
-    });
-    mediaDrop.addEventListener('click', (e) => {
-        // Let the "remove" button and native video controls handle their
-        // own clicks instead of reopening the file picker underneath them.
-        if (e.target.closest('#news-media-clear') || e.target.tagName === 'VIDEO') return;
-        mediaFileInput.click();
-    });
-    mediaDrop.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            mediaFileInput.click();
-        }
-    });
-    mediaFileInput.addEventListener('change', () => {
-        const file = mediaFileInput.files && mediaFileInput.files[0];
-        uploadMediaFile(file);
-        mediaFileInput.value = '';
-    });
-    mediaClearBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        discardPendingUpload();
-        imageEl.value = '';
-        clearMediaPreview();
-        setMediaStatus('', false);
-    });
-
-    // ── Add entry form ──────────────────────────────────────────────
     submitBtn.addEventListener('click', async () => {
         const title = titleEl.value.trim();
         const image = imageEl.value.trim();
@@ -892,7 +277,7 @@ try {
         statusEl.className = 'cms-status';
 
         try {
-            const res = await fetch(`${API}/api/news`, {
+            const res = await fetch(`${apiUrl}/api/news`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -901,34 +286,16 @@ try {
                 body: JSON.stringify({ title, image, article }),
             });
 
-            const dataRes = await res.json();
+            const data = await res.json();
 
-            if (res.ok && dataRes.success) {
+            if (res.ok && data.success) {
                 statusEl.textContent = 'Entry published successfully.';
                 statusEl.className = 'cms-status ok';
                 titleEl.value = '';
                 imageEl.value = '';
                 articleEl.value = '';
-                // The file (if any) is now attached to the published entry —
-                // forget it without deleting it, so future edits don't remove it.
-                pendingUpload = null;
-                clearMediaPreview();
-                setMediaStatus('', false);
-                // Reload the list so the new entry shows up.
-                try {
-                    const list = await (await fetch(`${API}/api/news`)).json();
-                    if (list.news) {
-                        // Remove only the rendered panels — keep the <template>.
-                        newsSection.querySelectorAll('article').forEach((a) => a.remove());
-                        rendered = false;
-                        data = list.news;
-                        newsSection.hidden = false;
-                        renderPanels();
-                        rendered = true;
-                    }
-                } catch (ignored) { /* list refresh is best-effort */ }
             } else {
-                statusEl.textContent = dataRes.error || 'Publish failed. Try again.';
+                statusEl.textContent = data.error || 'Publish failed. Try again.';
                 statusEl.className = 'cms-status err';
             }
         } catch (err) {

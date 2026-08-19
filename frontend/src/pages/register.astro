@@ -179,7 +179,7 @@ import Layout from '../layouts/Layout.astro';
       submitBtn.disabled = true;
 
       try {
-        const res = await fetch('http://localhost:3000/api/register', {
+        const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ firstName, lastName, email }),

@@ -1,5 +1,5 @@
 ---
-
+const apiUrl = import.meta.env.PUBLIC_API_URL;
 ---
 
 <section class="completeCard">
@@ -238,7 +238,7 @@
 </style>
 
 
-<script define:vars={{ TEXT_PRICE, PICTURE_PRICE, AUDIO_PRICE, VIDEO_PRICE }}>
+<script define:vars={{ TEXT_PRICE, PICTURE_PRICE, AUDIO_PRICE, VIDEO_PRICE, apiUrl }}>
 // ═══════════════════════════════════════════════════════════════════════════
 // ALL const declarations first — define:vars wraps this in a block scope,
 // so anything referenced before its declaration hits the temporal dead zone.
@@ -397,7 +397,7 @@ payBtn.addEventListener('click', async () => {
     payBtn.textContent = 'Processing…';
 
     try {
-        const res = await fetch('http://localhost:3000/create-payment-intent', {
+        const res = await fetch(`${apiUrl}/create-payment-intent`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
