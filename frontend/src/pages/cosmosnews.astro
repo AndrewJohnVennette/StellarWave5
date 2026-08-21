@@ -18,7 +18,8 @@ import spaceImage from '../assets/images/newsImages/starun2.webp';
 // frontend and backend are deployed as separate services (they are; see
 // server.js's commented-out stellarwave-frontend.onrender.com entry).
 // Same env var pepenews.astro already uses.
-const apiBase = process.env.API_URL ?? 'http://localhost:3000';
+const apiBase = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:3000';
+// const apiBase = process.env.API_URL ?? 'http://localhost:3000';
 
 let data = [];
 try {
